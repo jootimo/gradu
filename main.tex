@@ -1,0 +1,164 @@
+% Tässä metadata gradujen pdf/a tiedostomuotoa varten. Muista päivittää! Tähän ei voi laittaa ääkkösiä
+\begin{filecontents*}{\jobname.xmpdata}
+\Title{Pistepilvien visualisointi laitossuunnitteluohjelmistossa}
+\Author{Timo Heinonen}
+\end{filecontents*}
+\documentclass{wihuri}
+%\usepackage{isolatin1} % Saadaan ääkköset toimimaan !
+%\usepackage[latin1]{inputenc} % Saadaan oikeat merkit
+\usepackage[utf8]{inputenc} % Tällä toimii utf-8
+\usepackage[T1]{fontenc}      % Ja tämä liittyy edelliseen
+\usepackage[finnish]{babel} %Suomenkielinen tavutus
+\usepackage{tytiivis} %Tiivistelmäsivun laatimiseksi
+\usepackage{graphicx}%Saadaan kuvat toimimaan
+\usepackage{xcolor}
+\usepackage{lastpage}
+\usepackage{subfiles}
+\usepackage{url}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage[a-1b]{pdfx}  % pdf:n tulee graduissa olla pdf/a-1b-standardin mukaista. Tällä ja pdflatexia käyttämällä se onnistuu
+\usepackage[pdfa]{hyperref} % Tämä tarvitaan, jos haluaa sisällysluettelon klikattavaan muotoon. 
+\hypersetup{
+    colorlinks = false,
+    linkbordercolor = {white}
+}
+% pdflatex vaatii, että kuvat ovat jotain muuta kuin eps-muotoisia. Esimerkiksi pdf käy mainiosti vektorikuville 
+% ja png pikselikuville. Pikselikuvat mennevät paremmin läpi gradujen validoinnista.
+%
+% Esimerkkejä uusien käskyjen määrittelyistä.
+% Käsky \mathbi{``vektorin symboli''} luo boldin italicin kirjaimen. Kreikkalaisille
+% kirjaimille taitaa olla pakko käyttää \pmb:tä.
+\newcommand{\mathbi}[1]{\textbf{\em #1}}
+% Käsky \der luo derivaatan d:n
+\newcommand{\der}{\mbox{d}}
+%
+
+\newcommand{\engl}[1]{\emph{(engl. #1)}}
+
+\begin{document}
+\title{Pistepilvien visualisointi laitossuunnitteluohjelmistossa}
+\opinnayte{Pro Gradu}
+\author{Timo Heinonen}
+\vuosi{2018}
+\oppiaine{Tietojenkäsittelytiede}
+\tarkastaja{P.P.}
+\tarkastaja{H.H.}
+\maketitle
+\newpage
+\thispagestyle{empty}
+\vspace*{10cm}
+
+\vfill
+
+\hspace*{-2cm}\parbox{\textwidth}{Turun yliopiston laatujärjestelmän mukaisesti
+  tämän julkaisun alkuperäisyys on tarkastettu Turnitin
+  OriginalityCheck-järjestelmällä} 
+%Huomaa, että joudut kuitenkin printtaamaan tämän sivun erikseen
+%kaksipuoleseksi kannen kanssa.
+
+
+\newpage
+\begin{tiivistelma}%
+        {Tulevaisuuden teknologioiden laitos}%
+        {Timo Heinonen}%
+        {Pistepilvien visualisointi laitossuunnitteluohjelmistossa}
+        {Pro Gradu, \pageref{LastPage} s., 3 liites.}%
+        {Tietojenkäsittelytiede}% Oppiaine
+        {\today}%
+	Juuh elikkäs gradutyötä...
+\end{tiivistelma}
+
+\tableofcontents %Sisällysluettelo
+\newpage
+
+\subfile{johdanto.tex}
+\begin{figure}
+\centering
+\tdplotsetmaincoords{60}{110}
+%
+\pgfmathsetmacro{\rvec}{.8}
+\pgfmathsetmacro{\thetavec}{30}
+\pgfmathsetmacro{\phivec}{60}
+%
+\begin{tikzpicture}[scale=5,tdplot_main_coords]
+    \coordinate (O) at (0,0,0);
+    \draw[thick,->] (0,0,0) -- (1,0,0) node[anchor=north east]{$x$};
+    \draw[thick,->] (0,0,0) -- (0,1,0) node[anchor=north west]{$y$};
+\draw[thick,->] (0,0,0) -- (0,0,1) node[anchor=south]{$z$};
+    \tdplotsetcoord{P}{\rvec}{\thetavec}{\phivec}
+    \draw[-stealth,color=red] (O) -- (P) node[above right] {$r$};
+    \draw[dashed, color=red] (O) -- (Pxy);
+    \draw[dashed, color=red] (P) -- (Pxy);
+    \tdplotdrawarc{(O)}{0.2}{0}{\phivec}{anchor=north}{$\phi$}
+    \tdplotsetthetaplanecoords{\phivec}
+    \tdplotdrawarc[tdplot_rotated_coords]{(O)}{0.25}{75}%
+        {\thetavec}{anchor=south west}{$\theta$}
+\end{tikzpicture}
+
+\caption{Pallokoordinaatisto}
+\label{pallokoord}
+
+\end{figure}{}
+
+
+%\section*{Johdanto}
+%\addcontentsline{toc}{section}{Johdanto}
+%Näin tehtynä Johdannolle ei tule numeroa sisälllysluetteloon
+
+\section{Pistepilvien käsittelyssä käytetyt tietorakenteet}
+
+\subsection{Pistedatan pakkaaminen}
+Octreen pisteen koordinaatin ilmaiseminen kahdella tavulla: Tavun kumpikin bitti ilmaisee $s/2^{16}$ etäisyyttä suorakulmaisen särmiön vasemmasta alanurkasta. $s$ on särmiön sivun pituus. \cite{Elseberg}
+
+
+
+
+
+\section{Laitossuunnittelusovellukseen optimoitu tietorakenne}
+
+
+\section{Vertailu}
+
+
+\section{Johtopäätökset}
+
+
+
+
+
+
+
+
+
+%\newpage
+% Rivinväli pienemmäksi viiteluettelossa. Fonttia on vaihdettava, jotta käsky
+% toimisi !
+\renewcommand{\baselinestretch}{1}\large\normalsize
+
+
+
+
+
+\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliography{refs} % Entries are in the "refs.bib" file
+%
+%\begin{thebibliography}{50}% Viiteluettelo. TÄTÄ ON PAKKO KÄYTTÄÄ !
+% Jaa, ai miksi ? No, koska tällä tavalla se on vaan niin pirusti
+% helpompaa.
+%\bibitem{lshort} T. Oetiker, H. Partl, I. Hyna and E. Schlegl,
+%Not so short introduction to \LaTeX 2e, 1998
+%\end{thebibliography}
+%
+% Vaihtoehtoisesti thebibliography ympäristölle voi käyttää BibTeX
+% tietokantaa, jonka voit luoda tai käyttää olemassaolevaa (esim.
+% Wihurilla). Suosittelemme tätä lämpimästi!
+%
+% Bibtex-tietokannan saa helposti tehtyä esim TeXMakerilla. Sitten
+% vaan ajetaan latex gradu, bibtex gradu, latex gradu ja latex
+% gradu. Ja TADAA viitteet ovat oikeassa järjestyksessä.
+%
+%\bibliography{/var/bib/yhdistetty}
+%\bibliographystyle{wihuri}
+%
+\end{document} % Se oli siinä !

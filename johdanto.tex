@@ -1,0 +1,45 @@
+\section{Johdanto}
+Tässä luvussa määritellään pistepilven käsite ja esitetään sille sovelluskohteita.
+
+\subsection{Pistepilvet}
+
+Pistepilveksi kutsutaan jotakin objektia tai maisemaa kuvaavaa suurta joukkoa pisteitä kolmiulotteisessa avaruudessa. Pistepilvi tuotetaan yleensä laserkeilaimella \engl{Laser Scanner}, joka ampuu ympärilleen laserpurskeita ja mittaa etäisyyksiä pisteisiin, joista purske heijastuu takaisin. Pistepilviä voidaan tuottaa myös synteettisesti ottamalla näytepisteitä mistä tahansa 3D-mallista, mutta tässä tutkielmassa keskitytään laserkeilaimilla tuotettuihin pistepilviin. \footnote{1980-luvulla pisteitä ehdotettiin jopa yleisiksi renderöintiprimitiiveiksi kuvaamaan mitä tahansa geometriaa \cite{Whitted}. Aika kuitenkin näytti kolmion olevan tehokkaampi primitiivi ja nykyään grafiikkakirjastot ja -prosessorit onkin optimoitu kolmioiden käsittelyyn.}
+
+Pistepilville on useita käyttökohteita. Historiallisten rakennusten ja muistomerkkien säilyminen jälkipolville voidaan varmistaa luomalla niistä 3D-malli \footnote{ks. esim. \cite{Kersten}}. Rakennuksen manuaalinen mallintaminen olisi hyvin suuri työ verrattuna muutaman kymmenen pistepilven luomiseen laserkeilaimella, mikä voidaan tehdä päivässä. Toinen yleinen pistepilvien sovelluskohde on arkkitehtuuri ja rakentaminen \footnote{ks. esim \cite{silta}}. Jos rakennelmaan halutaan tehdä muutostöitä, on siitä yleensä tehtävä 3D-malli. Jälleen laserkeilaus on mallintamista huomattavasti edullisempi vaihtoehto.
+
+\subsection{Laserkeilaimet}
+
+Laserkeilaimien toimintaperiaatteissa on eroja. Kaksi yleisintä toimintaperiaatetta ovat kulkuaikatekniikka \engl{Time-Of-Flight} ja vaihesiirtotekniikka \engl{Phase Shift}. Kulkuaikatekniikkassa pisteen etäisyys keilaimesta selviää ajasta, joka kuluu laserpurskeen lähetettämisestä sen heijastuksen vastaanottamiseen. Pisteen etäisyys keilaimesta on yksinkertaisesti $d=\frac{c\cdot t}{2}$, missä c on valonnopeus ja t on mitattu aika. \cite{fabritius}   
+
+Vaihesiirtotekniikka perustuu keilaimesta lähtevän signaalin vaiheen vertaamista palaavan signaalin vaiheeseen. Pisteen etäisyys keilaimesta saadaan laskemalla $d=n\cdot \lambda + \frac{\Phi \cdot \lambda}{2 \cdot \pi}$, missä n on havainnon täysien aallonpituutuuksien määrä, $\lambda$ on signaalin aallonpituus ja $\Phi$ on lähtevän ja palaavan signaalin vaihe-ero. \cite{fabritius}
+
+
+Laserkeilain tallentaa mittaamansa pisteen pallokoordinaateissa. Pisteen siirtäminen pallokoordinaateista karteesiseen koordinaatistoon onnistuu laskemalla koordinaatit $x=r \cdot \sin \theta \cdot \cos \phi, y=r \cdot \sin \theta \cdot \cos \phi, z=r \cdot \cos \theta$, missä r on pallon säde, $\theta$ on korotuskulma ja $\phi$ atsimuuttikulma.   
+
+Laserkeilauksen tuottama pistepilvi sisältää joukon pisteitä koordinaatistossa, jonka origona on keilaimen sijainti. Usein keilauksen kohteesta otetaan kymmeniä tai jopa satoja keilauksia, jotka täytyy saada samaan koordinaatistoon. Tätä kutsutaan pistepilvien rekisteröinniksi. 
+
+Pistepilvet voidaan reksiteröidä usealla eri tavalla. Joskus keilattavaan kohteeseen asetetaan erityisiä merkkikuvioita, jotka näkyvät useasta keilaimesta. Kun tiedetään merkkien etäisyys ja suunta kustakin keilaimesta, voidaan pistepilvet sovittaa yhteen koordinaatistoon. Joissakin sovelluksissa käyttäjä merkitsee pilvistä pisteitä, jotka kuvaavat samaa aluetta.
+
+Pistepilviä voidaan rekisteröidä myös ilman merkkikuvioita. Iteratiivinen lähimmän pisteen algoritmi \engl{Iterative Closest Point, ICP} sovittaa pistepilven toiseen etsimällä rotaation ja translaation,
+ jolla pilvien välinen virhe saadaan minimoitua. ICP-algoritmi määrittää ensin pilvistä toisiaan vastaavat pisteet ja virhe lasketaan kaikkien vastaavuuksien välisistä etäisyyksistä.
+ Yksinkertaisimmillaan pistettä vastaavaksi pisteeksi merkitään sovitettavan pilven lähinnä sijaitseva piste. 
+ ICP-algoritmi tarvitsee käyttäjältä usein hyvän alkuarvauksen, jotta pilvien sovittaminen onnistuisi. 
+ \footnote{Täysin automaattista pistepilvien rekisteröintiä on tutkittu paljon, ks. esim. \cite{Pascal}.}
+
+
+
+Suurin haaste pistepilvien visualisoinnissa on pisteiden valtava määrä. Nykyaikaisella pistepilvellä voi mitata jopa yli miljoona pistettä sekunnissa \cite{Elseberg}.
+
+Nykyaikaisten laserkeilainten tuottamat pistepilvet ovat niin tarkkoja, että niistä voi havaita esimerkiksi putkien roikkumisen ja lämpölaajenemisen \cite{Piipponen}. 
+
+
+\subsection{Pistepilvien hyödyntäminen laitossuunnittelussa}
+Juuh elikkäs\cite{cadmatic}.
+
+Aiemmin mainittiin erilaisia sovelluksia laserkeilainten tuottamille pistepilville. Tässä tutkielmassa kesitytään pistepilvien hyödyntämiseen laitossuunnitteluohjelmistoissa.
+
+Yleinen ongelma on 3D-mallin vanhentuminen. Laitoksen laitteistojen sommittelua saatetaan muuttaa ilman, että samoja muutoksia tehdään 3D-malliin \cite{Piipponen}. Kun 3D-mallia halutaan taas hyödyntää, voi olla kustannustehokkaampaa luoda laitoksesta pistepilvi laserkeilaimella, kuin mallintaa tehdyt muutokset suunnitteluohjelmalla.
+
+
+Markkinoilla on myös ohjelmistoja, joiden luvataan tuottavan pistepilvestä automaattisesti älykäs 3D-malli ilman aikaavievää päällemallinnusta \cite{aveva}.
+
