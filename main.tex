@@ -17,12 +17,16 @@
 \usepackage{url}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
+\usepackage{forest}
 \usepackage[a-1b]{pdfx}  % pdf:n tulee graduissa olla pdf/a-1b-standardin mukaista. Tällä ja pdflatexia käyttämällä se onnistuu
 \usepackage[pdfa]{hyperref} % Tämä tarvitaan, jos haluaa sisällysluettelon klikattavaan muotoon. 
 \hypersetup{
     colorlinks = false,
     linkbordercolor = {white}
 }
+\usepackage{times}
+
+
 % pdflatex vaatii, että kuvat ovat jotain muuta kuin eps-muotoisia. Esimerkiksi pdf käy mainiosti vektorikuville 
 % ja png pikselikuville. Pikselikuvat mennevät paremmin läpi gradujen validoinnista.
 %
@@ -35,6 +39,7 @@
 %
 
 \newcommand{\engl}[1]{\emph{(engl. #1)}}
+
 
 \begin{document}
 \title{Pistepilvien visualisointi laitossuunnitteluohjelmistossa}
@@ -81,8 +86,8 @@
 \subfile{tietorakenteet.tex}
 
 
-\subsection{Pistedatan pakkaaminen}
-Octreen pisteen koordinaatin ilmaiseminen kahdella tavulla: Tavun kumpikin bitti ilmaisee $s/2^{16}$ etäisyyttä suorakulmaisen särmiön vasemmasta alanurkasta. $s$ on särmiön sivun pituus. \cite{Elseberg}
+%\subsection{Pistedatan pakkaaminen}
+%Octreen pisteen koordinaatin ilmaiseminen kahdella tavulla: Tavun kumpikin bitti ilmaisee $s/2^{16}$ etäisyyttä suorakulmaisen särmiön vasemmasta alanurkasta. $s$ on särmiön sivun pituus. \cite{Elseberg}
 
 
 
@@ -92,6 +97,8 @@ Octreen pisteen koordinaatin ilmaiseminen kahdella tavulla: Tavun kumpikin bitti
 
 
 \section{Vertailu}
+
+%Memory overhead M ~ 1/(alpha-1), alpha=branching factor: D UGUET F., D RETTAKIS G.: Flexible point-based rendering on mobile devices. Computer Graphics and Applications 24(4) (2004), 57–63.
 
 
 \section{Johtopäätökset}
