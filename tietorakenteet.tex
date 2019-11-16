@@ -1,24 +1,16 @@
 \section{Pistepilvien käsittelyssä käytetyt tietorakenteet}
 
-Tässä luvussa selvitetään, mitä vaatimuksia pistepilvien käsittely asettaa tietorakenteille ja visualisointialgoritmeille, tutustutaan aiheesta tehtyihin julkaisuihin ja esitetään laitossuunnitteluohjelmistolle optimoitu tietorakenne.
+Tässä luvussa selvitetään, mitä haasteita pistepilvien käsittely asettaa tietorakenteille ja visualisointialgoritmeille. Lisäksi tutustutaan haasteisiin vastaaviin hierarkisista tietorakenteista kirjoitettuihin julkaisuihin.
 
-\subsection{Vaatimukset ja haasteet}
+\subsection{Pistepilvien käsittelyn haasteet}
 
 Suurin haaste pistepilvien käsittelyssä on niiden koko. Nykyaikainen laserkeilain, kuten luvussa \ref{laserkeilaimet} esitetty Leica Geosystemsin RTC360, tuottaa pistepilven, jossa on satoja miljoonia pisteitä. Kun tällaisella keilaimella tehdään useita keilauksia, on pisteiden määrä valtava. Oletetaan esimerkiksi, että suuressa projektissa käytetään pistepilviä, joissa on yhteensä miljardi pistettä. Kun koordinaatit tallennetaan kolmella nelitavuisella liukuluvuulla ja värit RGB-muodossa kolmella tavulla ja lisätään perään vielä yksi täytetavu, voidaan yksi pilven piste esittää 16:lla tavulla. Miljardin pisteen pilvi olisi siis kooltaan 16 gigatavua, joka saattaisi vielä mahtua tehokkaan työaseman keskusmuistiin, mutta ei grafiikkaprosessorin muistiin. Yleensä koko pilveä ei haluta pitää kerralla keskusmuistissa, vaan pisteitä haetaan levyltä muistiin ulkoisen muistin algoritmeilla \engl{out-of-core algorithm}.
 
 Pisteiden määrän vuoksi ei ole realistista olettaa, että kaikki pisteet voitaisiin visualisoida reaaliajassa. Pisteiden määrää voidaan karsia harventamalla pilveä esimerkiksi jakamalla pilvi säännöllisiin kuutioihin, niin sanottuihin vokseleihin, \engl{volume element, voxel}, ja näyttämällä vain yksi piste kustakin vokselista. %TODO: saisko tästä lisää?
 Pilven harventaminen kuitenkin aiheuttaa yksityiskohtien katoamista pilvestä, joten sitä täytyy käyttää sovelluskohteesta riippuen maltillisesti. 
 
-Usein on hyväksyttävä, ettei pistepilveä saada visualisoitua reaaliajassa. Interaktiivisessa ohjelmistossa, kuten laitossuunnitteluohjelmistossa, on tärkeää kuitenkin pitää ruudunpäivitystaajuus tarpeeksi korkeana. Tällöin voidaan pistepilvestä piirtää ruudulle ensin karkea yleiskuva, jota tarkennetaan vähitellen, ellei käyttäjä keskeytä visualisointia esimerkiksi vaihtamalla kuvakulmaa. Tällainen astettainen visualisointi on mahdollista käyttämällä hierarkisia tietorakenteita pistepilven käsittelyssä. Tämän tekniikan etuna on se, että käyttäjä näkee välittömästi pistepilven yleisen muodon ilman, että hänen täytyy odottaa, että koko pilvi on visualisoitu. Jos käyttäjällä riittää kärsivällisyys, näkee hän kaikki pilven yksityiskohdat, kun visualisointialgoritmi on käynyt koko tietorakenteen läpi. 
+Usein on hyväksyttävä, ettei pistepilveä saada visualisoitua reaaliajassa. Interaktiivisessa ohjelmistossa on tärkeää kuitenkin pitää ruudunpäivitystaajuus tarpeeksi korkeana. Tällöin voidaan pistepilvestä piirtää ruudulle ensin karkea yleiskuva, jota tarkennetaan vähitellen, ellei käyttäjä keskeytä visualisointia esimerkiksi vaihtamalla kuvakulmaa. Tällainen astettainen visualisointi on mahdollista käyttämällä hierarkisia tietorakenteita pistepilven käsittelyssä. Tämän tekniikan etuna on se, että käyttäjä näkee välittömästi pistepilven yleisen muodon ilman, että hänen täytyy odottaa, että koko pilvi on visualisoitu. Jos käyttäjällä riittää kärsivällisyys, näkee hän kaikki pilven yksityiskohdat, kun visualisointialgoritmi on käynyt koko tietorakenteen läpi. 
 
-Tämän tutkielman osana kehitetään laitossuunnitteluohjelmistolle optimoitu hierarkinen tietorakenne pistepilvien käsittelyyn. Esitetään tietorakenteelle seuraavat vaatimukset:
-\begin{itemize}
-    \item On voitava visualisoida karkea yleiskuva pistepilvestä vain pienellä osalla datasta. 
-    \item Pistepilveä on voitava harventaa siten, että tarkkuuden menetystä voidaan kontrolloida.
-    \item On käytettävä ulkoisen muistin algoritmeja, eli koko pilveä ei pidetä kerralla keskusmuistissa.
-    \item Hakuoperaatioiden tulee onnistua logaritmisessa ajassa pisteiden määrään suhteutettuna.
-    \item Käyttäjän on voitava määrittää pilvestä alueita, joiden sisältävien pisteiden ominaisuuksia, kuten näkyvyyttä tai väriä, voidaan muuttaa.
-\end{itemize}
 
 \subsection{Hierarkiset tietorakenteet}
 

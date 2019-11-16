@@ -1,0 +1,33 @@
+\section{Laitossuunnitteluohjelmistoon optimoitu tietorakenne}
+
+Tässä luvussa esitellään pistepilvien käsittelyyn ja visualisointiin käytettävä tietorakenne ja algoritmeja erityisesti laitossuunnitteluohjelmiston tarpeisiin. Ensin määritellään vaatimukset tietorakenteelle tyypillisten pistepilvien käyttötapausten mukaan, jonka jälkeen valitaan alan kirjallisuudesta sovelluskohteelle hyödyllisimmät tekniikat.
+
+\subsection{Käyttötapaukset}
+
+\large\textbf{Mallintaminen}
+\normalsize
+
+\noindent Kun laitoksesta halutaan luoda ajantasalla oleva 3d-malli pistepilven avulla, täytyy se mallintaa suunnitteluohjelmiston käyttämäksi geometriaksi pistepilveä mukaillen. Lattiat ja seinät on tasoina helppo asettaa paikalleen, kuin myös suunnitteluohjelmiston komponenttikirjastosta löytyvät laitteet. Suurin työ on yleensä putkistoissa, ilmakanavissa ja kaapeliradoissa. Useat suunnitteluohjelmistot tarjoavat jonkinasteista automatisointia etenkin putkien reititykseen pistepilven päälle. Ohjelmisto voi automaattisesti tunnistaa pilvestä sylinterejä ja asettaa niiden päälle sopivia putkisto-osia, tai käyttäjä voi valita pilvestä muutamia pisteitä ja ohjelmisto laskee niiden perusteella putken pituuden ja halkaisijan ja asettaa oikean osan paikalleen.
+
+Mallintamisessa tärkeässä roolissa on suunnittelijan käyttämät näkymät ja pistepiven rajaaminen. Yleensä suunnittelija käyttää muutamaa koordinaattiakselien suuntaista näkymää samanaikaisesti, jotta kursorin saa helposti oikeaan paikkaan. Näkymän syvyys asetetaan usein hyvin pieneksi, jotta mallista näkyisi vain se pieni siivu, jota kulloinkin mallinnetaan. Myös pistepilveä voidaan rajata niin, että siitä näkyy vain tarpeellinen osa. 
+
+\large\textbf{Mittaaminen}
+\normalsize
+
+\noindent Toinen tärkeä ominaisuus pistepilvien kanssa työskennellessä on mittaaminen. Pistepilviä käytetään usein tarkastamaan, mahtuuko laitokseen jokin uusi laite tai putkisto. Tällöin on hyödyllistä suorittaa mittauksia joko kahden pistepilven pisteen, tai pisteen ja 3d-mallin geometrian välillä. Mittausoperaatiossa käyttäjä valitsee pistepilvestä kursorilla haluamansa pisteen ja ohjelmisto palauttaa lähimmäksi kursoria projisoidun pisteen. 
+
+\large\textbf{Katselu}
+\normalsize
+
+\noindent Kolmas yleinen pistepilvien käyttökohde on 3d-mallin katselu joko laitossuunnitteluohjelmistossa tai erityisessä katseluohjelmistossa. Etenkin suunnitteluprojektien esimiehet haluavat usein tarkastella suunnittelijoiden luomaa 3d-mallia helposti ja nopeasti. Luonnollisesti malliin kuuluvat pistepilvet tulevat myös näkyä katselijalle. Tämä saattaa tuottaa haasteita ohjelmiston kannalta, sillä katseluohjelmistojen käyttäjillä on käytettävissä harvoin yhtä järeää laitteistoa, kuin suunnittelijoiden työasemat.   
+
+\subsection{Vaatimukset}
+Tässä tutkielmassa kehitetään laitossuunnitteluohjelmistolle optimoitu hierarkinen tietorakenne pistepilvien käsittelyyn. Esitetään tietorakenteelle seuraavat vaatimukset edellä mainittujen käyttötapausten perusteella:
+\begin{itemize}
+    \item On voitava visualisoida karkea yleiskuva pistepilvestä vain pienellä osalla datasta. 
+    \item Pistepilven vaatimaa tallennustilan määrää voidaan laskea harventamalla sen tiheästi näytteistettyjä osia. 
+    \item On käytettävä ulkoisen muistin algoritmeja, eli koko pilveä ei pidetä kerralla keskusmuistissa.
+    \item Hakuoperaatioiden tulee onnistua logaritmisessa ajassa pisteiden määrään suhteutettuna.
+    \item Käyttäjän on voitava määrittää pilvestä alueita, joiden sisältävien pisteiden ominaisuuksia, kuten näkyvyyttä tai väriä, voidaan muuttaa.
+    \item Käyttäjän on voitava tehdä mittausoperaatioita pistepilvestä. Tämä tarkoittaa, että pilvestä on löydettävä käyttäjän valitsema piste nopeasti. 
+\end{itemize}
