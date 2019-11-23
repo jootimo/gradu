@@ -2,7 +2,7 @@
 
 Tässä luvussa esitellään pistepilvien käsittelyyn ja visualisointiin soveltuva tietorakenne ja algoritmeja erityisesti laitossuunnitteluohjelmiston tarpeisiin. Ensin määritellään vaatimukset tietorakenteelle tyypillisten pistepilvien käyttötapausten mukaan, jonka jälkeen valitaan alan kirjallisuudesta sovelluskohteelle hyödyllisimmät tekniikat.
 
-\subsection{Käyttötapaukset}
+\subsection{Käyttötapaukset ja vaatimukset tietorakenteelle}
 
 Kolme yleistä käyttötapausta pistepilvien kanssa työskenneltäessä ovat mallintaminen, mittaaminen ja katselu, jotka asettavat erilaisia vaatimuksia pistepilviä käsittelevälle ja visualisoivalle Laitossuunnitteluohjelmistolle. Esitellään seuraavaksi käyttötapaukset ja niiden asettamat vaatimukset. 
 
@@ -15,9 +15,7 @@ Mallintamisessa tärkeässä roolissa on suunnittelijan käyttämät näkymät j
 Toinen tärkeä ominaisuus pistepilvien kanssa työskennellessä on mittaaminen. Pistepilviä käytetään usein tarkastamaan, mahtuuko laitokseen jokin uusi laite tai putkisto. Tällöin on hyödyllistä suorittaa mittauksia joko kahden pistepilven pisteen, tai pisteen ja 3d-mallin geometrian välillä. Mittausoperaatiossa käyttäjä valitsee pistepilvestä kursorilla haluamansa pisteen ja ohjelmisto palauttaa lähimmäksi kursoria projisoidun pisteen. Käyttäjän kannalta olisi miellyttävää, jos mittausoperaatioita tehtäessä ei tarvitsisi odottaa, kun pistepilven miljoonien pisteiden joukosta etsitään juuri kursorin alla oleva piste. Yksittäisten pisteiden hakeminen pilvestä täytyy siis olla nopeaa.
 
 \subtitle{Katselu}
-Kolmas yleinen pistepilvien käyttökohde on 3d-mallin katselu joko laitossuunnitteluohjelmistossa tai erityisessä katseluohjelmistossa. Etenkin suunnitteluprojektien esimiehet haluavat usein tarkastella suunnittelijoiden luomaa 3d-mallia helposti ja nopeasti. Luonnollisesti malliin kuuluvat pistepilvet tulevat myös näkyä katselijalle. Tämä saattaa tuottaa haasteita ohjelmiston kannalta, sillä katseluohjelmistojen käyttäjillä on käytettävissä harvoin yhtä järeää laitteistoa, kuin suunnittelijoiden työasemat. Katseluohjelmistossa pistepilveä harvemmin rajataan pienemmäksi, joten visualisoitavia pisteitä on niin paljon, etteivät ne mahdu kerralla keskusmuistiin tai grafiikkaprosessorin muistiin. Yleensä käyttäjä myös liikuttaa näkymää mallin ympäri enemmän kuin mallinnustyössä, joten pistepilvivisualisoinnin suorituskyky ja tarkkuustasot ovat entistäkin tärkeämpiä.
-
-\subsection{Vaatimukset}
+Kolmas yleinen pistepilvien käyttökohde on 3d-mallin katselu joko laitossuunnitteluohjelmistossa tai erityisessä mallinkatseluohjelmistossa. Etenkin suunnitteluprojektien esimiehet haluavat usein tarkastella suunnittelijoiden luomaa 3d-mallia helposti ja nopeasti. Luonnollisesti malliin kuuluvat pistepilvet tulevat myös näkyä katselijalle. Tämä saattaa tuottaa haasteita ohjelmiston kannalta, sillä katseluohjelmistojen käyttäjillä on käytettävissä harvoin yhtä järeää laitteistoa, kuin suunnittelijoiden työasemat. Mallinkatseluohjelmistossa pistepilveä harvemmin rajataan pienemmäksi, joten visualisoitavia pisteitä on niin paljon, etteivät ne mahdu kerralla keskusmuistiin tai grafiikkaprosessorin muistiin. Yleensä käyttäjä myös liikuttaa näkymää mallin ympäri enemmän kuin mallinnustyössä, joten pistepilvivisualisoinnin suorituskyky ja tarkkuustasot ovat entistäkin tärkeämpiä.
 
 Tässä tutkielmassa kehitetään laitossuunnitteluohjelmistolle optimoitu hierarkinen tietorakenne pistepilvien käsittelyyn. Esitetään tietorakenteelle seuraavat vaatimukset edellä mainittujen käyttötapausten perusteella:
 \begin{enumerate}
@@ -25,7 +23,7 @@ Tässä tutkielmassa kehitetään laitossuunnitteluohjelmistolle optimoitu hiera
     \item \label{vaatimus:ooc} On käytettävä ulkoisen muistin algoritmeja, eli koko pilveä ei pidetä kerralla keskusmuistissa.
     \item \label{vaatimus:harvennus} Pistepilven vaatimaa tallennustilan määrää voidaan laskea harventamalla sen tiheästi näytteistettyjä osia. 
     \item \label{vaatimus:crop} Käyttäjän on voitava määrittää pilvestä alueita, joiden sisältävien tai ulkopuolelle jäävien pisteiden ominaisuuksia, kuten näkyvyyttä tai väriä, voidaan muuttaa.
-    \item \label{vaatimus:select} Pilvestä on voitava nopeasti ja tarkasti valita yksittäisiä pisteitä
+    \item \label{vaatimus:select} Pilvestä on voitava nopeasti ja tarkasti valita yksittäisiä pisteitä.
     \item \label{vaatimus:virhe} Pistepilvessä ei saa esiintyä yli millimetrin suuruisia virheitä.
 \end{enumerate}
 
@@ -40,4 +38,6 @@ Valintaoperaatiot onnistuvat nopeasti oktettipuussa. Puun jokainen solmu sisält
 \subsection{Ruudukko}
 
 \subsection{Pisteiden valinta}
+
+\subsection{Visualisointi}
 %Scheiblauer esittää väitöskirjassaan sisäkkäisille muokattaville oktettipuille erityistä tietorakennetta pisteiden valintaan. Scheiblauer määrittää jokaista valittavaa tilaa kohti uuden oktettipuun, jonka ...

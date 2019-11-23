@@ -1,7 +1,7 @@
 \section{Johdanto}
-Tässä luvussa määritellään pistepilven käsite, tutustutaan laserkeilaimiin, joilla pistepilviä taltioidaan ja mainitaan muutamia yleisiä pistepilvien käsittelyn työvaiheita. Lisäksi esitellään muutama esimerkki pistepilvien käyttökohteista. 
+Tässä luvussa määritellään pistepilven käsite, tutustutaan laserkeilaimiin, joilla pistepilviä taltioidaan ja mainitaan muutamia yleisiä pistepilvien käsittelyn työvaiheita. Lisäksi esitellään muutama esimerkki pistepilvien käyttökohteista. Lopuksi määritellään tämän tutkielman tavoitteet, toteutustapa ja rakenne.
 
-\subsection{Pistepilvet}
+\subsection{Pistepilvet ja laserkeilaimet}\label{laserkeilaimet}
 
 Pistepilveksi kutsutaan jotakin objektia tai maisemaa kuvaavaa suurta joukkoa pisteitä kolmiulotteisessa avaruudessa. Pistepilvi tuotetaan yleensä laserkeilaimella \engl{Laser Scanner}, joka ampuu ympärilleen laserpurskeita ja mittaa etäisyyksiä pisteisiin, joista purske heijastuu takaisin. Pistepilviä voidaan tuottaa myös synteettisesti ottamalla näytepisteitä mistä tahansa 3d-mallista, mutta tässä tutkielmassa keskitytään laserkeilaimilla tuotettuihin pistepilviin. \footnote{1980-luvulta lähtien pisteitä on ehdotettu yleisiksi renderöintiprimitiiveiksi kuvaamaan mitä tahansa geometriaa \cite{Whitted}. Aika kuitenkin näytti kolmion olevan suositumpi primitiivi ja nykyään grafiikkakirjastot ja -prosessorit onkin optimoitu kolmioiden käsittelyyn.}
 
@@ -40,9 +40,7 @@ Eräs vaativa pistepilvien sovelluskohde on itseohjautuvat kulkuneuvot. Voidakse
 
 Pistepilviä voidaan käyttää myös huomattavasti suuremmassa mittakaavassa. Maanmittauslaitos on kerännyt ilmasta käsin pistepilvidataa lähes koko Suomen maaperästä. Lentokoneesta keilattu pistepilvi on melko harva - puoli pistettä neliömetriä kohden -, mutta keilattavan kohteen laajuus tekee pilvistä valtavia. Pistepilviä on käytetty lähinnä metsävarojen kartoittamiseen, mutta Maanmittauslaitos aikoo ryhtyä keräämään pistedataa tarkemmilla laserkeilamilla myös rakennuksista. \cite{hs}
 
-\subsection{Laserkeilaimet}\label{laserkeilaimet}
-
-Perinteinen laserkeilain on jalustalla seisova laite, joka pyörii pystyakselinsa ympäri ampuen laserpurskeita ympärilleen tihein välein. Laserkeilain mittaa etäisyyksiä pisteisiin, joista laserpurske heijastuu takaisin keilaimeen ja muodostaa näistä pisteistä pistepilven. Heijastuksen voimakkuutta käytetään usein määräämään pisteelle väri. 
+Perinteinen pistepilvien mittaamiseen käytetty laserkeilain on jalustalla seisova laite, joka pyörii pystyakselinsa ympäri ampuen laserpurskeita ympärilleen tihein välein. Laserkeilain mittaa etäisyyksiä pisteisiin, joista laserpurske heijastuu takaisin keilaimeen ja muodostaa näistä pisteistä pistepilven. Heijastuksen voimakkuutta käytetään usein määräämään pisteelle väri. 
 
 \begin{figure}
     \centering
@@ -116,3 +114,7 @@ Laitossuunnittelussa yleisempi ongelma on 3d-mallin vanhentuminen tai sen puuttu
 Pistepilviä voi hyödyntää monin tavoin laitossuunnittelussa. Vähiten töitä vaatii pilvien käyttö sellaisenaan. Jos laitokseen halutaan vaikkapa uusi vesiputki, voidaan sen mahtuminen varmistaa reitittämällä putki suunnitteluohjelmistolla ja tarkastamalla, osuuko se pistepilveen. Jos vanhasta laitoksesta halutaan luoda ajantasalla oleva 3d-malli, voi suunnittelija mallintaa laitosta pistepilvien avulla. Pistepilven päälle on helppo sijoittaa suunnitteluohjelman putkistoja ja laitteita oikeille paikoilleen. Markkinoilla on myös ohjelmistoja, joiden luvataan tuottavan pistepilvestä automaattisesti älykäs 3d-malli komponenttitietoineen ilman aikaavievää päällemallinnusta \cite{aveva}.
 
 %Nykyaikaisten laserkeilainten tuottamat pistepilvet ovat niin tarkkoja, että niistä voi havaita esimerkiksi putkien roikkumisen ja lämpölaajenemisen \cite{Piipponen}. 
+
+\subsection{Tutkielman tavoitteet ja menetelmät}
+
+\subsection{Tutkielman rakenne}
