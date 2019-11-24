@@ -111,10 +111,19 @@ Tietokoneavusteisessa suunnittelussa pistepilviä käytetään olemassaolevien r
 
 Laitossuunnittelussa yleisempi ongelma on 3d-mallin vanhentuminen tai sen puuttuminen kokonaan. Vaikka laitosta alunperin suunniteltaessa siitä olisi tehty 3d-malli, laitteistojen sommittelua saatetaan muuttaa ilman, että samoja muutoksia tehdään 3d-malliin. Kun 3d-mallia halutaan taas hyödyntää, voi olla kustannustehokkaampaa luoda laitoksesta laserkeilaimella pistepilvi kuin mallintaa tehdyt muutokset suunnitteluohjelmalla. \cite{Piipponen}
 
-Pistepilviä voi hyödyntää monin tavoin laitossuunnittelussa. Vähiten töitä vaatii pilvien käyttö sellaisenaan. Jos laitokseen halutaan vaikkapa uusi vesiputki, voidaan sen mahtuminen varmistaa reitittämällä putki suunnitteluohjelmistolla ja tarkastamalla, osuuko se pistepilveen. Jos vanhasta laitoksesta halutaan luoda ajantasalla oleva 3d-malli, voi suunnittelija mallintaa laitosta pistepilvien avulla. Pistepilven päälle on helppo sijoittaa suunnitteluohjelman putkistoja ja laitteita oikeille paikoilleen. Markkinoilla on myös ohjelmistoja, joiden luvataan tuottavan pistepilvestä automaattisesti älykäs 3d-malli komponenttitietoineen ilman aikaavievää päällemallinnusta \cite{aveva}.
+Kuten sillanrakennuksessa, myös laitoksia rakentaessa on joskus syytä suorittaa tarkastusmittauksia ja verrata niitä alkuperäiseen 3d-malliin. Pistepilvet ovat tähänkin tarkoitukseen sopivia. Nykyaikaisten laserkeilainten tuottamat pistepilvet ovat niin tarkkoja, että niistä voi havaita esimerkiksi putkien roikkumisen ja lämpölaajenemisen \cite{Piipponen}. 
 
-%Nykyaikaisten laserkeilainten tuottamat pistepilvet ovat niin tarkkoja, että niistä voi havaita esimerkiksi putkien roikkumisen ja lämpölaajenemisen \cite{Piipponen}. 
+Pistepilviä voi hyödyntää monin tavoin laitossuunnittelussa. Vähiten töitä vaatii pilvien käyttö sellaisenaan. Jos laitokseen halutaan vaikkapa uusi vesiputki, voidaan sen mahtuminen varmistaa reitittämällä putki suunnitteluohjelmistolla ja tarkastamalla, osuuko se pistepilveen. Jos vanhasta laitoksesta halutaan luoda ajantasalla oleva 3d-malli, voi suunnittelija mallintaa laitosta pistepilvien avulla. Pistepilven päälle on helppo sijoittaa suunnitteluohjelman putkistoja ja laitteita oikeille paikoilleen. Markkinoilla on myös ohjelmistoja, joiden luvataan tuottavan pistepilvestä automaattisesti älykäs 3d-malli komponenttitietoineen ilman aikaavievää päällemallinnusta \cite{aveva}. 
 
-\subsection{Tutkielman tavoitteet ja menetelmät}
 
-\subsection{Tutkielman rakenne}
+Joitakin yleisiä käyttötapauksia pistepilvien kanssa työskentelystä on esitetty luvussa \ref{usecase}.
+
+
+
+\subsection{Tutkielman tavoitteet ja rakenne}
+
+Tämän tutkielman tarkoituksena on tutustua pistepilvien käsittelyn ja visualisoinnin tuottamiin ongelmiin ja selvittää niihin ratkaisuvaihtoehtoja alan julkaisujen pohjalta. Selvitystyön pohjalta kehitetään tietorakenne erityisesti laitossuunnitteluohjelmiston tarpeisiin. Lopuksi arvioidaan tietorakenteen suorituskykyä ja soveltuvuutta tehtävään käyttäen verrokkina yksinkertaista ei-hierarkista tietorakennetta.
+
+Tässä luvussa on perehdytty pistepilviin ja laserkeilaimiin yleisellä tasolla. Luvussa \ref{kirjallisuus} tutustutaan alan kirjallisuuteen ja esitellään tietorakenteita, joiden ominaisuuksia voisi hyödyntää myös laitossuunnitteluohjelmistossa. Luvussa \ref{mun} määritellään vaatimuksia, joita laitossuunnitteluohjelmisto asettaa pistepilvien käsittelyyn ja visualisointiin käytetylle tietorakenteelle. Tämän jälkeen ehdotetaan luvussa \ref{kirjallisuus} esiteltyihin julkaisuihin perustuva, laitossuunnitteluohjelmistoon soveltuva tietorakenne. Tätä tietorakennetta verrataan yksinkertaiseen toteutukseen luvussa \ref{arviointi}.
+
+Tämä tutkielma on tehty CADMATIC Oy:n toimeksiantona. CADMATIC on suomalainen ohjelmistoyritys, joka kehittää tuotteita laivojen ja laitosten tietokoneavusteiseen suunnitteluun. CADMATIC on toiminut alalla 1980-luvulta lähtien ja sillä on asiakkainaan yli tuhat organisaatiota yli viidestäkymmenestä maasta \cite{cadmatic}. Yrityksen pääkonttori on Turussa. Tutkielmassa kehitettävää tietorakennetta testataan CADMATIC Plant Modeller -laitossuunnitteluohjelmistossa, sekä eBrowser-mallinkatseluohjelmistossa. 

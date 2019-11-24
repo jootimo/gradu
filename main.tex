@@ -25,6 +25,8 @@
     linkbordercolor = {white}
 }
 \usepackage{times}
+\usetikzlibrary{positioning}
+
 
 
 % pdflatex vaatii, että kuvat ovat jotain muuta kuin eps-muotoisia. Esimerkiksi pdf käy mainiosti vektorikuville 
@@ -98,7 +100,13 @@
 \subfile{mun_tietorakenne.tex}
 
 
-\section{Arviointi}
+\section{Arviointi}\label{arviointi}
+
+\subsection{Tietorakenteen rakentaminen ja lataaminen}
+\subsection{Visualisointi}
+\subsection{Pisteiden valitseminen}
+\subsection{jotain muuta?}
+\subsection{jotain muuta?}
 
 %Memory overhead M ~ 1/(alpha-1), alpha=branching factor: D UGUET F., D RETTAKIS G.: Flexible point-based rendering on mobile devices. Computer Graphics and Applications 24(4) (2004), 57–63.
 
@@ -119,10 +127,11 @@
 \renewcommand{\baselinestretch}{1}\large\normalsize
 
 
+\addcontentsline{toc}{section}{Viitteet}
 
-
-
-\bibliographystyle{plain} % We choose the "plain" reference style
+\clearpage
+%\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliographystyle{wihuri}
 \bibliography{refs} % Entries are in the "refs.bib" file
 %
 %\begin{thebibliography}{50}% Viiteluettelo. TÄTÄ ON PAKKO KÄYTTÄÄ !
