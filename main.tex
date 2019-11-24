@@ -11,12 +11,13 @@
 \usepackage[finnish]{babel} %Suomenkielinen tavutus
 \usepackage{tytiivis} %Tiivistelmäsivun laatimiseksi
 \usepackage{graphicx}%Saadaan kuvat toimimaan
-\usepackage{xcolor}
 \usepackage{lastpage}
 \usepackage{subfiles}
 \usepackage{url}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{tikz}
 \usepackage{tikz-3dplot}
+\usetikzlibrary{positioning}
 \usepackage{forest}
 \usepackage[a-1b]{pdfx}  % pdf:n tulee graduissa olla pdf/a-1b-standardin mukaista. Tällä ja pdflatexia käyttämällä se onnistuu
 \usepackage[pdfa]{hyperref} % Tämä tarvitaan, jos haluaa sisällysluettelon klikattavaan muotoon. 
@@ -25,8 +26,15 @@
     linkbordercolor = {white}
 }
 \usepackage{times}
-\usetikzlibrary{positioning}
 
+% Algoritmipaketti ja pari hyödyllistä komentoa
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\renewcommand*{\listalgorithmcfname}{Lista algoritmeista}
+\renewcommand*{\algorithmcfname}{Algoritmi}
+\renewcommand*{\algorithmautorefname}{Algoritmi}
+\newcommand{\perusalgoritmi}[0]{\SetKwData{Left}{left}\SetKwData{This}{this}\SetKwData{Up}{up}\SetKwFunction{Union}{Union}\SetKwFunction{FindCompress}{FindCompress}\SetKwInOut{Input}{Syöte}\SetKwInOut{Output}{Tuloste}\BlankLine}
+\definecolor{kommentticolor}{RGB}{30,90,65}
+\newcommand{\kommentti}[1]{\textcolor{kommentticolor}{\footnotesize\tcp{#1}}\normalsize}
 
 
 % pdflatex vaatii, että kuvat ovat jotain muuta kuin eps-muotoisia. Esimerkiksi pdf käy mainiosti vektorikuville 

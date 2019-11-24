@@ -1,0 +1,21 @@
+\caption{RakennaOktettipuu}
+\perusalgoritmi
+
+\Input{Joukko pistepilviä $P$} %joissa jokaisen pisteen sijainti on ilmaistu $x$, $y$ ja $z$-koordinaateilla ja väri $rgb$-koodauksella}
+\Output{Pisteet yhdessä oktettipuussa $O$}
+
+\kommentti{Selvitetään ensin pilvien rajaavien laatikkojen unioni}
+$L \Leftarrow$ Tyhjä rajaava laatikko\;
+\For{Pistepilvi $pc \in P$} {
+    \If{Jokin pilven $pc$ pisteistä on laatikon $L$ ulkopuolella}{
+        Kasvata laatikkoa $L$ siten, että se peittää kaikki pilven $pc$ pisteet
+    }
+}
+
+\kommentti{Lisätään pisteet oktettipuuhun}
+\For{Pistepilvi $pc \in P$} {
+    Sekoita $pc$:n pisteet satunnaiseen järjestykseen\;
+    \For{Piste $p \in pc$} {
+        LisääPuuhun($O, p$)
+    }
+}
