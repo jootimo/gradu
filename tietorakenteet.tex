@@ -25,66 +25,7 @@ Puurakenne tallennetaan levylle leveysjärjestyksessä \engl{breadth-first}. Tä
 
 \begin{figure}
     \centering
-    %https://tex.stackexchange.com/questions/332300/draw-lines-on-top-of-tikz-forest
-    \begin{forest}
-        for tree={circle,draw,fill=white,align=center},
-    %    my label/.style={
-    %        label={[anchor=south,font=\scriptsize,red]:#1},
-    %      },
-        before drawing tree={
-        tikz+={
-            \node [anchor=mid east, font=\sffamily] (m) at (current bounding box.west |- .mid) {};
-        },
-        tempcounta'=-1,
-        for tree={
-            if={% if the current level exceeds the value of tempcounta
-            >OR>{level}{tempcounta}%
-            }{% then step the count and add the level marker
-            tempcounta'+=1,
-            tikz+/.process={ Rw {tempcounta} {
-                \node [anchor=mid east, font=\sffamily] at (m.east |- .mid) {taso #1};
-                }%
-            },
-            }{},
-        },
-        },
-        [$a$,name=a
-            [$b$,name=b
-                [$d$,name=d
-                    [$h$,name=h]
-                    [,phantom]
-                ]
-                [$e$,name=e
-                    [$i$,name=i]
-                    [$j$,name=j]
-                ]
-            ]
-            [$c$,name=c
-                [$f$,name=f
-                    [,phantom]
-                    [$k$,name=k]
-                ]
-                [$g$,name=g
-                    [,phantom]
-                    [,phantom]
-                ]
-            ]
-        ]
-        \draw[->,dotted,thick,relative,red] (a) to[out=-20,in=200] (b);
-        \draw[->,dotted,thick,relative,red] (b) to[out=0,in=180] (c);
-        \draw[->,dotted,thick,relative,red] (c) to[out=20,in=290] (d);
-        \draw[->,dotted,thick,relative,red] (d) to[out=0,in=180] (e);
-        \draw[->,dotted,thick,relative,red] (e) to[out=0,in=180] (f);
-        \draw[->,dotted,thick,relative,red] (f) to[out=0,in=180] (g);
-        \draw[->,dotted,thick,relative,red] (g) to[out=30,in=300] (h);
-        \draw[->,dotted,thick,relative,red] (h) to[out=0,in=180] (i);
-        \draw[->,dotted,thick,relative,red] (i) to[out=0,in=180] (j);
-        \draw[->,dotted,thick,relative,red] (j) to[out=0,in=180] (k);
-        %\begin{scope}[->,dashed,thick,blue]
-        %  \draw ([shift={(-0.1,0.1)}]a.north west) -- ([shift={(-0.1,0.1)}]b.north west);
-        %  \draw ([shift={(-0.1,0.1)}]b.north west) -- ([shift={(-0.1,0.1)}]d.north west);
-        %\end{scope}
-    \end{forest}
+    \subfile{fig/puuntasot.tex}
     \caption{Puun läpikäyntijärjestys (punainen katkoviiva) muodostaa luonnolliset tarkkuustasot}
     \label{tarkkuustasot}
 \end{figure}
