@@ -15,7 +15,7 @@ Mallintamisessa tärkeässä roolissa on suunnittelijan käyttämät näkymät j
 Toinen tärkeä ominaisuus pistepilvien kanssa työskennellessä on mittaaminen. Pistepilviä käytetään usein tarkastamaan, mahtuuko laitokseen jokin uusi laite tai putkisto. Tällöin on hyödyllistä suorittaa mittauksia joko kahden pistepilven pisteen, tai pisteen ja 3d-mallin geometrian välillä. Mittausoperaatiossa käyttäjä valitsee pistepilvestä kursorilla haluamansa pisteen ja ohjelmisto palauttaa lähimmäksi kursoria projisoidun pisteen. Käyttäjän kannalta olisi miellyttävää, jos mittausoperaatioita tehtäessä ei tarvitsisi odottaa, kun pistepilven miljoonien pisteiden joukosta etsitään juuri kursorin alla oleva piste. Yksittäisten pisteiden hakeminen pilvestä täytyy siis olla nopeaa.
 
 \subtitle{Katselu}
-Kolmas yleinen pistepilvien käyttökohde on 3d-mallin katselu joko laitossuunnitteluohjelmistossa tai erityisessä mallinkatseluohjelmistossa. Etenkin suunnitteluprojektien esimiehet haluavat usein tarkastella suunnittelijoiden luomaa 3d-mallia helposti ja nopeasti. Luonnollisesti malliin kuuluvat pistepilvet tulevat myös näkyä katselijalle. Tämä saattaa tuottaa haasteita ohjelmiston kannalta, sillä katseluohjelmistojen käyttäjillä on käytettävissä harvoin yhtä järeää laitteistoa, kuin suunnittelijoiden työasemat. Mallinkatseluohjelmistossa pistepilveä harvemmin rajataan pienemmäksi, joten visualisoitavia pisteitä on niin paljon, etteivät ne mahdu kerralla keskusmuistiin tai grafiikkaprosessorin muistiin. Yleensä käyttäjä myös liikuttaa näkymää mallin ympäri enemmän kuin mallinnustyössä, joten pistepilvivisualisoinnin suorituskyky ja tarkkuustasot ovat entistäkin tärkeämpiä.
+Kolmas yleinen pistepilvien käyttökohde on 3d-mallin katselu joko laitossuunnitteluohjelmistossa tai erityisessä mallinkatseluohjelmistossa. Etenkin suunnitteluprojektien esimiehet haluavat usein tarkastella suunnittelijoiden luomaa 3d-mallia helposti ja nopeasti. Luonnollisesti malliin kuuluvat pistepilvet tulevat myös näkyä katselijalle. Tämä saattaa tuottaa haasteita ohjelmiston kannalta, sillä katseluohjelmistojen käyttäjillä on käytettävissä harvoin yhtä järeää laitteistoa, kuin suunnittelijoiden työasemat. Mallinkatseluohjelmistossa pistepilveä harvemmin rajataan pienemmäksi, joten visualisoitavia pisteitä on niin paljon, etteivät ne mahdu kerralla keskusmuistiin tai näytönohjaimen muistiin. Yleensä käyttäjä myös liikuttaa näkymää mallin ympäri enemmän kuin mallinnustyössä, joten pistepilvivisualisoinnin suorituskyky ja tarkkuustasot ovat entistäkin tärkeämpiä.
 
 Tässä tutkielmassa kehitetään laitossuunnitteluohjelmistolle optimoitu hierarkinen tietorakenne pistepilvien käsittelyyn. Esitetään tietorakenteelle seuraavat vaatimukset edellä mainittujen käyttötapausten perusteella:
 \begin{enumerate}
@@ -30,17 +30,67 @@ Tässä tutkielmassa kehitetään laitossuunnitteluohjelmistolle optimoitu hiera
 
 \subsection{Tietorakenteen valinta}
 
-Luvussa \ref{tietorakenteet} esitellyt sisäkkäispistepuut näyttävät soveltuvan hyvin laitossuunnitteluohjelmiston vaatimuksiin. Oktettipuun läpikäyminen taso kerrallaan muodostaa tehokkaasti tarkkuustasot, joten vaatimus \ref{vaatimus:lod} on helppo tyydyttää. Pisteiden asettelu sisäkkäisten oktettipuiden solmuihin mahdollistaa myös vaatimuksen \ref{vaatimus:ooc} mukaisesti ulkoisen muistin käyttämisen. Scheiblauerin muokattavien sisäkkäisten oktettipuiden jokainen solmu sisältää ruudukon, johon pisteet sijoitetaan. Mitä syvemmällä tasolla solmu on, sitä pienempiä ruudukon solut ovat. Vaatimuksen \ref{vaatimus:harvennus} esittämä pilven harvennus onnistuu asettamalla puulle enimmäissyvyys ruudukon koon mukaan ja hylkäämällä lehtisolmuissa kaikki pisteet, jotka tulisi lisätyksi jo varattuun soluun. 
+Luvussa \ref{tietorakenteet} esitelty Potree on osoittaunut massiivisten pistepilvien interaktiivisen visualisoinnin olevan mahdollista jopa verkkoselaimessa, jossa etenkin tiedonsiirtonopeus rajoittaa renderöinnin nopeutta. Tarkastellaan siis sisäkkäispistepuiden sovelutuvuutta laitossuunnitteluohjelmistoon. 
 
-Valintaoperaatiot onnistuvat nopeasti oktettipuussa. Puun jokainen solmu sisältää tiedon sen sisältämien pisteiden rajaavasta laatikosta, joten jos valinnan sijainti ei osu rajaavan laatikon sisälle, ei kyseisen solmun lapsisolmujakaan tarvitse tarkastaa. Yksittäisiä pisteitä tarvitsee tarkastella vasta kun valittavan alueen raja kulkee puun solmun rajaavan laatikon läpi, tai kun käyttäjä haluaa valita vain yhden pisteen. Tietyllä aluella sijaitsevat pisteet jakautuvat useaan oktettipuun solmuun, minkä johdosta valintaoperaatiot eivät ole triviaaleja sisäkkäisissä oktettipuissa. Vaatimuksiin \ref{vaatimus:crop} ja \ref{vaatimus:select} voidaan kuitenkin vastata sisäkkäisillä oktettipuilla. Scheiblauer ja Schütz eivät tiivistäneet pistepilviä, joten niiden tarkkuus ei kärsinyt. Näin myöskään vaatimus \ref{vaatimus:virhe} ei tuota ongelmia.
+Oktettipuun läpikäyminen taso kerrallaan muodostaa tehokkaasti tarkkuustasot, joten vaatimus \ref{vaatimus:lod} on helppo tyydyttää. Pisteiden asettelu sisäkkäisten oktettipuiden solmuihin mahdollistaa myös vaatimuksen \ref{vaatimus:ooc} mukaisesti ulkoisen muistin käyttämisen. Scheiblauerin muokattavien sisäkkäisten oktettipuiden jokainen solmu sisältää ruudukon, johon pisteet sijoitetaan. Mitä syvemmällä tasolla solmu on, sitä pienempiä ruudukon solut ovat. Vaatimuksen \ref{vaatimus:harvennus} esittämä pilven harvennus onnistuu asettamalla puulle enimmäissyvyys ruudukon koon mukaan ja hylkäämällä lehtisolmuissa kaikki pisteet, jotka tulisi lisätyksi jo varattuun soluun. 
+
+Valintaoperaatiot onnistuvat nopeasti oktettipuussa. Puun jokainen solmu sisältää tiedon sen sisältämien pisteiden rajauslaatikosta \engl{bounding box}, joten jos valinnan sijainti ei osu rajauslaatikon sisälle, ei kyseisen solmun lapsisolmujakaan tarvitse tarkastaa. Yksittäisiä pisteitä tarvitsee tarkastella vasta kun valittavan alueen raja kulkee puun solmun rajauslaatikon läpi, tai kun käyttäjä haluaa valita vain yhden pisteen. Tietyllä aluella sijaitsevat pisteet jakautuvat useaan oktettipuun solmuun, minkä johdosta valintaoperaatiot eivät ole triviaaleja sisäkkäisissä oktettipuissa. Vaatimuksiin \ref{vaatimus:crop} ja \ref{vaatimus:select} voidaan kuitenkin vastata sisäkkäisillä oktettipuilla. Scheiblauer ja Schütz eivät tiivistäneet pistepilviä, joten niiden tarkkuus ei kärsinyt. Näin myöskään vaatimus \ref{vaatimus:virhe} ei tuota ongelmia.
+
+Sisäkkäispistepuut näyttävät siis soveltuvan myös laitossuunnitteluohjelmiston tarpeisiin. Scheiblauerin ja Schützin tietorakenteiden käyttämät ruudukot mahdollistavat kuitenkin myös joitakin laitossuunnittelusovelluksille tärkeitä optiomointeja. Luvuissa \ref{kompressio} ja \ref{render} esitellään, miten pistedataa voi tiivistää ruudukon avulla ja miten pistepilvien renderöinti onnistuu nopeasti sisäkkäispistepuita käyttäen.
 
 
-\subsection{Ruudukko}
+\subsection{Pistedatan esitysmuoto}\label{kompressio}
+
+Pistepilvet sisältävät usein satoja miljoonia ja jopa miljardeja pisteitä. tämä luonnollisesti johtaa isoihin tiedostokokoihin. Yleensä hierarkiatiedon osuus tiedoston sisällöstä on varsin pieni, joten tiedostokokoa saadaan pienennettyä parhaiten tiivistämällä itse pisteiden esitysmuotoa. Pisteistä tarvitsee tallentaa vähintään niiden sijainti ja väri. Yleensä sijainti esitetään kolmella nelitavuisella liukuluvuilla ja väri RGB-koodauksella kolmella yhden tavun kokonaisluvulla:
+
+\code{
+struct Point \{\\
+    \tab float x;\\
+    \tab float y;\\
+    \tab float z;\\
+    \tab unsigned char r;\\
+    \tab unsigned char g;\\
+    \tab unsigned char b;\\
+    \}
+}
+
+\noindent Yleensä näiden 15:a tavun lisäksi lisätään yksi pakkaustavu, jotta koko olisi mukava kahden potenssi. Miljardi pistettä tallennettuna tässä esitysmuodossa vaatisi siis 16 gigatavua muistia.\footnote{Pistepilvisovelluksen käyttäjän rahapussin koosta riippuen tämän kokoinen pilvi mahtuisi vielä keskusmuistiin ja jopa näytönohjaimen muistiin \cite{rtx}.} Muuttamalla pisteiden esitysmuotoa pistepilviä voidaan tiivistää ja joitakin operaatioita nopeuttaa.
+
+Sisäkkäispistepuiden käyttämä ruudukko mahdollistaa yksinkertaisen pakkausalgoritmin. Puun rakennusvaiheessa pisteet lisätään jokaisessa solmussa olevaan kolmiulotteiseen ruudukkoon, jonka jokaiseen soluun mahtuu vain yksi piste. Kun piste lisätään ruudukon soluun, tallennetaan solun järjestysnumero hajautustauluun, josta voidaan jatkossa nopeasti tarkastaa, onko kyseinen solu varattu. Mahdollinen numerointi ruudukolle on esitetty kuvassa \ref{ruudukkokuva}. Numerointi alkaa vasemmasta alakulmasta indeksistä nolla ja etenee vasenkätisen koordinaatiston mukaisesti. 
+
 \begin{figure}
     \subfile{fig/ruudukko.tex}
-    \caption{64:n solun ruudukko}
+    \caption{64:n solun ruudukko, jonka indeksointi alkaa vasemmasta alakulmasta}
     \label{ruudukkokuva}
 \end{figure}
+
+Puun solmuihin on tallennettu rajauslaatikko, joka määrittää myös ruudukon mitat ja sijainnin. Ruudukkoon lisättävien pisteiden absoluuttinen sijainti voidaan unohtaa ja käyttää sijainnin tallentamiseen pisteen suhteellista sijaintia ruudukossa. Yksinkertaisimmillaan voidaan kustakin pisteestä tallentaa vain sen solun indeksi, jossa piste sijaitsee. Tällöin pisteen esitysmuoto on siis
+
+\code{
+struct Point \{\\
+    \tab unsigned int index;\\
+    \tab unsigned char r;\\
+    \tab unsigned char g;\\
+    \tab unsigned char b;\\
+    \}
+}
+
+\noindent Kun solun indeksi tallennetaan etumerkittömänä nelitavuisena kokonaislukuna ja lisätään loppuun yksi pakkaustavu, tiivistyy piste kahdeksantavuiseksi. Näin miljardi pistettä vaatisi enää 8 gigatavua muistia. 
+
+Esitysmuotoa voidaan tiivistää vielä tästäkin. Pisteen etäisyyttä suhteessa ruudukkoon voidaan esittää kolmella tavulla niin, että jokainen tavu kuvaa koordinaattiakselien suuntaisten askelten määrää ruudusta 0 lähtien. Yhden tavun esittämä enimmäisarvo on 255, joten ruudukossa voi olla enintään $255^3=16581375$ solua. Tällainen kompressio tuo toki pistepilveen epätarkkuutta, johon palataan myöhemmin. %TODO: \ref{error}
+
+Usein laserkeilaimissa ei käytetä värikameraa antamaan pisteille värejä, vaan väri-informaatio johdetaan keilaimeen heijastuvan valon määrästä. Tämä arvo normalisoidaan yleensä välille $[0,255]$, josta saadaan jokin harmaan sävy. Tällaisissa pistepilvissä on siis turha tallentaa jokaiselle pisteelle \texttt{r}, \texttt{g} ja \texttt{b} -arvoja, kun vain yksi arvo riittäisi. Nyt piste voidaan esittää muodossa 
+
+\code{
+struct Point \{\\
+    \tab unsigned char dx;\\
+    \tab unsigned char dy;\\
+    \tab unsigned char dz;\\
+    \tab unsigned char intensity;\\
+    \}
+}
+
+\noindent eli tarvitaan vain neljä tavua tilaa ja edellä mainittu pistepilvi saadaan tiivistettyä neljännekseen alkuperäisestä koostaan. 
 
 \begin{algorithm}[H]
     \subfile{alg/rakennapuu.tex}
@@ -48,7 +98,25 @@ Valintaoperaatiot onnistuvat nopeasti oktettipuussa. Puun jokainen solmu sisält
 \end{algorithm}
    
 
+
+\subsection{Visualisointi}\label{render}
+
+Yksityiskohtien karsinta \engl{detail culling} on suosittu nopeutustekniikka tietokonegrafiikassa. Ajatuksena on renderöidä vain tärkeimmät objektit ja jättää kaukana olevat tai pienet objektit renderöimättä, jotta ruudunpäivitystaajuus pysyy interaktiivisena. Yksinkertainen tapa karsia yksityiskohtia on järjestää objektit niiden kuvaruudulle projisoidun koon mukaan ja renderöidä niitä tiettyyn rajaan asti, tai kunnes aika loppuu kesken. Akenine-Möller et al. \cite{rrr} esittävät kuvaruudulle projisoidun objektin koon arviolle kaavaa 
+\begin{equation}
+    a = \pi (\frac{nr}{\mathbf{d} \cdot (\mathbf{c}-\mathbf{v})})^2,
+\end{equation} jossa $n$ on katselupisteen etäisyys kuvatasosta, $r$ objektin rajauspallon säde ja $\mathbf{c}$ keskipiste, $\mathbf{d}$ on normalisoitu katsomissuunta, ja $\mathbf{v}$ katselupiste. \cite{mikko}
+
+Mikko Yllikäinen havaitsi pro gradu -tutkielmassaan \cite{mikko}, ettei tarkkaa arvioita objektien koosta kannata selvittää, jos halutaan selville vain suuruusjärjestys. Yllikäinen yksinkertaistaa kaavan muotoon 
+\begin{equation}
+    \begin{split}
+    a & = \frac{r}{\mathbf{d} \cdot ( \mathbf{c} - \mathbf{v} )}\\
+    & \approx \frac{r}{\sqrt{(c_x-v_x)^2 + (c_y-v_y)^2 + (c_z - v_z)^2}}\\
+    & \propto \frac{r}{(c_x-v_x)^2 + (c_y-v_y)^2 + (c_z - v_z)^2}.    
+    \end{split}
+\end{equation}
+ Yllikäinen nimittää tällä kaavalla muodostetu suuruusjärjestyksen käyttämistä yksityiskohtien karsinnassa kontribuutiokarsinnaksi \engl{contribution culling}. On huomattava, että tällainen karsinta ei ole mahdollista paralleliprojektiomaisemissa, joissa katseluetäisyys ei vaikuta objektien kokoon. \cite{mikko}
+
+
 \subsection{Pisteiden valinta}
 
-\subsection{Visualisointi}
 %Scheiblauer esittää väitöskirjassaan sisäkkäisille muokattaville oktettipuille erityistä tietorakennetta pisteiden valintaan. Scheiblauer määrittää jokaista valittavaa tilaa kohti uuden oktettipuun, jonka ...

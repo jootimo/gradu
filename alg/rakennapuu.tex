@@ -2,20 +2,24 @@
 \perusalgoritmi
 
 \Input{Joukko pistepilviä $P$} %joissa jokaisen pisteen sijainti on ilmaistu $x$, $y$ ja $z$-koordinaateilla ja väri $rgb$-koodauksella}
-\Output{Pisteet yhdessä oktettipuussa $O$}
+\Output{Pisteet sisältävän oktettipuun juurisolmu $s$}
 
-\kommentti{Selvitetään ensin pilvien rajaavien laatikkojen unioni}
-$L \Leftarrow$ Tyhjä rajaava laatikko\;
+\kommentti{Selvitetään ensin pilvien rajauslaatikkojen unioni}
+$L \gets$ tyhjä rajauslaatikko\\
 \For{Pistepilvi $pc \in P$} {
-    \If{Jokin pilven $pc$ pisteistä on laatikon $L$ ulkopuolella}{
-        Kasvata laatikkoa $L$ siten, että se peittää kaikki pilven $pc$ pisteet
+    \For{Piste $p \in pc$} {
+        \If{$p \cap L = \emptyset$}{
+            $L \gets L \cup p$
+        }
     }
 }
 
 \kommentti{Lisätään pisteet oktettipuuhun}
+$s \gets$ juurisolmu, jonka rajauslaatikko on $L$\\
 \For{Pistepilvi $pc \in P$} {
-    Sekoita $pc$:n pisteet satunnaiseen järjestykseen\;
+    Sekoita $pc$:n pisteet satunnaiseen järjestykseen\\
     \For{Piste $p \in pc$} {
-        LisääPuuhun($O, p$)
+        LisääSolmuun($s, p$)
     }
 }
+\Return{$s$}

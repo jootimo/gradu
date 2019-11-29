@@ -3,7 +3,7 @@ Tässä luvussa määritellään pistepilven käsite, tutustutaan laserkeilaimii
 
 \subsection{Pistepilvet ja laserkeilaimet}\label{laserkeilaimet}
 
-Pistepilveksi kutsutaan jotakin objektia tai maisemaa kuvaavaa suurta joukkoa pisteitä kolmiulotteisessa avaruudessa. Pistepilvi tuotetaan yleensä laserkeilaimella \engl{Laser Scanner}, joka ampuu ympärilleen laserpurskeita ja mittaa etäisyyksiä pisteisiin, joista purske heijastuu takaisin. Pistepilviä voidaan tuottaa myös synteettisesti ottamalla näytepisteitä mistä tahansa 3d-mallista, mutta tässä tutkielmassa keskitytään laserkeilaimilla tuotettuihin pistepilviin. \footnote{1980-luvulta lähtien pisteitä on ehdotettu yleisiksi renderöintiprimitiiveiksi kuvaamaan mitä tahansa geometriaa \cite{Whitted}. Aika kuitenkin näytti kolmion olevan suositumpi primitiivi ja nykyään grafiikkakirjastot ja -prosessorit onkin optimoitu kolmioiden käsittelyyn.}
+Pistepilveksi kutsutaan jotakin objektia tai maisemaa kuvaavaa suurta joukkoa pisteitä kolmiulotteisessa avaruudessa. Pistepilvi tuotetaan yleensä laserkeilaimella \engl{Laser Scanner}, joka ampuu ympärilleen laserpurskeita ja mittaa etäisyyksiä pisteisiin, joista purske heijastuu takaisin. Pistepilviä voidaan tuottaa myös synteettisesti ottamalla näytepisteitä mistä tahansa 3d-mallista, mutta tässä tutkielmassa keskitytään laserkeilaimilla tuotettuihin pistepilviin. \footnote{1980-luvulta lähtien pisteitä on ehdotettu yleisiksi renderöintiprimitiiveiksi kuvaamaan mitä tahansa geometriaa \cite{Whitted}. Ajatus on nykyään vielä ajankohtaisempi, sillä renderöitävät mallit monimutkaistuvat jatkuvasti ja usein yksittäiset polygonit projisoituvat kuvaruudulle alle pikselin kokoisina. Tällöin polygonien kärkipisteiden sijaan olisi tehokkaampaa säilyttää muistissa vain yhtä pistettä. Grafiikkakirjastot ja näytönohjaimet on kuitenkin vielä optimoitu kolmioiden käsittelyyn.}
 
 Pistepilville on useita käyttökohteita, joista arkkitehtuuri ja rakentaminen on yksi tärkeimmistä. Pistepilvien hyödyntäminen voidaan aloittaa rakennusprojektin hyvin varhaisessa vaiheessa. Rakennettavan tontin ympäristöstä voidaan ottaa laserkeilauksia, jotta suunniteltavan rakennuksen sopimista tontille voidaan helposti arvioida. Rakennusprojektin aikana säännöllisillä laserkeilauksilla voidaan seurata tarkasti projektin etenemistä ja havaita mahdollisia ongelmia ajoissa. Pistepilvillä on myös tärkeä rooli rakennuksen valmistumisen jälkeen. Muutostöitä tehtäessä halutaan rakennuksesta saada ajantasalla oleva 3d-malli. Manuaalinen mallintaminen olisi hyvin suuri työ verrattuna muutaman kymmenen pistepilven luomiseen laserkeilaimella, mikä voidaan tehdä päivässä. \cite{bim} 
 
@@ -40,7 +40,8 @@ Eräs vaativa pistepilvien sovelluskohde on itseohjautuvat kulkuneuvot. Voidakse
 
 Pistepilviä voidaan käyttää myös huomattavasti suuremmassa mittakaavassa. Maanmittauslaitos on kerännyt ilmasta käsin pistepilvidataa lähes koko Suomen maaperästä. Lentokoneesta keilattu pistepilvi on melko harva - puoli pistettä neliömetriä kohden -, mutta keilattavan kohteen laajuus tekee pilvistä valtavia. Pistepilviä on käytetty lähinnä metsävarojen kartoittamiseen, mutta Maanmittauslaitos aikoo ryhtyä keräämään pistedataa tarkemmilla laserkeilamilla myös rakennuksista. \cite{hs}
 
-Perinteinen pistepilvien mittaamiseen käytetty laserkeilain on jalustalla seisova laite, joka pyörii pystyakselinsa ympäri ampuen laserpurskeita ympärilleen tihein välein. Laserkeilain mittaa etäisyyksiä pisteisiin, joista laserpurske heijastuu takaisin keilaimeen ja muodostaa näistä pisteistä pistepilven. Heijastuksen voimakkuutta käytetään usein määräämään pisteelle väri. 
+\subtitle{Laserkeilaimet}
+Perinteinen pistepilvien mittaamiseen käytetty laserkeilain on jalustalla seisova laite, joka pyörii pystyakselinsa ympäri ampuen ympärilleen miljoonia laserpurskeita. Laserkeilain mittaa etäisyyksiä pisteisiin, joista laserpurske heijastuu takaisin keilaimeen ja muodostaa näistä pisteistä pistepilven. Heijastuksen voimakkuutta käytetään usein määräämään pisteelle väri. Yleensä tarkasteltavaa kohdetta täytyy keilata useista eri suunnista, jotta saataisiin tarpeeksi kattava joukko pistepilviä. Kohteesta riippuen voidaan tarvita jopa satoja keilauksia. Pistepilvien sovittamista yhteen tarkastellaan luvussa \ref{workflow}.
 
 \begin{figure}
     \centering
@@ -49,12 +50,18 @@ Perinteinen pistepilvien mittaamiseen käytetty laserkeilain on jalustalla seiso
     \label{leica}
 \end{figure}
 
-Yleensä tarkasteltavaa kohdetta täytyy keilata useista eri suunnista, jotta saataisiin tarpeeksi kattava joukko pistepilviä. Kohteesta riippuen voidaan tarvita jopa satoja keilauksia. Pistepilvien sovittamista yhteen tarkastellaan luvussa \ref{workflow}.
-
 Nykyaikaisella laserkeilaimella saadaan muodostettua hyvin tarkka ja tiheä pistepilvi nopeasti. Esimerkiksi kuvassa \ref{leica} näkyvä Leica Geosystemsin RTC360 -keilaimen luvataan mittaamaavan jopa kaksi miljoonaa pistettä sekunnissa ja kiertävän täyden ympyrän alle kahdessa minuutissa. Keilaimen lisäksi laitteessa on kamera, jolla saadaan määritettyä pisteille oikeat värit. \cite{leica} 
 
-Laserkeilaimien toimintaperiaatteissa on eroja. Kaksi yleisintä toimintaperiaatetta ovat kulkuaikatekniikka \engl{Time-Of-Flight} ja vaihesiirtotekniikka \engl{phase shift}. Kulkuaikatekniikkassa pisteen etäisyys keilaimesta selviää ajasta, joka kuluu laserpurskeen lähetettämisestä sen heijastuksen vastaanottamiseen. Pisteen etäisyys keilaimesta on yksinkertaisesti $d=\frac{c\cdot t}{2}$, missä c on valonnopeus ja t on mitattu aika. \cite{fabritius}   
-Vaihesiirtotekniikka perustuu keilaimesta lähtevän signaalin vaiheen vertaamista palaavan signaalin vaiheeseen. Pisteen etäisyys keilaimesta saadaan laskemalla $d=n\cdot \lambda + \frac{\Phi \cdot \lambda}{2 \cdot \pi}$, missä n on havainnon täysien aaltojen määrä, $\lambda$ on signaalin aallonpituus ja $\Phi$ on lähtevän ja palaavan signaalin vaihe-ero. \cite{fabritius}
+Laserkeilaimien toimintaperiaatteissa on eroja. Kaksi yleisintä toimintaperiaatetta ovat kulkuaikatekniikka \engl{Time-Of-Flight} ja vaihesiirtotekniikka \engl{phase shift}. Kulkuaikatekniikkassa pisteen etäisyys keilaimesta selviää ajasta, joka kuluu laserpurskeen lähetettämisestä sen heijastuksen vastaanottamiseen. Pisteen etäisyys keilaimesta on yksinkertaisesti 
+\begin{equation}
+    d=\frac{c\cdot t}{2},    
+\end{equation}
+missä c on valonnopeus ja t on mitattu aika. \cite{fabritius}   
+Vaihesiirtotekniikka perustuu keilaimesta lähtevän signaalin vaiheen vertaamista palaavan signaalin vaiheeseen. Pisteen etäisyys keilaimesta saadaan laskemalla 
+\begin{equation}
+    d=n\cdot \lambda + \frac{\Phi \cdot \lambda}{2 \cdot \pi},
+\end{equation}
+missä n on havainnon täysien aaltojen määrä, $\lambda$ on signaalin aallonpituus ja $\Phi$ on lähtevän ja palaavan signaalin vaihe-ero. \cite{fabritius}
 
 \begin{figure}
     \centering
@@ -83,7 +90,15 @@ Vaihesiirtotekniikka perustuu keilaimesta lähtevän signaalin vaiheen vertaamis
     \label{pallo}
 \end{figure}{}
 
-Laserkeilain tallentaa mittaamansa pisteen pallokoordinaateissa. Pisteen siirtäminen pallokoordinaateista karteesiseen koordinaatistoon onnistuu laskemalla koordinaatit $x=r \cdot \sin \theta \cdot \cos \phi, y=r \cdot \sin \theta \cdot \cos \phi, z=r \cdot \cos \theta$, missä r on pallon säde, $\theta$ on korotuskulma ja $\phi$ atsimuuttikulma. Pallokoordinaatistoa on havainnollistettu kuvassa \ref{pallo}.
+Laserkeilain tallentaa mittaamansa pisteen pallokoordinaateissa. Pisteen siirtäminen pallokoordinaateista karteesiseen koordinaatistoon onnistuu laskemalla koordinaatit 
+\begin{equation}
+    \begin{split}
+        x&=r \cdot \sin \theta \cdot \cos \phi,\\ 
+        y&=r \cdot \sin \theta \cdot \cos \phi,\\
+        z&=r \cdot \cos \theta,    
+    \end{split}
+\end{equation}
+missä r on pallon säde, $\theta$ on korotuskulma ja $\phi$ atsimuuttikulma. Pallokoordinaatistoa on havainnollistettu kuvassa \ref{pallo}.
 
 \subsection{Pistepilvidatan käsittely}\label{workflow}
 
@@ -103,7 +118,7 @@ Joissakin sovelluksissa halutaan luoda pistedatasta kohteen pintoja kuvaava poly
 
 Joskus pistepilvet halutaan kompaktimpaan esitysmuotoon, jossa niiden käsittely on helpompaa. Pistepilvestä voidaan luoda panoramakuva projisoimalla laserkeilaimen ympäröimät pisteet kaksiulotteiselle kuvatasolle.\footnote{Projektio vaikuttaa suuresti panoramakuvan laatuun. ks. esim \cite{proj}} Panoramakuvan resoluutiosta riippuen pistepilvestä voidaan karsia huomattava määrä pisteitä, joiden koko olisi liian pieni projisoituna kuvatasolle. Panoramakuvaan on helppo soveltaa erilaisia kuvankäsittelyalgoritmeja, kuten piirteentunnistusta \engl{feature detection}. 
 
-\subsection{Pistepilvien hyödyntäminen laitossuunnittelussa}
+\subsection{Pistepilvien hyödyntäminen tietokoneavusteisessa suunnittelussa}
 
 Aiemmin mainittiin erilaisia sovelluksia laserkeilainten tuottamille pistepilville. Tässä tutkielmassa keskitytään pistepilvien hyödyntämiseen tietokoneavusteisessa suunnittelussa \engl{computer aided design, CAD} ja erityisesti laitossuunnitteluohjelmistoissa \engl{plant design software}.
 
@@ -113,11 +128,9 @@ Laitossuunnittelussa yleisempi ongelma on 3d-mallin vanhentuminen tai sen puuttu
 
 Kuten sillanrakennuksessa, myös laitoksia rakentaessa on joskus syytä suorittaa tarkastusmittauksia ja verrata niitä alkuperäiseen 3d-malliin. Pistepilvet ovat tähänkin tarkoitukseen sopivia. Nykyaikaisten laserkeilainten tuottamat pistepilvet ovat niin tarkkoja, että niistä voi havaita esimerkiksi putkien roikkumisen ja lämpölaajenemisen \cite{Piipponen}. 
 
-Pistepilviä voi hyödyntää monin tavoin laitossuunnittelussa. Vähiten töitä vaatii pilvien käyttö sellaisenaan. Jos laitokseen halutaan vaikkapa uusi vesiputki, voidaan sen mahtuminen varmistaa reitittämällä putki suunnitteluohjelmistolla ja tarkastamalla, osuuko se pistepilveen. Jos vanhasta laitoksesta halutaan luoda ajantasalla oleva 3d-malli, voi suunnittelija mallintaa laitosta pistepilvien avulla. Pistepilven päälle on helppo sijoittaa suunnitteluohjelman putkistoja ja laitteita oikeille paikoilleen. Markkinoilla on myös ohjelmistoja, joiden luvataan tuottavan pistepilvestä automaattisesti älykäs 3d-malli komponenttitietoineen ilman aikaavievää päällemallinnusta \cite{aveva}. 
+Pistepilviä voi hyödyntää monin tavoin laitossuunnittelussa. Jos laitokseen halutaan vaikkapa uusi vesiputki, voidaan sen mahtuminen varmistaa reitittämällä putki suunnitteluohjelmistolla ja tarkastamalla, osuuko se pistepilveen. Jos taas vanhasta laitoksesta halutaan luoda ajantasalla oleva 3d-malli, voi suunnittelija mallintaa laitosta pistepilvien avulla. Pistepilven päälle on helppo sijoittaa suunnitteluohjelman putkistoja ja laitteita oikeille paikoilleen. Markkinoilla on myös ohjelmistoja, joiden luvataan tuottavan pistepilvestä automaattisesti älykäs 3d-malli komponenttitietoineen ilman aikaavievää päällemallinnusta \cite{aveva}. 
 
-
-Joitakin yleisiä käyttötapauksia pistepilvien kanssa työskentelystä on esitetty luvussa \ref{usecase}.
-
+Tietokoneavusteisen suunnittelun ohjelmisto käsittelee pistepilviä eri tavoin riippuen suunnittelutyön luonteesta. Kappalemallinnuksessa visualisoidaan usein yksittäisiä osia, joita kuvaavat pistepilvet ovat hyvin tiiviitä ja usein kaikki pisteet ovat kerralla näkyvissä. Laitossuunnittelussa pistepilvet ovat taas hyvin laajoja ja voivat kuvata esimerkiksi kokonaista tehdasaluetta. Näissä sovelluksissa on tärkeää pistepilven nopea rajaaminen niin, että vain näkymän sisältävät pisteet renderöidään. Usein on tarpeen myös käyttää eri tarkkuuksia pistepilven eri osille; kaukana katsojasta sijaitsevista pisteistä renderöidään vain osa \cite{mikko}. Joitakin yleisiä käyttötapauksia pistepilvien kanssa työskentelystä laitossuunnittelussa ja niiden esittämiä vaatimuksia laitossuunnitteluohjelmistolle on esitetty luvussa \ref{usecase}.
 
 
 \subsection{Tutkielman tavoitteet ja rakenne}

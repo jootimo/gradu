@@ -26,6 +26,7 @@
     linkbordercolor = {white}
 }
 \usepackage{times}
+\usepackage{amsmath}
 
 % Algoritmipaketti ja pari hyödyllistä komentoa
 \usepackage[ruled,linesnumbered]{algorithm2e}
@@ -49,12 +50,14 @@
 %
 
 % Englanninkielinen termi
-\newcommand{\engl}[1]{\emph{(engl. #1)}}
+\newcommand{\engl}[1]{(engl. \emph{#1})}
 
 % Väliotsikko ilman numeroa. Ei tyhjää riviä tämän jälkeen.
 \newcommand{\subtitle}[1]{\vspace{0.5cm}\noindent\large\textbf{#1}\normalsize\\\noindent}
 
-
+% Koodia
+\newcommand{\code}[1]{\noindent\footnotesize\texttt{#1}\normalsize}
+\newcommand{\tab}[0]{\hspace*{1cm}}
 
 \begin{document}
 \title{Pistepilvien visualisointi laitossuunnitteluohjelmistossa}
