@@ -1,4 +1,3 @@
-\caption{RakennaOktettipuu}
 \perusalgoritmi
 
 \Input{Joukko pistepilviä $P$} %joissa jokaisen pisteen sijainti on ilmaistu $x$, $y$ ja $z$-koordinaateilla ja väri $rgb$-koodauksella}
@@ -17,7 +16,7 @@ $L \gets$ tyhjä rajauslaatikko\\
 \kommentti{Lisätään pisteet oktettipuuhun}
 $s \gets$ juurisolmu, jonka rajauslaatikko on $L$\\
 \For{Pistepilvi $pc \in P$} {
-    Sekoita $pc$:n pisteet satunnaiseen järjestykseen\\
+    %Sekoita $pc$:n pisteet satunnaiseen järjestykseen\\
     \For{Piste $p \in pc$} {
         LisääSolmuun($s, p$)
     }

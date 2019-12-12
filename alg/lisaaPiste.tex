@@ -1,0 +1,34 @@
+\perusalgoritmi
+
+\Input{Puun solmu $s$,\\ piste $p$, jolla on sijainti $(x,y,z)$ ja väri $(r,g,b)$}
+
+$i \gets$ sen ruudukon solun indeksi, jossa piste sijaitsee\\
+$h \gets$ hajautustaulu, johon solmun $s$ pisteet tallennetaan,\\
+
+\uIf{Solmun $s$ syvyys on puun enimmäissyvyys}{
+    \eIf{$i \notin h$} {
+        $h = h \cup (i, (r,g,b))$
+    }{
+        Hylkää piste $p$
+    }
+}
+
+\uElseIf{$s$ on täynnä}{
+    $l \gets$ uusi lapsisolmu\\
+    \Return{LisääPisteSolmuun($l, p$)}
+ }
+
+\uElseIf{$i \in h$}{
+    $l \gets$ uusi lapsisolmu\\
+    \Return{LisääPisteSolmuun($l, p$)}
+ }
+
+\uElseIf{$\epsilon >$ ennalta määrätty enimmäisvirhe}{
+    $l \gets$ uusi lapsisolmu\\
+    \Return{LisääPisteSolmuun($l, p$)}
+}
+
+\Else {
+    \kommentti{Solmussa $s$ ja sen ruudukon solussa $i$ on tilaa, eikä virhe $\epsilon$ ole liian suuri. Piste voidaan lisätä solmuun $s$.}
+    $h = h \cup (i, (r,g,b))$
+}

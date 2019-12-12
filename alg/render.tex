@@ -1,0 +1,27 @@
+\perusalgoritmi
+
+\Input{Sisäkkäispistepuu $P$}
+
+$b_{yleiskuva} \gets$ pistepuskuri, jota päivitetään vain tarvittaessa
+
+\uIf{Ensimmäinen renderöintikerta}{
+    \kommentti{Täytetään yleiskuvapuskuri $b_{yleiskuva}$}
+    \While{$b_{yleiskuva}$ ei ole täynnä}{
+        \kommentti{Käydään puuta läpi taso kerrallaan}
+        \For{Solmu $s \in P$} {
+            \If{$s$ on täysi \textbf{AND} $s$ on näkyvissä}{
+                Lisää $s$ puskuriin $b_{yleiskuva}$
+            }
+        }
+    }    
+}
+\Else {
+    \kommentti{Päivitetään yleiskuvapuskuri $b_{yleiskuva}$}
+    \For{Solmua $s$ vastaavat pisteet puskurissa $b_{yleiskuva}$} {
+        \If{Solmu $s$ ei ole enää näkyvissä}{
+            Vaihda pisteet toisiin, mahdollisimman ylhäällä puussa olevan solmun pisteisiin
+        }
+    }
+}
+
+Renderöi puskuri $b_{yleiskuva}$
