@@ -83,11 +83,24 @@ missä r on pallon säde, $\theta$ on korotuskulma ja $\phi$ atsimuuttikulma. Pa
 
 \subsection{Pistepilvidatan käsittely}\label{workflow}
 
+Laserkeilauksella tuotettuja pistepilviä ei usein käytetä sellaisenaan, vaan niitä täytyy ensin esikäsitellä. Yleisiä esikäsittelyvaiheita ovat panoramakuvien luominen, usean pistepilven rekisteröinti yhteen koordinaatistoon, muukalaispisteiden poistaminen ja pintojen rekonstruointi.
+
+\subsubsection{Panoramakuvat}
+
+Yksinkertaisin tapa visualisoida pistepilvi on muodostaa siitä kaksiulotteinen kuva. Pilvestä voidaan luoda panoramakuva projisoimalla laserkeilaimen ympäröimät pisteet kaksiulotteiselle kuvatasolle.\footnote{Projektio vaikuttaa suuresti panoramakuvan laatuun. Hyvän yleiskatsauksen erilaisiin projektiohin antaa \cite{proj}. Kuvassa \ref{img:pano} on käytetty tasavälistä lieriöprojektiota \engl{equirectangular projection}.} Kuvakoosta riippuen voidaan pistepilvestä karsia huomattava määrä pisteitä, joiden koko olisi liian pieni kuvatasolle projisoituna. Panoramakuvat toimivat siis myös pistedatan pakkausalgoritmina. Panoramakuvan pikseleille voidaan antaa värit joko sen perusteella, kuinka paljon valoa heijastuu takaisin niitä vastaavista pilven pisteistä, tai kuinka kaukana pisteet ovat keilaimesta. Panoramakuvaan on helppo soveltaa erilaisia kuvankäsittelyalgoritmeja, kuten piirteentunnistusta \engl{feature detection}. Kuvassa \ref{img:pano} on esimerkki panoramakuvasta.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{img/pano.png}
+    \caption{Saksan Würzburgissa sijaitsevasta Randersackerin Neitsyt Marian kärsimysten kappelista keilatusta pistepilvestä muodostettu panoramakuva.}
+    \label{img:pano}
+\end{figure}
+
 \subsubsection{Rekisteröinti}
 
 Laserkeilauksen tuottama pistepilvi sisältää joukon pisteitä koordinaatistossa, jonka origona on keilaimen sijainti. Usein keilauksen kohteesta otetaan kymmeniä tai jopa satoja keilauksia, jotka täytyy saada samaan koordinaatistoon. Tätä kutsutaan pistepilvien rekisteröinniksi. 
 
-Pistepilvet voidaan reksiteröidä usealla eri tavalla. Joskus keilattavaan kohteeseen asetetaan erityisiä merkkikuvioita, jotka näkyvät useasta keilaimesta. Kun tiedetään merkkien etäisyys ja suunta kustakin keilaimesta, voidaan pistepilvet sovittaa yhteen koordinaatistoon. Joissakin sovelluksissa käyttäjä merkitsee pilvistä pisteitä, jotka kuvaavat samaa aluetta.
+Pistepilviä voidaan rekisteröidä usealla eri tavalla. Joskus keilattavaan kohteeseen asetetaan erityisiä merkkikuvioita, jotka näkyvät useasta keilaimesta. Kun tiedetään merkkien etäisyys ja suunta kustakin keilaimesta, voidaan pistepilvet sovittaa helposti yhteen koordinaatistoon. Joissakin sovelluksissa käyttäjä merkitsee kahdesta pilvestä joukon pisteitä, joiden avulla pilvet saadaan rekisteröityä. Esimerkiksi 3DTK-kirjastolla käyttäjä voi valita kahdesta pilvestä samaa aluetta kuvaavia pisteitä, joiden avulla pilvien yhteensovitus onnistuu automaattisesti \cite{3dtk}.  
 
 \begin{figure}
     \begin{subfigure}{.5\textwidth}
@@ -102,34 +115,25 @@ Pistepilvet voidaan reksiteröidä usealla eri tavalla. Joskus keilattavaan koht
         \caption{}
         %\label{fig:sub2}
     \end{subfigure}
-    \caption{Saksan Würzburgissa sijaitsevasta Randersackerin Neitsyt Marian kärsimysten kappelista keilattuja pistepilviä (a) ennen rekisteröintiä ja (b) rekisteröinnin jälkeen. Kunkin keilauksen pisteet on piirretty eri väreillä.}
+    \caption{Kuvan \ref{img:pano} kappelista keilaittuja pistepilviä (a) ennen rekisteröintiä ja (b) rekisteröinnin jälkeen. Kunkin keilauksen pisteet on piirretty eri väreillä.}
     \label{img:reg}
 \end{figure}
 
-Pistepilviä voidaan rekisteröidä myös ilman merkkikuvioita. Iteratiivinen lähimmän pisteen algoritmi \engl{iterative closest point, ICP} sovittaa pistepilven toiseen etsimällä rotaation ja translaation, jolla pilvien välinen virhe saadaan minimoitua. ICP-algoritmi määrittää ensin pilvistä toisiaan vastaavat pisteet ja virhe lasketaan kaikkien vastaavuuksien välisistä etäisyyksistä. Yksinkertaisimmillaan pistettä vastaavaksi pisteeksi merkitään sovitettavan pilven lähinnä sijaitseva piste. 
-ICP-algoritmi tarvitsee käyttäjältä usein hyvän alkuarvauksen, jotta pilvien sovittaminen onnistuisi. 
-\footnote{Täysin automaattista pistepilvien rekisteröintiä on tutkittu paljon, ks. esim. \cite{Pascal}.} Kuvassa \ref{img:reg} on ICP-algoritmilla sovitettu yhteen kuusi pistepilveä. 
+Pistepilviä voidaan rekisteröidä myös ilman merkkikuvioita tai käyttäjän apua. Iteratiivinen lähimmän pisteen algoritmi \engl{iterative closest point, ICP} sovittaa pistepilven toiseen etsimällä rotaation ja translaation, jolla pilvien välinen virhe saadaan minimoitua. Virheen laskemista varten täytyy määrittää pilvistä toisiaan vastaavat pisteet. Yksinkertaisimmillaan pistettä vastaavaksi pisteeksi valitaan toisesta pilvestä se, jonka euklidinen etäisyys edellä mainittuun on pienin. Iteratiivisen algoritmin kunkin transformaation hyvyys lasketaan kaikkien vastaavien pisteiden välisten etäisyyksien muodostamasta virheestä. Algoritmin iteroiminen voidaan lopettaa, kun jokin ennaltamäärätty raja virheelle on alitettu. Kuvassa \ref{img:reg} on ICP-algoritmilla sovitettu yhteen kuusi pistepilveä. \cite{icp}
+
+%\footnote{Täysin automaattista pistepilvien rekisteröintiä on tutkittu paljon, ks. esim. \cite{Pascal}.} 
+
+ICP-algoritmi tarvitsee kuitenkin käyttäjältä hyvän alkuarvauksen, jotta virhe suppenisi ja pilvien sovittaminen onnistuisi. Se on myös erittäin raskas suorittaa isoille pistepilville. Yleensä ICP-algoritmia käytetäänkin karkeamman rekisteröintialgoritmin jälkeen hienosäätämiseen. Karkeampi pilvien yhteensovittaminen tehdään yleensä etsimällä kahdesta pistepilvestä muodostetuista panoramakuvista toisiaan vastaavia avainpisteitä \engl{keypoints}. Näiden avainpisteiden sijainneista saadaan harva joukko pisteitä, joiden yhteensovittaminen on paljon helpompaa kuin kokonaisten pistepilvien. Suosittuja tekniikoita avainpisteiden löytämiseen ovat esimerkiksi Harris'n nurkat \cite{harris} sekä FAST ja SIFT -piirteet \cite{fast}\cite{sift}. \cite{weinmann}
 
 
 \subsubsection{Muukalaispisteiden poistaminen}
 
 Pistepilvissä on usein muukalaispisteitä \engl{outlier}, johtuen esimerkiksi laserkeilaimen epätarkkuudesta tai vaikkapa tuulen heiluttamista puiden lehdistä. Yksinkertainen tekniikka poistaa muukalaispisteitä pilvestä on verrata pisteen normaalivektoria sen naapuripisteiden normaaleihin. Pisteen $p_i$ normaalivektori voidaan selvittää pääkomponenttianalyysillä \engl{principal component analysis, PCA}. Ensin on etsittävä pilvestä pisteen $p_i$ $k$ lähintä naapuria, jonka jälkeen naapurston pisteistä lasketaan ominaisarvot. Kahta suurinta ominaisarvoa vastaavaa ominaisvektoria voidaan käyttää kuvaamaan tasoa, joka sovitetaan naapuruston päälle. Jäljelle jäävä ominaisvektori kuvaa pisteen $p_i$ normaalia. \cite{huang}
 
-\subsubsection{Geometrian rekonstruointi}
+\subsubsection{Pintojen rekonstruointi}
 
 Joissakin sovelluksissa halutaan luoda pistedatasta kohteen pintoja kuvaava polygoniverkko, jotta renderöinti olisi nopeampaa olemassaolevilla grafiikkakirjastoilla ja visuaalinen lopputulos parempi. Yksinkertainen tekniikka luoda tiivis kolmiointi pistepilvestä on Delaunayn kolmiointi\footnote{Delaunayn kolmiointi sopii harvoin oikeilla laserkeilaimilla taltioituihin, häiriötä sisältäviin pistepilviin. Hyvän yleiskatsauksen realistisemmista pinnanmuodostustekniikoista ovat julkaisseet esim. \cite{berger}} \engl{Delaunay triangulation}. Delaunayn kolmiointi perustuu Voronoin diagrammiin \engl{Voronoi diagram}, joka jakaa pisteitä sisältävän tason tai avaruuden konvekseihin Voronoin soluihin. Voronoin solu kattaa sen alueen, jossa etäisyys solua vastaavaan pisteeseen on pienempi kuin muihin pisteisiin. Kahden solun välillä on Voronoin jana, josta etäisyys kahteen pisteeseen on sama, ja kolmen janan leikkauspisteessä on Voronoin kärki, josta etäisyys kolmeen pisteeseen on yhtä suuri. Delaunayn kolmiointi on Voronoin diagrammin duaaligraafi, josta luodaan graafi siten, että pisteiden välillä on kaari, mikäli niitä vastaavat Voronoin solut jakavat Voronoin janan. \cite{delaunay}
 
-\subsubsection{Panoramakuvat}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/pano.png}
-    \caption{Kuvan \ref{img:reg} kappelista keilatusta pistepilvestä luotu panoramakuva.}
-    \label{img:pano}
-\end{figure}
-
-
-Joskus pistepilvet halutaan kompaktimpaan esitysmuotoon, jossa niiden käsittely on helpompaa. Pistepilvestä voidaan luoda panoramakuva projisoimalla laserkeilaimen ympäröimät pisteet kaksiulotteiselle kuvatasolle.\footnote{Projektio vaikuttaa suuresti panoramakuvan laatuun. Hyvän yleiskatsauksen projektiohin antaa \cite{proj}. Kuvassa \ref{img:pano} on käytetty tasavälistä lieriöprojektiota \engl{Equirectangular projection}.} Panoramakuvan resoluutiosta riippuen pistepilvestä voidaan karsia huomattava määrä pisteitä, joiden koko olisi liian pieni projisoituna kuvatasolle. Panoramakuvaan on helppo soveltaa erilaisia kuvankäsittelyalgoritmeja, kuten piirteentunnistusta \engl{feature detection}. Kuvassa \ref{img:pano} on esimerkki panoramakuvasta.
 
 \subsection{Pistepilvien hyödyntäminen tietokoneavusteisessa suunnittelussa}
 
