@@ -4,9 +4,11 @@
 
 $B \gets$ pistepuskuri, joka on jaettu osioihin $b_0, b_1, b_2$\\
 $i \gets$ 0\kommentti{Täytettävän puskuriosion indeksi}
+$S \gets$ näkyvissä olevat puun solmut 
 
-\kommentti{Käydään puuta läpi taso kerrallaan}
-\For{Solmu $s \in P$} {
+Järjestä S ruudulle projisoidun koon mukaan
+
+\For{Solmu $s \in S$} {
     \uIf{Puskuriosiossa $i$ ei ole tilaa täydelle solmulle} {
         Lähetä näytönohjaimelle puskuriosio $i$\\
         Lähetä näytönohjaimelle osion $i$ synkronointiobjekti\\

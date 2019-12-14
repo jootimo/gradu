@@ -5,8 +5,8 @@
 
 \kommentti{Selvitetään ensin pilvien rajauslaatikkojen unioni}
 $L \gets$ tyhjä rajauslaatikko\\
-\For{Pistepilvi $pc \in P$} {
-    \For{Piste $p \in pc$} {
+\For{pistepilvi $pc \in P$} {
+    \For{piste $p \in pc$} {
         \If{$p \cap L = \emptyset$}{
             $L \gets L \cup p$
         }
@@ -15,9 +15,9 @@ $L \gets$ tyhjä rajauslaatikko\\
 
 \kommentti{Lisätään pisteet oktettipuuhun}
 $s \gets$ juurisolmu, jonka rajauslaatikko on $L$\\
-\For{Pistepilvi $pc \in P$} {
+\For{pistepilvi $pc \in P$} {
     %Sekoita $pc$:n pisteet satunnaiseen järjestykseen\\
-    \For{Piste $p \in pc$} {
+    \For{piste $p \in pc$} {
         LisääSolmuun($s, p$)
     }
 }

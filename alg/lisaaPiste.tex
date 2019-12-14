@@ -3,9 +3,9 @@
 \Input{Puun solmu $s$,\\ piste $p$, jolla on sijainti $(x,y,z)$ ja väri $(r,g,b)$}
 
 $i \gets$ sen ruudukon solun indeksi, jossa piste sijaitsee\\
-$h \gets$ hajautustaulu, johon solmun $s$ pisteet tallennetaan,\\
+$h \gets$ hajautustaulu, johon solmun $s$ pisteet tallennetaan\\
 
-\uIf{Solmun $s$ syvyys on puun enimmäissyvyys}{
+\uIf{Solmun $s$ syvyys = puun enimmäissyvyys}{
     \eIf{$i \notin h$} {
         $h = h \cup (i, (r,g,b))$
     }{
