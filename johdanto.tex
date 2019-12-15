@@ -3,7 +3,7 @@ Tässä luvussa määritellään pistepilven käsite, tutustutaan laserkeilaimii
 
 \subsection{Pistepilvet}
 
-Pistepilveksi kutsutaan jotakin objektia tai maisemaa kuvaavaa suurta joukkoa pisteitä kolmiulotteisessa avaruudessa. Pistepilvi tuotetaan yleensä laserkeilaimella \engl{Laser Scanner}, joka ampuu ympärilleen laserpurskeita ja mittaa etäisyyksiä pisteisiin, joista purske heijastuu takaisin. Pistepilviä voidaan tuottaa myös synteettisesti ottamalla näytepisteitä mistä tahansa 3d-mallista, mutta tässä tutkielmassa keskitytään laserkeilaimilla tuotettuihin pistepilviin. \footnote{1980-luvulta lähtien pisteitä on ehdotettu yleisiksi renderöintiprimitiiveiksi kuvaamaan mitä tahansa geometriaa \cite{Whitted}. Ajatus on nykyään vielä ajankohtaisempi, sillä renderöitävät mallit monimutkaistuvat jatkuvasti ja usein yksittäiset polygonit projisoituvat kuvaruudulle alle pikselin kokoisina. Tällöin polygonien kärkipisteiden sijaan olisi tehokkaampaa säilyttää muistissa vain yhtä pistettä. Grafiikkakirjastot ja näytönohjaimet on kuitenkin vielä optimoitu kolmioiden käsittelyyn.}
+Pistepilveksi kutsutaan jotakin objektia tai maisemaa kuvaavaa suurta joukkoa pisteitä kolmiulotteisessa avaruudessa. Pistepilvi tuotetaan yleensä laserkeilaimella \engl{laser scanner}, joka ampuu ympärilleen laserpurskeita ja mittaa etäisyyksiä pisteisiin, joista purske heijastuu takaisin. Pistepilviä voidaan tuottaa myös synteettisesti ottamalla näytepisteitä mistä tahansa 3d-mallista, mutta tässä tutkielmassa keskitytään laserkeilaimilla tuotettuihin pistepilviin. \footnote{1980-luvulta lähtien pisteitä on ehdotettu yleisiksi renderöintiprimitiiveiksi kuvaamaan mitä tahansa geometriaa \cite{Whitted}. Ajatus on nykyään vielä ajankohtaisempi, sillä renderöitävät mallit monimutkaistuvat jatkuvasti ja usein yksittäiset polygonit projisoituvat kuvaruudulle alle pikselin kokoisina. Tällöin polygonien kärkipisteiden sijaan olisi tehokkaampaa säilyttää muistissa vain yhtä pistettä. Grafiikkakirjastot ja näytönohjaimet on kuitenkin vielä optimoitu kolmioiden käsittelyyn.}
 
 Pistepilville on useita käyttökohteita, joista arkkitehtuuri ja rakentaminen on yksi tärkeimmistä. Pistepilvien hyödyntäminen voidaan aloittaa rakennusprojektin hyvin varhaisessa vaiheessa. Rakennettavan tontin ympäristöstä voidaan ottaa laserkeilauksia, jotta suunniteltavan rakennuksen sopimista tontille voidaan helposti arvioida. Rakennusprojektin aikana säännöllisillä laserkeilauksilla voidaan seurata tarkasti projektin etenemistä ja havaita mahdollisia ongelmia ajoissa. Pistepilvillä on myös tärkeä rooli rakennuksen valmistumisen jälkeen. Muutostöitä tehtäessä halutaan rakennuksesta saada ajantasalla oleva 3d-malli. Manuaalinen mallintaminen olisi hyvin suuri työ verrattuna muutaman kymmenen pistepilven luomiseen laserkeilaimella, mikä voidaan tehdä päivässä. \cite{bim} 
 
@@ -14,7 +14,7 @@ Pistepilville on useita käyttökohteita, joista arkkitehtuuri ja rakentaminen o
     \label{silt}
 \end{figure}
 
-Eräs mielenkiintoinen sovelluuskohde laserkeilaukselle on sillanrakentaminen. Sillanrakentamisessa haasteita tuottavat tien ja maaston geometrian yhteensovittamisen lisäksi projektin pitkä kesto. Silta on rakennettava osissa ja lopputuloksen on oltava suora, minkä takia siltatyömaalla suoritetaan usein tarkistusmittauksia. Älykäs silta -projektissa tutkittiin tapoja hyödyntää tietotekniikkaa sillanrakentamisessa ja -korjaamisessa, ja havaittiin laserkeilauksen olevan hyvä tapa suorittaa tarkkuusmittauksia. Laserkeilauksella muodostettiin pistepilviä sillan kannesta ja rakenteista, jonka jälkeen niistä muodostettiin pintoja 3d-suunnitteluohjelmaan. Pistepilvi ja siitä muodostettu geometria on esitetty kuvassa \ref{silt}. \cite{silta}   
+Eräs mielenkiintoinen sovelluuskohde laserkeilaukselle on siltojen rakentaminen. Sillanrakennuksessa haasteita tuottavat tien ja maaston geometrian yhteensovittamisen lisäksi projektin pitkä kesto. Silta on rakennettava osissa ja lopputuloksen on oltava suora, minkä takia siltatyömaalla suoritetaan usein tarkistusmittauksia. Älykäs silta -projektissa tutkittiin tapoja hyödyntää tietotekniikkaa sillanrakentamisessa ja -korjaamisessa, ja havaittiin laserkeilauksen olevan hyvä tapa suorittaa tarkkuusmittauksia. Laserkeilauksella muodostettiin pistepilviä sillan kannesta ja rakenteista, jonka jälkeen niistä muodostettiin pintoja 3d-suunnitteluohjelmaan. Pistepilvi ja siitä muodostettu geometria on esitetty kuvassa \ref{silt}. \cite{silta}   
 
 \begin{figure}
     \centering
@@ -27,6 +27,8 @@ Pistepilviä käytetään hyväksi myös arkeologiassa. Roomalaiset perustivat v
 sotilasleirin, josta kasvoi myöhemmin Carnuntumin kaupunki. Kaupungin muurien ulkopuolelle rakennettiin amfiteatteri, johon mahtui 13000 katsojaa.
 Vuonna 2007 Ala-Itävallan osavaltion hallitus aloitti arkeologiset kaivaukset amfiteatterin alueella, joiden yhteydessä alueesta muodostettiin kattava pistepilvi noin kahdellasadalla laserkeilauksella. Ruudunkaappaus kysesestä pistepilvestä on esitetty kuvassa \ref{amfi}. \cite{Carnuntum}
 
+Pistepilviä käytetään historiallisen kulttuuriperinnön säilyttämiseen myös pienemmässä mittakaavassa. 1800-luvulla tehdyissä Cerveterin arkeologisissa kaivauksissa Italiassa löydettiin 500-luvulla terrakottasavesta tehty etruskilainen sarkofagi, joka kuvasi avioparia rentoutumassa tuonpuoleisessa. Satoihin palasiin hajonnut sarkofagi restauroitiin vuonna 1893 ja se digitoitiin käyttämällä laserkeilausta ja fotogrammetriaa vuonna 2013 taidenäyttelyä varten. Sarkofagista keilattu pistepilvi on esitetty kuvassa \ref{sarko}. \cite{sarkofagi} 
+
 \begin{figure}
     \centering
     \includegraphics[width=0.4\paperwidth]{img/sarkofagi.png}
@@ -34,11 +36,11 @@ Vuonna 2007 Ala-Itävallan osavaltion hallitus aloitti arkeologiset kaivaukset a
     \label{sarko}
 \end{figure}
 
-Pistepilviä käytetään historiallisen kulttuuriperinnön säilyttämiseen myös pienemmässä mittakaavassa. 1800-luvulla tehdyissä Cerveterin arkeologisissa kaivauksissa Italiassa löydettiin 500-luvulla terrakottasavesta tehty etruskilainen sarkofagi, joka kuvasi avioparia rentoutumassa tuonpuoleisessa. Satoihin palasiin hajonnut sarkofagi restauroitiin vuonna 1893 ja se digitoitiin käyttämällä laserkeilausta ja fotogrammetriaa vuonna 2013 taidenäyttelyä varten. Sarkofagista keilattu pistepilvi on esitetty kuvassa \ref{sarko}. \cite{sarkofagi} 
-
 Eräs vaativa pistepilvien sovelluskohde on itseohjautuvat kulkuneuvot. Voidakseen navigoida liikenteessä itseohjautuva auto tarvitsee kameroiden ja ultraäänisensoreiden lisäksi katollen laserkeilaimen, jolla voidaan tarkkailla auton etäisyyttä muihin tienkäyttäjiin ja esteisiin. Itseohjautuvat autot ovat merkittävä tutkimuskohde myös pistepilvien käsittelyn kannalta. Auton katolle asennettavan laserkeilaimen tulisi olla tarkka, nopea ja edullinen, ja sen tuottamaa pistedataa täytyy voida käsitellä reaaliajassa. \cite{car} 
 
 Pistepilviä voidaan käyttää myös huomattavasti suuremmassa mittakaavassa. Maanmittauslaitos on kerännyt ilmasta käsin pistepilvidataa lähes koko Suomen maaperästä. Lentokoneesta keilattu pistepilvi on melko harva - puoli pistettä neliömetriä kohden -, mutta keilattavan kohteen laajuus tekee pilvistä valtavia. Pistepilviä on käytetty lähinnä metsävarojen kartoittamiseen, mutta Maanmittauslaitos aikoo ryhtyä keräämään pistedataa tarkemmilla laserkeilamilla myös rakennuksista. \cite{hs}
+
+Laserkeilauksen kohteena ei ole aina maasto tai eloton rakennelma, vaan myös ihmisistä voidaan tehdä pistepilviä. Esimerkiksi moottoripyöräkypärien suunnittelija voi käyttää hyväkseen ihmisen päätä kuvaavia pistepilviä selvittääkseen sopivan muodon kypärän sisukselle. Kypärän ulkokuori voidaan sen jälkeen mallintaa suunnitteluohjelmistolla niin, että se täyttää tarvittavat turvallisuusvaatimukset. Pistepilvillä on paikkansa myös lääketieteessä. Proteesin valmistaja voi esimerkiksi käyttää potilaan terveestä jalasta mitattua pistepilveä suunnitellessaan proteesia, jotta se muistuttaisi mahdollisimman paljon amputoitua jalkaa. Myös kirurgit voivat käyttää leikkauksen suunnittelussa hyväkseen elimistä laserkeilauksella muodostettuja 3d-malleja. \cite{saxena}  
 
 \subsection{Laserkeilaimet}\label{laserkeilaimet}
 
@@ -47,7 +49,7 @@ Perinteinen pistepilvien mittaamiseen käytetty laserkeilain on jalustalla seiso
 \begin{figure}
     \centering
     \includegraphics[width=0.7\paperwidth]{img/leica.jpg}
-    \caption{Kulkuaikatekniikkaan perustuva Leica RTC360 -laserkeilain. Kuva: \url{https://leica-geosystems.com/-/media/images/leicageosystems/about-us/news\%20room/reporter/reporter-83/09-discovering-the-power-of-scanning/leica-espresso_expert_insights_640x750_slider4.ashx?la=en&hash=9D35592CBB571C3777E1E8A9A0A056BD}}
+    \caption{Kulkuaikatekniikkaan perustuva Leica RTC360 -laserkeilain. Kuva: \cite{skannerikuva}}
     \label{leica}
 \end{figure}
 
@@ -123,17 +125,27 @@ Pistepilviä voidaan rekisteröidä myös ilman merkkikuvioita tai käyttäjän 
 
 %\footnote{Täysin automaattista pistepilvien rekisteröintiä on tutkittu paljon, ks. esim. \cite{Pascal}.} 
 
-ICP-algoritmi tarvitsee kuitenkin käyttäjältä hyvän alkuarvauksen, jotta virhe suppenisi ja pilvien sovittaminen onnistuisi. Se on myös erittäin raskas suorittaa isoille pistepilville. Yleensä ICP-algoritmia käytetäänkin karkeamman rekisteröintialgoritmin jälkeen hienosäätämiseen. Karkeampi pilvien yhteensovittaminen tehdään yleensä etsimällä kahdesta pistepilvestä muodostetuista panoramakuvista toisiaan vastaavia avainpisteitä \engl{keypoints}. Näiden avainpisteiden sijainneista saadaan harva joukko pisteitä, joiden yhteensovittaminen on paljon helpompaa kuin kokonaisten pistepilvien. Suosittuja tekniikoita avainpisteiden löytämiseen ovat esimerkiksi Harris'n nurkat \cite{harris} sekä FAST ja SIFT -piirteet \cite{fast}\cite{sift}. \cite{weinmann}
+ICP-algoritmi tarvitsee kuitenkin käyttäjältä hyvän alkuarvauksen, jotta virhe suppenisi ja pilvien sovittaminen onnistuisi. Se on myös erittäin raskas suorittaa isoille pistepilville. Yleensä ICP-algoritmia käytetäänkin karkeamman rekisteröintialgoritmin jälkeen hienosäätämiseen. Karkeampi pilvien yhteensovittaminen tehdään yleensä etsimällä kahdesta pistepilvestä muodostetuista panoramakuvista toisiaan vastaavia avainpisteitä \engl{keypoints}. Näiden avainpisteiden sijainneista saadaan harva joukko pisteitä, joiden yhteensovittaminen on paljon helpompaa kuin kokonaisten pistepilvien. Suosittuja tekniikoita avainpisteiden löytämiseen ovat esimerkiksi Harrisin nurkat \cite{harris} sekä FAST ja SIFT -piirteet \cite{fast}\cite{sift}. \cite{weinmann}
 
-
-\subsubsection{Muukalaispisteiden poistaminen}
-
-Pistepilvissä on usein muukalaispisteitä \engl{outlier}, johtuen esimerkiksi laserkeilaimen epätarkkuudesta tai vaikkapa tuulen heiluttamista puiden lehdistä. Yksinkertainen tekniikka poistaa muukalaispisteitä pilvestä on verrata pisteen normaalivektoria sen naapuripisteiden normaaleihin. Pisteen $p_i$ normaalivektori voidaan selvittää pääkomponenttianalyysillä \engl{principal component analysis, PCA}. Ensin on etsittävä pilvestä pisteen $p_i$ $k$ lähintä naapuria, jonka jälkeen naapurston pisteistä lasketaan ominaisarvot. Kahta suurinta ominaisarvoa vastaavaa ominaisvektoria voidaan käyttää kuvaamaan tasoa, joka sovitetaan naapuruston päälle. Jäljelle jäävä ominaisvektori kuvaa pisteen $p_i$ normaalia. \cite{huang}
 
 \subsubsection{Pintojen rekonstruointi}
 
-Joissakin sovelluksissa halutaan luoda pistedatasta kohteen pintoja kuvaava polygoniverkko, jotta renderöinti olisi nopeampaa olemassaolevilla grafiikkakirjastoilla ja visuaalinen lopputulos parempi. Yksinkertainen tekniikka luoda tiivis kolmiointi pistepilvestä on Delaunayn kolmiointi\footnote{Delaunayn kolmiointi sopii harvoin oikeilla laserkeilaimilla taltioituihin, häiriötä sisältäviin pistepilviin. Hyvän yleiskatsauksen realistisemmista pinnanmuodostustekniikoista ovat julkaisseet esim. \cite{berger}} \engl{Delaunay triangulation}. Delaunayn kolmiointi perustuu Voronoin diagrammiin \engl{Voronoi diagram}, joka jakaa pisteitä sisältävän tason tai avaruuden konvekseihin Voronoin soluihin. Voronoin solu kattaa sen alueen, jossa etäisyys solua vastaavaan pisteeseen on pienempi kuin muihin pisteisiin. Kahden solun välillä on Voronoin jana, josta etäisyys kahteen pisteeseen on sama, ja kolmen janan leikkauspisteessä on Voronoin kärki, josta etäisyys kolmeen pisteeseen on yhtä suuri. Delaunayn kolmiointi on Voronoin diagrammin duaaligraafi, josta luodaan graafi siten, että pisteiden välillä on kaari, mikäli niitä vastaavat Voronoin solut jakavat Voronoin janan. \cite{delaunay}
+Joissakin sovelluksissa halutaan luoda pistedatasta kohteen pintoja kuvaava polygoniverkko, jotta renderöinti olisi nopeampaa olemassaolevilla grafiikkakirjastoilla ja visuaalinen lopputulos parempi. Yksinkertainen tekniikka luoda tiivis kolmiointi pistepilvestä on Delaunayn kolmiointi. Delaunayn kolmiointi perustuu Voronoin diagrammiin \engl{Voronoi diagram}, joka jakaa pisteitä sisältävän tason tai avaruuden konvekseihin Voronoin soluihin. Voronoin solu kattaa sen alueen, jossa etäisyys solua vastaavaan pisteeseen on pienempi kuin muihin pisteisiin. Kahden solun välillä on Voronoin jana, josta etäisyys kahteen pisteeseen on sama, ja kolmen janan leikkauspisteessä on Voronoin kärki, josta etäisyys kolmeen pisteeseen on yhtä suuri. Delaunayn kolmiointi on Voronoin diagrammin duaaligraafi, josta luodaan graafi siten, että pisteiden välillä on kaari, mikäli niitä vastaavat Voronoin solut jakavat Voronoin janan. \cite{delaunay}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/artifacts.png}
+    \caption{Kaarevasta pinnnasta (a) keilatussa pistepilvissä esiintyviä mahdollisia virheitä: (b) epätasainen pistetiheys, (c) häiriötä pisteiden sijainneissa, (d) muukalaispisteitä, (e) epätarkka rekisteröinti ja (f) puuttuvaa dataa. Kuva: \cite{berger}}
+    \label{img:artifacts}
+\end{figure}
+
+Oikeat, laserkeilaimella taltioidut pistepilvet sisältävät kuitenkin usein erilaisia virheitä, kuten kuvassa \ref{img:artifacts} esitellyt epätasainen keilaus, keilaimen häiriö, muukalaispisteet \engl{outlier}, ongelmat rekisteröinnissä ja puuttuva data. Virheiden johdosta Delaunayn kolmiointi ei ole kovin tehokas algoritmi. Useissa pintojen rekonstruointialgoritmeissa tehdään joitakin oletuksia pistepilven ominaisuuksista. Etenkin tietokoneavusteisessa suunnittelussa keilauksen kohteet muodostuvat yksinkertaisista geometrisista primitiiveistä, kuten tasoista ja sylintereistä. Esimerkiksi RANSAC-algoritmi \cite{ransac} sovittelee primitiivejä satunnaistetusti pistepilveen ja arvioi niiden sopivuutta. \cite{berger} 
+
+\subsubsection{Normaalivektorien löytäminen}
+
+Joskus on hyödyllistä tietää pistepilven esittämien pintojen normaalivektorit. Tasainen pinta on helppo sijoittaa pistepilven päälle, jos jollakin alueella on tiheästi pisteitä, joiden normaalivektorit osoittavat samaan suuntaan. Laserkeilaimen epätarkkuudesta tai vaikkapa tuulen heiluttamista puiden lehdistä johtuen on pistepilvissä usein muukalaispisteitä. Yksinkertainen tapa havaita ja poistaa muukalaispisteitä on vertailla pisteiden normaalivektoreita niiden naapuruston normaaleihin ja etsiä poikkeavuuksia. 
+
+Pisteen $p_i$ normaalivektori voidaan selvittää pääkomponenttianalyysillä \engl{principal component analysis, PCA}. Ensin on etsittävä pilvestä pisteen $p_i$ $k$ lähintä naapuria, jonka jälkeen naapurston pisteistä lasketaan ominaisarvot. Kahta suurinta ominaisarvoa vastaavaa ominaisvektoria voidaan käyttää kuvaamaan tasoa, joka sovitetaan naapuruston päälle. Jäljelle jäävä ominaisvektori kuvaa pisteen $p_i$ normaalia. \cite{huang}
 
 \subsection{Pistepilvien hyödyntäminen tietokoneavusteisessa suunnittelussa}
 
