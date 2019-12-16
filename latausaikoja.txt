@@ -1,0 +1,35 @@
+20 viskoteepakkia, 18,7GB ascii, 546572600 pistettä, 528017 solmua, kaikki pisteet muistissa rakentamisen aikana, 1 säie
+
+a) ei kompressiota: x, y, z, r, g, b, 8,18GB
+
+b) normikompressio: index, r, g, b, 4,10GB
+
+c) kompressio: dx, dy, dz, intensity 2,07GB
+
+rakentaminen:
+a) 2185s = 36min 25s
+b) 1652s = 27min 32s
+c) 1602s = 26min 42s
+
+
+läpikäynti + kompression purkaminen:
+a) 6399ms
+b) 16190ms
+c) 13462ms
+
+
+
+Pump.e57->41MB ascii, 1213990 pistettä, 4561 solmua
+a) 18,8MB
+b) 9,57MB
+c) 4,94MB
+
+rakentaminen:
+a) 12s
+b) 10s
+c) 9s
+
+läpikäynti + kompression purkaminen:
+a) 15ms
+b) 36ms
+c) 29ms
