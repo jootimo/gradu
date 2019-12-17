@@ -33,3 +33,19 @@ läpikäynti + kompression purkaminen:
 a) 15ms
 b) 36ms
 c) 29ms
+
+
+Small Army Office.e57: https://shop.leica-geosystems.com/de/blk360-dataset-downloads -> ascii 8,43GB
+a)
+b) 1,83GB 
+c)
+
+rakentaminen:
+a)
+b) 724s
+c)
+
+läpikäynti:
+a)
+b) 8492ms
+c)
