@@ -36,16 +36,16 @@ c) 29ms
 
 
 Small Army Office.e57: https://shop.leica-geosystems.com/de/blk360-dataset-downloads -> ascii 8,43GB
-a)
+a) 3,62GB
 b) 1,83GB 
-c)
+c) 961MB
 
 rakentaminen:
-a)
-b) 724s
-c)
+a) 791s = 13min 11s
+b) 724s = 12min 4s 
+c) 712s = 11min 52s
 
 läpikäynti:
-a)
+a) 1060ms
 b) 8492ms
-c)
+c) 6985ms
