@@ -35,7 +35,7 @@ b) 36ms
 c) 29ms
 
 
-Small Army Office.e57: https://shop.leica-geosystems.com/de/blk360-dataset-downloads -> ascii 8,43GB
+Small Army Office.e57: https://shop.leica-geosystems.com/de/blk360-dataset-downloads -> ascii 8,43GB, 240727221 pistettä
 a) 3,62GB
 b) 1,83GB 
 c) 961MB
