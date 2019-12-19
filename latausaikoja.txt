@@ -49,3 +49,16 @@ läpikäynti:
 a) 1060ms
 b) 8492ms
 c) 6985ms
+
+Ilmanvaihtohuone 13 skannausta e57, 11,1GB
+a)
+b) 3,79GB
+c) 
+
+a)
+b) 1319s
+c)
+
+a)
+b)
+c)
