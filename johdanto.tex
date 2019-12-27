@@ -105,18 +105,14 @@ Laserkeilauksen tuottama pistepilvi sisältää joukon pisteitä koordinaatistos
 Pistepilviä voidaan rekisteröidä usealla eri tavalla. Joskus keilattavaan kohteeseen asetetaan erityisiä merkkikuvioita, jotka näkyvät useasta keilaimesta. Kun tiedetään merkkien etäisyys ja suunta kustakin keilaimesta, voidaan pistepilvet sovittaa helposti yhteen koordinaatistoon. Joissakin sovelluksissa käyttäjä merkitsee kahdesta pilvestä joukon pisteitä, joiden avulla pilvet saadaan rekisteröityä. Esimerkiksi 3DTK-kirjastolla käyttäjä voi valita kahdesta pilvestä samaa aluetta kuvaavia pisteitä, joiden avulla pilvien yhteensovitus onnistuu automaattisesti \cite{3dtk}.  
 
 \begin{figure}
-    \begin{subfigure}{.5\textwidth}
-        \centering
-        \includegraphics[width=.89\linewidth]{img/reg1.png}
-        \caption{}
-        %\label{fig:sub1}
-    \end{subfigure}%
-    \begin{subfigure}{.5\textwidth}
-        \centering
-        \includegraphics[width=.855\linewidth]{img/reg2.png}
-        \caption{}
-        %\label{fig:sub2}
-    \end{subfigure}
+    \centering
+    \subfloat[]{
+        \includegraphics[width=.498\textwidth]{img/reg1.png}
+    }
+    \subfloat[]{
+        \includegraphics[width=.48\textwidth]{img/reg2.png}
+    }%
+    
     \caption{Kuvan \ref{img:pano} kappelista keilaittuja pistepilviä (a) ennen rekisteröintiä ja (b) rekisteröinnin jälkeen. Kunkin keilauksen pisteet on piirretty eri väreillä.}
     \label{img:reg}
 \end{figure}

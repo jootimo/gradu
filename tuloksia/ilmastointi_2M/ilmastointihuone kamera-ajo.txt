@@ -1,0 +1,5 @@
+2M pistettä/frame
+Ensin ajetaan huoneen poikki, näkyvät noodit vähenee, renderöintiaika pienenee.
+100 framen kohdalla käännytään takaisin huonetta kohti, paljon noodeja näkyvissä -> piikki
+Sitten ajetaan kohti vastakkaista seinää -> vähemmän noodeja näkyvissä, alamäki.
+Lopuksi pakitetaan niin, että enemmän noodeja tulee näkyviin -> ylämäki.
