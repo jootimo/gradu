@@ -1,21 +1,18 @@
 \perusalgoritmi
 
-\Input{Sisäkkäispistepuu $P$\\Yleiskuvapuskuri $b_{yleiskuva}$}
+\Input{Sisäkkäispistepuun solmujoukko $S$}
 
-$B \gets$ pistepuskuri, joka on jaettu osioihin $b_0, b_1, b_2$\\
-$i \gets$ 0\kommentti{Täytettävän puskuriosion indeksi}
-$S \gets$ näkyvissä olevat puun solmut 
-
-Järjestä S ruudulle projisoidun koon mukaan
+$b_0, b_1, b_2 \gets$ kolmeen osioon jaettu pistepuskuri\\
+$i \gets 0$ \kommentti{Täytettävän puskuriosion indeksi}
 
 \For{Solmu $s \in S$} {
-    \uIf{Puskuriosiossa $i$ ei ole tilaa täydelle solmulle} {
-        Lähetä näytönohjaimelle puskuriosio $i$\\
-        Lähetä näytönohjaimelle osion $i$ synkronointiobjekti\\
+    \uIf{Puskuriosiossa $i$ ei ole tilaa solmun $s$ pisteille} {
+        Lähetä puskuriosio $i$ näytönohjaimelle renderöitäväksi\\
+        Lähetä osion $i$ synkronointiobjekti näytönohjaimelle\\
         $i = (i + 1)$ mod $3$\\
         Odota, että näytönohjain on käsitellyt osion $i$ synkronointiobjektin
     }
-    \uElseIf {Solmun $s$ pisteet eivät ole puskurissa $b_{yleiskuva}$} {
+    \uElse {
         Lisää solmun $s$ pisteet puskuriosioon $i$
     }
 }

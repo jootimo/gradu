@@ -7,7 +7,7 @@ $h \gets$ hajautustaulu, johon solmun $s$ pisteet tallennetaan\\
 
 \uIf{Solmun $s$ syvyys = puun enimmäissyvyys}{
     \eIf{$i \notin h$} {
-        $h = h \cup (i, (r,g,b))$
+        lisää $i$ ja $(r,g,b)$ hajautustauluun $h$
     }{
         Hylkää piste $p$
     }
@@ -30,5 +30,5 @@ $h \gets$ hajautustaulu, johon solmun $s$ pisteet tallennetaan\\
 
 \Else {
     \kommentti{Solmussa $s$ ja sen ruudukon solussa $i$ on tilaa, eikä virhe $\epsilon$ ole liian suuri. Piste voidaan lisätä solmuun $s$.}
-    $h = h \cup (i, (r,g,b))$
+    lisää $i$ ja $(r,g,b)$ hajautustauluun $h$
 }

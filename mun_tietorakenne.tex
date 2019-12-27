@@ -120,7 +120,7 @@ Puun rakentaminen suoritetaan kahdessa vaiheessa. Ensin käydään kaikki syöte
     \subfile{alg/rakennapuu.tex}
 \end{algorithm}
 
-Algoritmi \ref{alg:lisaaPiste} huolehtii pisteen pisteen lisäämisestä solmuun. Piste hyväksytään solmuun, jos sitä vastaava ruudukon solu on tyhjä, sen etäisyys solun keskipisteestä on pienempi kuin sallittu enimmäisvirhe ja solussa ei ole jo liikaa pisteitä. Solmujen sisältämien pisteiden määrälle kannattaa asettaa yläraja, jotta saavutettaisiin sopiva haarautuminen. Luvussa \ref{render} huomataan, että etenkin puun ylimmillä tasoilla olisi renderöinnin kannalta hyvä, jos solmuissa olisi saman verran pisteitä.
+Algoritmi \ref{alg:lisaaPiste} huolehtii pisteen pisteen lisäämisestä solmuun. Piste hyväksytään solmuun, jos sitä vastaava ruudukon solu on tyhjä, sen etäisyys solun keskipisteestä on pienempi kuin sallittu enimmäisvirhe ja solussa ei ole jo liikaa pisteitä. Solmujen sisältämien pisteiden määrälle kannattaa asettaa yläraja, jotta saavutettaisiin sopiva haarautuminen. %Luvussa \ref{render} huomataan, että etenkin puun ylimmillä tasoilla olisi renderöinnin kannalta hyvä, jos solmuissa olisi saman verran pisteitä.
 
 Puun syvyyttä voi rajoittaa asettamalla ruudukon soluille vähimmäismitat. Yleensä laserkeilaimen lähellä olevat pinnat on hyvin tiheästi näytteistettyjä ja tilannetta pahentaa, jos useat keilaimet ovat mitanneet samoja pintoja tiheästi. Algoritmin \ref{alg:lisaaPiste} rivillä 3 tarkastetaan, onko ylittäisikö uusi lapsisolmu puun enimmäissyvyyden. Kun ennaltamäärätylle pohjatasolle hyväksytään kaikki pisteet, kunhan niitä vastaava ruudukon solu on vapaa, saadaan pistepilvelle tehokas ja globaali enimmäistiheys. Tällä tavalla pilveä saadaan harvennettua tehokkaasti ja vaatimus \ref{vaatimus:harvennus} voidaan tyydyttää. %TODO: \ref{arviointi} missä tätä toivottavasti on mitattu
 
@@ -172,15 +172,16 @@ Nopein tapa renderöidä pistepilvi on pitää kaikki pisteet näytönohjaimen m
 
 Kuvassa \ref{triplebuffering} pistepuskuri on jaettu osioihin $b_0$, $b_1$ ja $b_2$. Puskurin koko on valittu niin, että jokaiseen osioon mahtuu neljän täyden solmun pisteet. Käytännössä solmut eivät kuitenkaan aina ole täysiä, joten on mahdollista, että osiot jäävät vajaiksi. Puskureita kuitenkin vaihdetaan tiuhaan, joten ei ole järkevää käyttää aikaa puskurin täyttöasteen maksimointiin.
 
-Tietorakenteen renderöintiä testatessa puskurivirta ei kuitenkaan tuottanut tarpeeksi miellyttävää visuaalista lopputulosta. Etenkin pilveä pyöriteltäessä ja sen läpi liikuttaessa puskurivirralla ehdittiin pilvestä renderöidä vain hyvin karkea tarkkuus niin, että ruudunpäivitystaajuus pysyi interaktiivisena. Ratkaisuna tähän näytti toimivan hyvin toinen pistepuskuri, jossa säilytetään karkeaa yleiskuvaa pilvestä. Tätä yleiskuvapuskuria päivitetään vain silloin, kun jotkut sen sisältämistä solmuista on pudonnut näkymän ulkopuolelle. 
+Tietorakenteen renderöintiä testatessa puskurivirta ei kuitenkaan tuottanut tarpeeksi miellyttävää visuaalista lopputulosta. Etenkin pilveä pyöriteltäessä ja sen läpi liikuttaessa puskurivirralla ehdittiin pilvestä renderöidä vain hyvin karkea tarkkuus niin, että ruudunpäivitystaajuus pysyi interaktiivisena. Ratkaisuna tähän näytti toimivan hyvin toinen pistepuskuri, jossa säilytetään karkeaa yleiskuvaa pilvestä. Tämä yleiskuvapuskuri pidetään näytönohjaimen muistissa, josta se on nopea renderöidä jokaisella ruudunpäivityksellä. 
 
 \begin{algorithm}[!h]
-    \caption{RenderöiYleiskuva}
+    \caption{RenderöiYleiskuvapuskuri}
     \label{alg:render}
     \subfile{alg/render.tex}
 \end{algorithm}
 
-Algoritmissa \ref{alg:render} yleiskuvapuskuri täytetään ensimmäisellä renderöintikerralla niiden solmujen pisteillä, jotka ovat mahdollisimman ylhäällä puussa, ja ne ovat täynnä, eli sisältävät rakentamisvaiheessa määritellyn enimmäismäärän pisteitä. Seuraavilla renderöintikerroilla puskurista tarkistetaan, ovatko niiden sisältämät pisteet vielä näkyvissä. Jokaista pistettä ei tarvitse tarkastaa, jos ylläpidetään listaa solmuista, joiden pisteet puskuriin lisättiin. Jos näkymä on muuttunut niin, että jokin solmu ei enää ole näkyvissä, vaihdetaan sen pisteet toisen solmun pisteisiin. Yleiskuvapuskurissa pidetään solmuja mahdollisimman läheltä puun juurta, jotta ne muodostaisivat tarpeeksi kattavan kuvan koko pistepilvestä.
+Algoritmissa \ref{alg:render} yleiskuvapuskuri täytetään ensimmäisellä renderöintikerralla puun ylimpien tasojen solmujen pisteillä, jotka muodostavat karkean, mutta kattavan yleiskuvan pilvestä. Yleiskuvapuskurista voisi yrittää vaihtaa näkymän ulkopuolella olevia pisteitä näkyviin solmuihin, mutta näkyvyystarkastelun suorittaminen ja puskurin muokkaaminen jokaisella ruudunpäivityksellä osoittautui liian aikaavieväksi. 
+%Seuraavilla renderöintikerroilla puskurista tarkistetaan, ovatko niiden sisältämät pisteet vielä näkyvissä. Jokaista pistettä ei tarvitse tarkastaa, jos ylläpidetään listaa solmuista, joiden pisteet puskuriin lisättiin. Jos näkymä on muuttunut niin, että jokin solmu ei enää ole näkyvissä, vaihdetaan sen pisteet toisen solmun pisteisiin. Yleiskuvapuskurissa pidetään solmuja mahdollisimman läheltä puun juurta, jotta ne muodostaisivat tarpeeksi kattavan kuvan koko pistepilvestä.
 
 \begin{algorithm}[!h]
     \caption{RenderöiPuskurivirta}
@@ -188,9 +189,11 @@ Algoritmissa \ref{alg:render} yleiskuvapuskuri täytetään ensimmäisellä rend
     \subfile{alg/renderDetail.tex}
 \end{algorithm}
 
-Yleiskuvan renderöinnin jälkeen pistepilveä tarkennetaan renderöimällä loput pisteet puskurivirralla. Algoritmi \ref{alg:renderDetail} käy puun solmuja läpi taso kerrallaan ja lisää solmun pisteet täyttövuorossa olevaan puskurivirran osioon, jos solmua ei ole jo renderöity yleiskuvapuskurilla. Puskuriosion täyttyessä vaihdetaan täytettäväksi seuraava osio. Puskurivirrassa täytyy varmistaa, ettei sama osio ole sekä suorittimen kirjoitettavana, että näytönohjaimen luettavana. Tämä tapahtuu lähettämällä näytönohjaimelle jokaisen puskuriosion täyttymisen jälkeen synkronointiobjekti \engl{sync object}. Kun uutta osiota otetaan kirjoitettavaksi, tarkastetaan, että näytönohjain on merkannut kyseisen osion synkronointiobjektin käsitellyksi. \cite{sync}
+Yleiskuvan renderöinnin jälkeen jäljelle jäävät solmut järjestetään niiden kuvaruudulle projisoidun koon mukaan, koska pistepilvi näyttää tarkentuvan nopeammin, kun ensin renderöidään suuret ja lähellä kameraa olevat solmut. Järjestämisen jälkeen loput pisteet voidaan renderöidä algoritmissa \ref{alg:renderDetail} kuvatulla puskurivirralla. 
 
-Algoritmi \ref{alg:renderDetail} suorittaa pistepilvelle näkyvyyskarsintaa \engl{visibility culling}. Puu käydään ensin kokonaan läpi ja renderöitäviksi valitaan vain ne solmut jotka ovat täysin tai osittain näkymäkartion \engl{view frustum} sisällä. Näkyvyyskarsinnan lisäksi algoritmin voidaan katsoa suorittavan yksinkertaista yksityiskohtien karsintaa \engl{detail culling}, kun kuvaruudulle suurena projisoidut solmut renderöidään ensin.
+Algoritmi \ref{alg:renderDetail} lisää kunkin solmun pisteet täyttövuorossa olevaan puskurivirran osioon. Puskuriosion täyttyessä vaihdetaan täytettäväksi seuraava osio. Puskurivirtaa käyttäessä täytyy varmistaa, ettei sama osio ole sekä suorittimen kirjoitettavana, että näytönohjaimen luettavana. Tämä tapahtuu lähettämällä näytönohjaimelle jokaisen puskuriosion täyttymisen jälkeen synkronointiobjekti \engl{sync object}. Kun uutta osiota otetaan kirjoitettavaksi, tarkastetaan, että näytönohjain on merkannut kyseisen osion synkronointiobjektin käsitellyksi. \cite{sync}
+
+Algoritmi \ref{alg:render} suorittaa pistepilvelle näkyvyyskarsintaa \engl{visibility culling} valitessaan renderöitäviksi vain ne solmut jotka ovat täysin tai osittain näkymäkartion \engl{view frustum} sisällä. Näkyvyyskarsinnan lisäksi algoritmin voidaan katsoa suorittavan yksinkertaista yksityiskohtien karsintaa \engl{detail culling}, kun kuvaruudulle suurena projisoidut solmut renderöidään ensin.
 
 Yksityiskohtien karsinta on suosittu nopeutustekniikka tietokonegrafiikassa. Ajatuksena on renderöidä vain tärkeimmät objektit ja jättää kaukana olevat tai pienet objektit renderöimättä, jotta ruudunpäivitystaajuus pysyy interaktiivisena. Yksinkertainen tapa karsia yksityiskohtia on järjestää objektit niiden kuvaruudulle projisoidun koon mukaan ja renderöidä niitä tiettyyn rajaan asti, tai kunnes aika loppuu kesken. Akenine-Möller et al. \cite{rrr} esittävät kuvaruudulle projisoidun objektin koon arviolle kaavaa 
 \begin{equation}
