@@ -10,7 +10,7 @@ Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kol
     \begin{tabular}{llll}
     \hline
     pisteiden esitysmuoto & tiedoston koko & rakentaminen ja tallentaminen & läpikäynti \\ \hline
-    16 tavua       & 8,18 GB             & 2185s = 36min 25s             & 6399ms     \\
+    16 tavua       & 8,17 GB             & 2574s = 42min 54s              & 6227ms     \\
     8 tavua        & 4,10 GB             & 1652s = 27min 32s             & 16190ms    \\
     4 tavua        & 2,07 GB             & 1602s = 26min 42s             & 13462ms    \\ \hline
     \end{tabular}
@@ -23,7 +23,7 @@ Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kol
     \begin{tabular}{llll}
     \hline
     pisteiden esitysmuoto & tiedoston koko & rakentaminen ja tallentaminen & läpikäynti \\ \hline
-    16 tavua & 3,62GB              & 791s = 13min 11s              & 1060ms     \\
+    16 tavua & 3,59GB              & 891s = 14min 51s              & 2763ms     \\
     8 tavua  & 1,83GB              & 724s = 12min 4s               & 8492ms     \\
     4 tavua & 961MB               & 712s = 11min 52s              & 6985ms     \\ \hline
     \end{tabular}
@@ -35,7 +35,7 @@ Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kol
     \begin{tabular}{llll}
     \hline
     pisteiden esitysmuoto & tiedoston koko & rakentaminen ja tallentaminen & läpikäynti \\ \hline
-    16 tavua       & 18,8MB              & 12s                           & 15ms       \\
+    16 tavua       & 18,6MB              & 12s                           & 14ms       \\
     8 tavua      & 9,57MB              & 10s                           & 36ms       \\
     4 tavua      & 4,94MB              & 9s                            & 29ms       \\ \hline
     \end{tabular}
@@ -85,8 +85,6 @@ Ilmanvaihtohuoneen kamera-ajo alkaa huoneen reunalta kameran osoittaessa vastakk
 
 Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset työmaa-pilvelle. Oranssin viivan kuvaamassa renderöintitavassa on yleiskuvapuskurissa puun viisi ylintä kerrosta, 1862 solmua ja 481663 pistettä.
 
-
-
 \begin{figure}
     \subfloat[]{
         \includegraphics[width=.5\linewidth]{tuloksia/worksite_2M/worksite_stream.png}
@@ -98,9 +96,9 @@ Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset työmaa-pilvelle. Oranssin vii
     \label{img:worksite_vertailu}
 \end{figure}
 
-Mittauksista selviää, että pelkän puskurivirran käyttäminen puun renderöinnissä on selkeästi nopeampaa kuin yleiskuvapuskurin ja puskurivirran yhdistelmällä. Tämä ero selittyy puun solmujen järjestämiseen vaaditulla ajalla. Vaikka järjestäminen vie arvokasta laskenta-aikaa, voidaan sen parantavan lopputuloksen laatua. Kuvassa \ref{img:worksite_vertailu} vasemmalla puolella näkyy, kuinka puskurivirta on renderöinyt koko näkyvillä olevan pistepilven samalla pistetiheydellä ja taaimmainen seinä näyttää tarkemmalta kuin kameraa lähempänä oleva. Oikeanpuoleisessa kuvassa puun solmut on yleiskuvan renderöinnin jälkeen järjestetty ruudulle projisoidun koon mukaan, minkä seurauksena etualalla oleva seinä näkyy selvästi. 
+Mittauksista selviää, että pelkän puskurivirran käyttäminen puun renderöinnissä on selkeästi nopeampaa kuin yleiskuvapuskurin ja puskurivirran yhdistelmällä. Tämä ero selittyy puun solmujen järjestämiseen vaaditulla ajalla. Vaikka järjestäminen vie arvokasta laskenta-aikaa, voidaan sen parantavan lopputuloksen laatua. Kuvassa \ref{img:worksite_vertailu} vasemmalla puolella näkyy, kuinka puskurivirta on renderöinyt koko näkyvillä olevan pistepilven samalla pistetiheydellä ja taaimmainen seinä näyttää tarkemmalta kuin kameraa lähempänä oleva. Oikeanpuoleisessa kuvassa puun solmut on yleiskuvan renderöinnin jälkeen järjestetty ruudulle projisoidun koon mukaan, minkä seurauksena etualalla oleva seinä näkyy selvästi. Solmujen järjestämistä voisi nopeuttaa helposti säikeistämällä renderöintialgortimi niin, että yksi säie valikoi puusta solmuja prioriteettijonoon, josta toinen säie ottaa aina suurimman prioriteetin omaavan solmun renderöitäväksi.
 
-Kameran liikkuessa pistepilven ohi riittää usein renderöidä vain karkea yleiskuva pilvestä. Kun yleiskuvan pisteet pidetään näytönohjaimen muistissa, on niiden renderöiminen jokaisella ruudunpäivityksellä nopeaa. Kuvassa \ref{ws_ovw} on verrattu yleiskuvan renderöintiä kun yleiskuvapuskuri on valmiiksi näytönohjaimen muistissa siihen, kun pisteet ladataan keskusmuistista puskurivirralla näytönohjaimelle. Yleiskuvapuskurin tapauksessa renderöintiaika on mitattu piirtokomennon suorittamisesta siihen, että näytönohjain on saanut kaikki pisteet renderöityä ja merkattua synkronointiobjektin käsitellyksi. Pisteiden lataaminen levyltä ja kompression purkaminen on tässä mittauksessa jätetty pois.
+Kameran liikkuessa pistepilven ohi riittää usein renderöidä vain karkea yleiskuva pilvestä. Kun yleiskuvan pisteet pidetään näytönohjaimen muistissa, on niiden renderöiminen jokaisella ruudunpäivityksellä nopeaa. Kuvassa \ref{ws_ovw} on verrattu yleiskuvan renderöintiä kun yleiskuvapuskuri on valmiiksi näytönohjaimen muistissa siihen, kun pisteet ladataan keskusmuistista puskurivirralla näytönohjaimelle. Yleiskuvapuskurin tapauksessa renderöintiaika on mitattu piirtokomennon suorittamisesta siihen, että näytönohjain on saanut kaikki pisteet renderöityä ja merkattua synkronointiobjektin käsitellyksi. Näin kaikki pisteet on varmasti renderöity ruudulle ajastimen pysähtyessä. Pisteiden lataaminen levyltä ja kompression purkaminen on näissä mittauksissa jätetty pois.
 
 \begin{figure}[h]
     \centering
@@ -108,6 +106,3 @@ Kameran liikkuessa pistepilven ohi riittää usein renderöidä vain karkea ylei
     \caption{Työmaa-pilvestä muodostetun puun viiden ylimmän tason renderöintiin käytetty aika mikrosekunteina puskurivirralla ja kun pisteet ovat valmiiksi yleiskuvapuskurissa näytönohjaimen muistissa.}
     \label{ws_ovw}
 \end{figure}
-
-
-\subsection{Pisteiden valitseminen}

@@ -158,6 +158,7 @@ struct Node \{\\
 
 \noindent Nelitavuisilla liukuluvuilla ja kokonaisluvuilla vaatii solmu siis tallennustilaa $33 + d$ tavua, missä $d$ on solmun syvyys puussa.
 
+Edellä kuvattu rakennusalgoritmi pitää koko oktettipuun muistissa ennen kuin pisteet kirjoitetaan levylle. Massiivisten pistepilvien tapauksessa keskusmuisti saattaa täyttyä vaikka pilveä olisi harvennettu ja pisteitä kompressoitu. Muisin täyttyessä käyttöjärjestelmä alkaa pitää osaa prosessin muistiavaruudesta kiintolevyllä sivutuksen \engl{paging} avulla \cite{os}. Jatkotutkimuksen aiheeksi jää selvittää, onko nopeampaa antaa käyttöjärjestelmän siirtää sivuja kiintolevylle, vai esimerkiksi tallentaa ensin pisteitä väliaikaiseen tiedostoon niiden lisäysjärjestykessä, josta ne kopioidaan oikeassa järjestyksessä lopulliseen tiedostoon. 
 
 \subsection{Renderöinti}\label{render}
 
@@ -211,17 +212,19 @@ Mikko Yllikäinen huomautti pro gradu -tutkielmassaan \cite{mikko}, ettei tarkka
  Yllikäinen nimittää tällä kaavalla muodostetu suuruusjärjestyksen käyttämistä yksityiskohtien karsinnassa kontribuutiokarsinnaksi \engl{contribution culling}. On huomattava, että tällainen karsinta ei ole mahdollista paralleliprojektiomaisemissa, joissa katseluetäisyys ei vaikuta objektien kokoon. \cite{mikko}
 
 
-\subsection{Pisteiden valinta}
+\subsection{Pisteiden valitseminen}
 
-Yksittäisten pisteiden valinta pistepilvestä on hyvin raskas operaatio, jos pisteet eivät ole hierarkisessa tietorakenteessa. Oktettipuuta käytettäessä kaikkia pisteitä ei tarvitse kuitenkaan käydä läpi. Käyttäjän valitessa hiirellä piste pilvestä ammutaan kamerasta säde kursorin projisoidun sijainnin läpi maisemaan. Nyt pisteitä tarvitsee etsiä vain niistä oktettipuun solmuista, joihin säde osuu. Yksinkertaisimmillaan voidaan valita sädettä lähinnä oleva piste. Tällöin valituksi saattaisi kuitenkin tulle halutun sijainnin takana oleva piste, tai muukalaispiste, joka sattuu olemaan juuri kameran edessä. 
+Yksittäisten pisteiden valitseminen pistepilvestä on hyvin raskas operaatio, jos pisteet eivät ole hierarkisessa tietorakenteessa. Oktettipuuta käytettäessä kaikkia pisteitä ei tarvitse kuitenkaan käydä läpi. Käyttäjän valitessa hiirellä piste ammutaan kamerasta säde kursorin projisoidun sijainnin läpi pistepilveen. Nyt pisteitä tarvitsee etsiä vain niistä oktettipuun solmuista, joihin säde osuu. Yksinkertaisimmillaan voidaan valita sädettä lähinnä oleva piste. Tällöin valituksi saattaisi kuitenkin tulla muukalaispiste, joka sattuu olemaan juuri kameran edessä. Yksinkertainen tapa välttää muukalaispisteen valitsemista olisi hylätä sellaiset puun solmut, joissa säde osuu vain yhteen tai muutamaan pisteeseen.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/shootRay}
-    \caption{Piste valitaan pilvestä ampumalla säde $r$ kamerasta $C$ maisemaan. $a$- säteisen lieriön sisäpuolella olevista, punaisella merkatuista pisteistä jokin on käyttäjän haluama piste.} 
-    \label{img:ray}
-\end{figure}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=\textwidth]{img/shootRay}
+%    \caption{Piste valitaan pilvestä ampumalla säde $r$ kamerasta $C$ maisemaan. $a$- säteisen lieriön sisäpuolella olevista, punaisella merkatuista pisteistä jokin on käyttäjän haluama piste.} 
+%    \label{img:ray}
+%\end{figure}
 
-Jotta voitaisiin välttää väärien pisteiden valitseminen vahingossa, kannattaa säteen läheltä ensin kerätä useampi potentiaalinen piste, joista lopullinen valintapiste valitaan. Kuvassa \ref{img:ray} on esitetty kamerasta $C$ lähtevä säde $r$, jonka ympärillä on $a$-säteinen lieriö. Kaikki lieriön sisäpuolella olevat pisteet valitaan jatkokäsiteltäväksi. Yksinkertainen, mutta käytännössä toimivaksi todettu tapa hylätä ei-toivotut pisteet potentiaalisisten pisteiden joukosta on järjestää pisteet niiden kamerasta katsotun etäisyyden perusteella ja jättää pois lähin ja kauimmaisin kolmasosa. Jäljelle jääneistä pisteistä valitaan se, joka on lähinnä sädettä.
+%Jotta voitaisiin välttää väärien pisteiden valitseminen vahingossa, kannattaa säteen läheltä ensin kerätä useampi potentiaalinen piste, joista lopullinen valintapiste valitaan. Kuvassa \ref{img:ray} on esitetty kamerasta $C$ lähtevä säde $r$, jonka ympärillä on $a$-säteinen lieriö. Kaikki lieriön sisäpuolella olevat pisteet valitaan jatkokäsiteltäväksi. Yksinkertainen, mutta käytännössä toimivaksi todettu tapa hylätä ei-toivotut pisteet potentiaalisisten pisteiden joukosta on järjestää pisteet niiden kamerasta katsotun etäisyyden perusteella ja jättää pois lähin ja kauimmaisin kolmasosa. Jäljelle jääneistä pisteistä valitaan se, joka on lähinnä sädettä.
 
-Scheiblauer esittää väitöskirjassaan sisäkkäisille muokattaville oktettipuille erityistä tietorakennetta valittujen pisteiden käsittelyyn. Scheiblauer valitsee pisteitä puusta laatikkovalitsimella tai kolmiulotteisella siveltimellä \engl{volumetric brush}, ja lisää ne erityiseen valintaoktettipuuhun \engl{selection octree}. Kun halutut pisteet on valittu, kuvaa valintaoktettipuu valittujen pisteiden asuttamaa avaruuden osaa. Valintaoktettipuuta käytetään esimerkiksi pisteiden piilottamiseen näkymästä. \cite{scheiblauer} Pisteitä renderöitäessä tarkastetaan, osuuko sen sijainti valintaoktettipuun solmuihin ja päätetään sen perusteella, hylätäänkö piste vai ei. Tämän tutkielman yhteydessä valintaoktettipuuta ei toteutettu, sillä piilotettavien ja renderöitävien pisteiden erottelu onnistui tarpeeksi nopeasti määrittämällä valintalaatikoita ja tarkastamalla, kuuluuko renderöitävä puun solmu osittain tai kokonaan valintalaatikkoon. 
+Oktettipuun rakenne auttaa myös vaatimuksen \ref{vaatimus:crop} tyydyttämisessä. Jos pistepilvestä halutaan piilottaa tai korostaa tiettyä osaa, voi käyttäjä valita maisemasta laatikon ja muokata sen sisältämien pisteiden näkyvyyttä. Oktettipuuta käytettäessä ei jokaisen pisteen sisältymistä valintalaatikoihin tarvitse selvittää, vaan riittää tarkastaa, leikkaako valintalaatikko solmun rajauslaatikon kanssa. Vain tässä tapauksessa tarkastus tehdeään pisteille.
+
+Scheiblauer esittää väitöskirjassaan sisäkkäisille muokattaville oktettipuille erityistä tietorakennetta valittujen pisteiden käsittelyyn. Scheiblauer valitsee pisteitä puusta laatikkovalitsimella tai kolmiulotteisella siveltimellä \engl{volumetric brush}, ja lisää ne erityiseen valintaoktettipuuhun \engl{selection octree}. Kun halutut pisteet on valittu, kuvaa valintaoktettipuu valittujen pisteiden asuttamaa avaruuden osaa. Valintaoktettipuuta käytetään esimerkiksi pisteiden piilottamiseen näkymästä. Pisteitä renderöitäessä tarkastetaan, osuuko sen sijainti valintaoktettipuun solmuihin ja päätetään sen perusteella, hylätäänkö piste vai ei. \cite{scheiblauer}
