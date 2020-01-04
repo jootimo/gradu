@@ -50,7 +50,7 @@ Yllätyksettömästi 16:n tavun pistedatan muistiin lataaminen ja läpikäyminen
 
 \subsection{Renderöinti}\label{renderöinti}
 
-Tietorakenteen renderöitiä arvioitaessa käytetään kahta pistepilveä. \emph{Ilmanvaihtohuone} on keilattu Elomatic Oy:n Jyväskylän toimiston ilmanvaihdon konehuoneesta ja siinä on 13 keilausta, joista muodostetussa puussa on 506366789 pistettä 267641 solmussa kahdeksassa tasossa. \emph{Työmaa}-pilvi on Leica Geosystemsin testidataa, joka sisältää 7 keilausta, joiden 53881180 pistettä jakautuu 543105 solmuun yhdeksälle puun tasolle. 
+Tietorakenteen renderöitiä arvioitaessa käytetään kahta pistepilveä. \emph{Ilmanvaihtohuone} on keilattu Elomatic Oy:n Jyväskylän toimiston ilmanvaihdon konehuoneesta ja siinä on 13 keilausta, joista muodostetussa puussa on 506366789 pistettä 267641 solmussa kahdeksassa tasossa. \emph{wroksite}-pilvi on Leica Geosystemsin testidataa, joka sisältää 7 keilausta, joiden 53881180 pistettä jakautuu 543105 solmuun yhdeksälle puun tasolle. 
 
 \begin{figure}[h]
     \centering
@@ -79,11 +79,11 @@ Ilmanvaihtohuoneen kamera-ajo alkaa huoneen reunalta kameran osoittaessa vastakk
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{tuloksia/worksite_ms_per_frame.png}
-    \caption{Työmaa-pilven kahden miljoonan pisteen renderöintiin vaadittu aika millisekunteina kahdella eri renderöintialgoritmilla}
+    \caption{Worksite-pilven kahden miljoonan pisteen renderöintiin vaadittu aika millisekunteina kahdella eri renderöintialgoritmilla}
     \label{ws_ms}
 \end{figure}
 
-Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset työmaa-pilvelle. Oranssin viivan kuvaamassa renderöintitavassa on yleiskuvapuskurissa puun viisi ylintä kerrosta, 1862 solmua ja 481663 pistettä.
+Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset worksite-pilvelle. Oranssin viivan kuvaamassa renderöintitavassa on yleiskuvapuskurissa puun viisi ylintä kerrosta, 1862 solmua ja 481663 pistettä.
 
 \begin{figure}
     \subfloat[]{
@@ -92,7 +92,7 @@ Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset työmaa-pilvelle. Oranssin vii
     \subfloat[]{
         \includegraphics[width=.5\linewidth]{tuloksia/worksite_2M/worksite_overviewbuf.png}
     }
-    \caption{Työmaa-pilvi renderöity kahdella miljoonalla pisteellä käyttäen (a) pelkkää puskurivirtaa ja (b) yleiskuvapuskurin ja puskurivirran yhdistelmällä. Pistepilvi on Leica Geosystemsin omaisuutta.}
+    \caption{Worksite-pilvi renderöity kahdella miljoonalla pisteellä käyttäen (a) pelkkää puskurivirtaa ja (b) yleiskuvapuskurin ja puskurivirran yhdistelmällä. Pistepilvi on Leica Geosystemsin omaisuutta.}
     \label{img:worksite_vertailu}
 \end{figure}
 
@@ -103,6 +103,22 @@ Kameran liikkuessa pistepilven ohi riittää usein renderöidä vain karkea ylei
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{tuloksia/worksite_overview.png}
-    \caption{Työmaa-pilvestä muodostetun puun viiden ylimmän tason renderöintiin käytetty aika mikrosekunteina puskurivirralla ja kun pisteet ovat valmiiksi yleiskuvapuskurissa näytönohjaimen muistissa.}
+    \caption{Worksite-pilvestä muodostetun puun viiden ylimmän tason renderöintiin käytetty aika mikrosekunteina puskurivirralla ja kun pisteet ovat valmiiksi yleiskuvapuskurissa näytönohjaimen muistissa.}
     \label{ws_ovw}
 \end{figure}
+
+
+\subsection{Pohdintaa}
+
+Luvussa \ref{rakentaminen} selvisi, että pistedatan kompressoiminen johtaa pienempien tiedostokokojen lisäksi myös oktettipuun rakentamisen nopeutumiseen. Toisaalta kompression purkaminen vie runsaasti laskenta-aikaa renderöintivaiheessa. Laitossuunnitteluohjelmistossa tallennustilan tehokas käyttö ja pistepilven saaminen nopeasti katsottavaksi ovat tärkeää, joten olisi syytä tutkia, saadaanko kompression purkamista nopeutettua. Yksi mahdollisuus olisi säikeistää pisteiden lataamista niin, että yksi säie lukee pisteitä levyltä, toinen purkaa niiden kompressiota ja kolmas kopioi niitä näytönohjaimelle.
+
+Pistebudjetin käyttö pistepilveä renderöitäessä mahdollistaa interaktiivisen ruudunpäivitysnopeuden, mutta huonontaa renderöidyn kuvan laatua. Kuvassa \ref{lod_border} näkyy ilmanvaihtohuoneen katossa ikäviä tarkkuustasojen eroja. Kun puusta renderöidään solmuja niiden kuvaruudulle projisoidun koon mukaan eikä taso kerrallaan, voi kuvassa esiintyä suuria tiheyseroja. Tiheyseroja voisi vähentää ja kuvan laatua parantaa implementoimalla esimerkiksi Schützin \ref{potree} ehdottaman muokkautuvan pistekoon algoritmin. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{tuloksia/ilmastointi_2M/ilmastointihuone_vesijohto_overviewbuf.png}
+    \caption{Kahden miljoonan pisteen budjetin käyttäminen aiheuttaa ilmanvaihtohuone-pilvessä häiritseviä tarkkuustasojen välisiä eroja.}
+    \label{lod_border}
+\end{figure}
+
+

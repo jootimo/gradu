@@ -92,7 +92,14 @@
         {Pro Gradu, \pageref{LastPage} s., 3 liites.}%
         {Tietojenkäsittelytiede}% Oppiaine
         {\today}%
-	Juuh elikkäs gradutyötä...
+  Pistepilvet ovat useimmiten laserkeilaimilla mitattuja malleja jostakin tosimaailman esineestä tai maisemasta. Monimutkaisen geometrian sijaan kohdetta kuvataan valtavalla määrällä pisteitä, jotka visualisoimalla saadaan kuva yhtenäisitä pinnoista. Laserkeilaimella taltioituja pistepilviä käytetään esimerkiksi arkkitehtuurissa, rakentamisessa ja kuluttajatuotteiden suunnittelussa. Tässä tutkielmassa keskitytään pistepilvien käyttöön laitossuunnitteluohjelmistoissa, jossa käyttäjä haluaa katsella suurista laitoksista keilattuja pistepilviä ja mallintaa geometriaa niiden avulla.
+
+  Pistepilvien massiivinen koko aiheuttaa ongelmia niitä käsitteleville ja visualisoiville ohjelmistoille. Suuret pistepilvet eivät mahdu kerralla tietokoneen keskusmuistiin ja niiden visualisoiminen kestää kauan. Usein pistepilvi tallennetaan hierarkiseen tietorakenteeseen, joka mahdollistaa sen asteittaisen lataamisen kiintolevyltä ja pisteiden määrää vähentäviä tarkkuustasoja, joilla saadaan aikaan interaktiivinen ruuudunpäivitystaajuus.
+  
+  Tässä tutkielmassa perehdytään pistepilvien visualisoinnissa käytettyihin hierarkisiin tietorakenteisiin ja todetaan niin kutsuttujen sisäkkäispistepuiden soveltuvan laitossuunnitteluohjelmistossa käytettäväksi. Lisäksi esitellään niin sisäkkäispistepuille yksinkertainen kompressiotekniikka ja renderöintialgoritmi. 
+  
+  %Lopuksi mitataan kompression ja renderöintialgoritmin vaikutusta suorituskykyyn. Pistedatan kompressointi pienentää tiedostokokoja ja lyhentää tietorakenteen rakennusaikaa, mutta kompression purkaminen vaatii laskenta-aikaa renderöintivaiheessa. 
+
 \end{tiivistelma}
 
 \tableofcontents %Sisällysluettelo
@@ -107,21 +114,16 @@
 \newpage
 \subfile{tietorakenteet.tex}
 
-
-%\subsection{Pistedatan pakkaaminen}
-%Octreen pisteen koordinaatin ilmaiseminen kahdella tavulla: Tavun kumpikin bitti ilmaisee $s/2^{16}$ etäisyyttä suorakulmaisen särmiön vasemmasta alanurkasta. $s$ on särmiön sivun pituus. \cite{Elseberg}
-
 \newpage
 \subfile{mun_tietorakenne.tex}
 
 \newpage
 \subfile{tulokset.tex}
 
-
 %Memory overhead M ~ 1/(alpha-1), alpha=branching factor: D UGUET F., D RETTAKIS G.: Flexible point-based rendering on mobile devices. Computer Graphics and Applications 24(4) (2004), 57–63.
 
 \newpage
-\section{Johtopäätökset}
+\section{Yhteenveto}
 
 
 
