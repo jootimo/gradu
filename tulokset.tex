@@ -1,6 +1,6 @@
 \section{Tietorakenteen arviointi}\label{tulokset}
 
-Luvussa \ref{mun} todettiin sisäkkäispistepuun sopivan pistepilvien käsittelyyn ja visualisointiin myös laitossuunnitteluohjelmistossa ja esitettiin puun solmujen sisältämien ruudukoiden mahdollistama yksinkertainen kompressiotekniikka. Luvussa \ref{rakentaminen} mitataan sisäkkäispistepuun rakentamisen, tallentamisen ja läpikäynnin suorituskykyä ja arvioidaan kompression vaikutusta siihen. Luvussa \ref{renderöinti} mitataan pistepilvien renderöintinopeutta luvun \ref{render} algoritmeilla. Testikoneessa on Intel i7-8850H -suoritin, 32 gigatavua keskusmuistia, SSD-levy ja Nvidia Quadro P2000 -näytönohjain.  
+Luvussa \ref{mun} esitettiin sisäkkäispistepuun solmujen sisältämien ruudukoiden mahdollistama yksinkertainen kompressiotekniikka ja algoritmeja puun rakentamiseen ja renderöintiin. Luvussa \ref{rakentaminen} mitataan sisäkkäispistepuun rakentamisen, tallentamisen ja läpikäynnin suorituskykyä ja arvioidaan kompression vaikutusta siihen. Luvussa \ref{renderöinti} mitataan pistepilvien renderöintinopeutta eri tekniikoilla. Testikoneessa on Intel i7-8850H -suoritin, 32 gigatavua keskusmuistia, SSD-levy ja Nvidia Quadro P2000 -näytönohjain.  
 
 \subsection{Tietorakenteen rakentaminen ja lataaminen}\label{rakentaminen}
 
@@ -106,19 +106,3 @@ Kameran liikkuessa pistepilven ohi riittää usein renderöidä vain karkea ylei
     \caption{Worksite-pilvestä muodostetun puun viiden ylimmän tason renderöintiin käytetty aika mikrosekunteina puskurivirralla ja kun pisteet ovat valmiiksi yleiskuvapuskurissa näytönohjaimen muistissa.}
     \label{ws_ovw}
 \end{figure}
-
-
-\subsection{Pohdintaa}
-
-Luvussa \ref{rakentaminen} selvisi, että pistedatan kompressoiminen johtaa pienempien tiedostokokojen lisäksi myös oktettipuun rakentamisen nopeutumiseen. Toisaalta kompression purkaminen vie runsaasti laskenta-aikaa renderöintivaiheessa. Laitossuunnitteluohjelmistossa tallennustilan tehokas käyttö ja pistepilven saaminen nopeasti katsottavaksi ovat tärkeää, joten olisi syytä tutkia, saadaanko kompression purkamista nopeutettua. Yksi mahdollisuus olisi säikeistää pisteiden lataamista niin, että yksi säie lukee pisteitä levyltä, toinen purkaa niiden kompressiota ja kolmas kopioi niitä näytönohjaimelle.
-
-Pistebudjetin käyttö pistepilveä renderöitäessä mahdollistaa interaktiivisen ruudunpäivitysnopeuden, mutta huonontaa renderöidyn kuvan laatua. Kuvassa \ref{lod_border} näkyy ilmanvaihtohuoneen katossa ikäviä tarkkuustasojen eroja. Kun puusta renderöidään solmuja niiden kuvaruudulle projisoidun koon mukaan eikä taso kerrallaan, voi kuvassa esiintyä suuria tiheyseroja. Tiheyseroja voisi vähentää ja kuvan laatua parantaa implementoimalla esimerkiksi Schützin \ref{potree} ehdottaman muokkautuvan pistekoon algoritmin. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\textwidth]{tuloksia/ilmastointi_2M/ilmastointihuone_vesijohto_overviewbuf.png}
-    \caption{Kahden miljoonan pisteen budjetin käyttäminen aiheuttaa ilmanvaihtohuone-pilvessä häiritseviä tarkkuustasojen välisiä eroja.}
-    \label{lod_border}
-\end{figure}
-
-

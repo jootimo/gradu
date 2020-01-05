@@ -1,24 +1,10 @@
 \section{Pistepilvien visualisointi}\label{kirjallisuus}
 
-Tässä luvussa selvitetään, mitä haasteita pistepilvien ominaisuudet asettavat visualisoinnissa käytetyille tietorakenteille ja algoritmeille. Lisäksi tutustutaan alan julkaisuihin, joilla haasteisiin pyritään vastaamaan.
-
-\subsection{Pistepilvien visualisoinnin haasteet}
-
-Suurin haaste pistepilvien käsittelyssä ja visualisoinnissa on niiden koko. Nykyaikainen laserkeilain, kuten luvussa \ref{laserkeilaimet} esitetty Leica Geosystemsin RTC360, tuottaa pistepilven, jossa on satoja miljoonia pisteitä. Kun tällaisella keilaimella tehdään useita keilauksia, on pisteiden määrä valtava. Oletetaan esimerkiksi, että suuressa projektissa käytetään pistepilviä, joissa on yhteensä miljardi pistettä. Kun koordinaatit tallennetaan kolmella nelitavuisella liukuluvulla ja värit RGB-muodossa kolmella tavulla ja lisätään perään vielä yksi täytetavu, voidaan yksi pilven piste esittää 16:lla tavulla. Miljardin pisteen pilvi olisi siis kooltaan 16 gigatavua mahdollisen metadatan lisäksi. Tämän kokoista pilveä ei haluta pitää kerralla keskusmuistissa, vaan pisteitä haetaan levyltä muistiin vain tarvittaessa. 
-
-Pisteiden tallentaminen levylle aiheuttaa kuitenkin ongelmia tiedonsiirron hitauden takia, sillä tiedonsiirtonopeus kiintolevyltä on jopa kaksi kertaluokkaa hitaampi kuin keskusmuistista. Ongelman ratkaisemiseksi käytetään usein ulkoisen muistin algoritmeja \engl{out-of-core algorithm}, jotka lataavat pisteitä levyltä muistiin isoissa palasissa, mikä on huomattavasti nopeampaa kuin yksittäisten pisteiden lataaminen. \cite{scheiblauer} 
-
-Pistepilvien koon vuoksi ei ole realistista olettaa, että kaikki pisteet voitaisiin renderöidä reaaliajassa.\footnote{Miellyttävän käyttökokemuksen takaamiseksi pitäisi ruutu päivittää vähintään kymmenen kertaa sekunnissa.} Tästä syystä on kehitetty erilaisia tekniikoita pistepilven harventamiseen ja osittaiseen renderöintiin. Yksinkertainen tapa harventaa pistepilveä on jakaa sen peittämä alue niin kutsuttuihin vokseleihin \engl{volume element, voxel}, eli säännöllisiin kuutioihin, ja visualisoimalla vain yksi piste kustakin vokselista. Pilven harventaminen kuitenkin aiheuttaa yksityiskohtien katoamista pilvestä, joten sitä täytyy käyttää sovelluskohteesta riippuen maltillisesti. 
-
-Toinen keino vähentää visualisoitavien pisteiden määrää on määrittää pistepilvelle tarkkuustasot \engl{level-of-detail, LOD}. Tarkkuustasot mahdollistavat pistepilven astettaisen tarkentamisen karkeasta yleiskuvasta yksityiskohtiin. Usein interaktiivisissa ohjelmistoissa korkean ruudunpäivitystaajuuden ylläpitäminen vaatii sitä, että pistepilvi renderöidään matalimmalla tarkkuudella esimerkiksi käyttäjän pyörittäessä näkymää. Toisaalta kun kamera pysähtyy paikalleen, voidaan renderöintiin käyttää enemmän aikaa ja pistepilveä tarkentaa.
-
-\subsection{Hierarkiset tietorakenteet}\label{tietorakenteet}
-
 Edellä mainittuihin haasteisiin on otettu kantaa laajalti alan julkaisuissa. Lupaavin tekniikka tarkkuustasojen muodostamiseen, ulkoisen muistin käyttöön ja pistepilvien harventamiseen näyttää olevan pistepilven jakaminen hierarkiseen tietorakenteeseen. Ajatuksena on, ettei kaikkia pisteitä tarvitse käydä läpi jokaisella ruudunpäivityksellä, vaan hierarkian yläpäässä on karkein tarkkuustaso ja alaspäin kulkiessa tarkkuus kasvaa.  
 
 Esitellään seuraavaksi muutama kiinnostava hierarkinen tietorakenne. Aihealueen pioneerityönä pidetään Rusinkiewiczin ja Levoyn Qsplatia, joka onkin antanut vaikutteita uudemmille tietorakenteille. Dachsbacher et al. esittelivät peräkkäispistepuut, jotka voidaan renderöidä hyvin nopeasti näytönohjaimella. Viime vuosina pistepilvien visualisoinnin tutkimuksen kirkkainta kärkeä on edustanut Wienin teknillisen yliopiston tietokonegrafiikan tutkimusyksikkö. Tämän tutkielman päälähteinä käytetään Claus Scheiblauerin ja Markus Schützin julkaisuja sisäkkäispistepuista.
 
-\subsubsection{QSplat}
+\subsection{QSplat}
 Yksi ensimmäisistä pistedatan visualisointiin käytetyistä hierarkisista tietorakenteista on Rusinkiewiczin ja Levoyn esittämä QSplat, joka on kehitetty polygoniverkon visualisointiin pisteiden avulla. Tietorakenne muodostetaan kolmioidusta mallista, jossa kolmioiden normaalit tunnetaan, joten se ei suoraan sovellu raa'an pistepilvidatan käsittelyyn.\footnote{Itse asiassa Rusinkiewicz ja Levoy käyttivät laserkeilatusta pistepilvestä muodostettua kolmioverkkoa, jonka tietorakenne esitti yksinkertaistettuna pistedatana.} QSplatissa on käytetty kuitenkin monia kiinnostavia tekniikoita, joita voi hyödyntää pistepilvien käsittelyssä. \cite{qsplat}
 
 QSplat perustuu puurakenteeseen, jonka solmuissa on rajauspalloja \engl{bounding sphere}. Pallot jakavat avaruutta rekursiivisesti pienempiin osiin siten, että juuren pallo sisältää kaikki kolmiot ja jokainen sisäinen solmu jakaa avaruuden keskimäärin neljään osaan. Puun latva saavutetaan, kun avaruuden jakamisen seurauksena jäljelle jää yksi kolmio. Siitä muodostetaan lehtisolmu, jonka rajauspallo sisältää koko kolmion. Puun visualisointi onnistuu piirtämällä jokaisen pallon kohdalle sopivan kokoinen täplä \engl{splat}. Puurakenne mahdollistaa myös tehokkaan pisteiden karsimisen. Jos solmun pallo ei ole näkökentässä, eivät sen lapsetkaan ole ja haaraa ei tarvitse käydä läpi. \cite{qsplat}
@@ -38,7 +24,7 @@ QSplat onnistui renderöimään 1,5-2,5 miljoonaa pistettä sekunnissa, mikä on
 
 Toisena ongelmana voidaan pitää tapaa, jolla mallin kolmioita esitetään palloina. Tietorakenteeseen luodaan nimittäin uutta dataa, kun lehtisolmuihin tallennettujen, yhden kolmion sisältävien pallojen lisäksi ylemmillä tasoilla on keinotekoisia, monia kolmioita kuvaavia palloja. QSplat tarjoaa kuitenkin monia tekniikoita, joita pistepilviä käsittelevässä tietorakenteessa voidaan hyödyntää, kuten hierarkinen rakenne ja koordinaattien suhteellinen esitystapa.
 
-\subsubsection{Peräkkäispistepuut}
+\subsection{Peräkkäispistepuut}
 Dachsbacher et al. esittelevät niin kutstutun peräkkäispistepuun \engl{sequential point tree}, jossa pisteet on aluksi järjestetty samaan tapaan pallopuuhun kuin QSplatissa. Pisteet sijaitsevat puun lehtisolmuissa ja sisäsolmuissa säilytetään täpliä, jotka juuri ja juuri peittävät solmun lasten rajauspallot. Täplien väri määräytyy lapsisolmujen värien keskiarvolla. \cite{spt}
 
 Jokaiseen puun solmuun on virhelaskelmien perusteella lisätty rajat katseluetäisyydelle, jolla solmu valitaan visualisoitavaksi. Visualisointivaiheessa hierarkia litistetään taulukoksi, joka voidaan syöttää suoraan näytönohjaimelle. Näytönohjain käy taulukkoa läpi ja valikoi sopivat solmut, joiden perusteella täpliä piirretään ruudulle. \cite{spt}
@@ -47,7 +33,7 @@ Peräkkäispistepuut voidaan renderöidä nopeasti näytönohjaimen käytön ans
 
 Wimmer ja Scheiblauer esittävät parannuksia peräkkäispistepuihin. Uusien täplien luomisen sijaan puun sisäsolmuissa valitaan lapsisolmuista edustaja, joka parhaiten kuvaa sisäsolmun esittämää avaruuden osaa. Tämä on tärkeä huomio, sillä käsiteltäessä massiivisia pistepilviä tulisi välttää ylimääräisen datan luomista. Hierarkiasta muodostetaan tarkkuustasot siten, että alemmat tarkkuustasot sisältyvät ylempiin tasoihin ja visualisoitaessa oikea tarkkuustaso valitaan täplien koon ja katseluetäisyyden perusteella. Solmua vastaavan täplän koko määräytyy siitä, kuinka syvällä hierarkiassa se on. Wimmer ja Scheiblauer kutsuvat tätä rakennetta muistioptimoiduksi peräkkäispistepuuksi. \engl{memory optimized sequential point tree, MOSPT} \cite{ip} %Kun hierarkian läpikäymistä jatketaan niin pitkälle, että solmujen täplät ovat yhden pikselin kokoisia, ei lopputulokseen jää aukkoja. \cite{ip}
 
-\subsubsection{Sisäkkäispistepuut}
+\subsection{Sisäkkäispistepuut}\ref{sisäkkäis}
 \begin{figure}
     \centering
     \includegraphics[width=0.5\paperwidth]{img/octree.png}
@@ -84,7 +70,7 @@ Potree käyttää ulkoista muistia tehokkaasti ja pystyy käsittelemään jopa 6
 
 Potreen visualisointialgoritmi priorisoi niitä hierarkian solmuja, jotka ovat lähellä katselupistettä ja joiden kuvaruudulle projisoitu koko on suurin. Renderöinnin suorituskykyä voidaan säädellä Scheiblauerin toteutuksen mukaisesti käyttäjän asettamalla pistebudjetilla. Schütz on kehittänyt Potreehen myös näytönohjaimella ajettavan algoritmin mukautuvaan pisteiden koon määrittämiseen; pistepilven harvemmissa osissa piirretään pisteet suurempina, jottei reikiä esiintyisi. \cite{potree}
 
-\subsubsection{kd-puut}
+\subsection{kd-puut}
 Suosittujen oktettipuiden lisäksi on pistepilvien visualisoinnissa käytetty kd-puita \engl{k-dimensional tree, kd-tree}\footnote{Kolmiulotteisten mallien visualisointiin käytetyissä kd-puissa luonnollisesti $k=3$}. Oktettipuusta poiketen kd-puut eivät jaa pistepilveä yhtäsuuren tilavuuden omaaviin osiin, vaan jokainen solmu jakaa kuvaamansa alueen kahtia niin, että tilanjakotason molemmille puolille jää yhtä monta pistettä. Tätä varten pisteet on järjestettävä, mikä pidentää puun rakennusaikaa. Toisaalta tietorakenteen siirtely kiintolevyltä muistiin ja sieltä näytönohjaimelle on helpompaa, kun puu on tasapainoinen, eli kaikki solmut ovat saman kokoisia. \cite{richter}
 
 Richter et al. kehittivät massiivisten ulkoilmakeilausten visualisointiin kd-puuhun perustuvan pistepilvirenderöijän, joka käytti luokiteltua pistepilvidataa. Pisteet oli jaettu objektiluokkiin, kuten kasvillisuus, vesi tai rakennus, joille jokaiselle rakennettiin oma kd-puu. Renderöintivaiheessa kd-puista lähetetään solmuja näytönohjaimelle niiden kuvaruudulle projisoidun koon määräämässä järjestyksessä niin, että jokaisella objektiluokalla oli oma rajansa muistinkäytölle. \cite{richter}
@@ -104,3 +90,13 @@ Pistepilvistä voi muodostaa tarkkuustasoja myös ilman hierarkista tietorakenne
 \end{figure}
 
 Jatkuvat tarkkuustasot ratkaisevat hierarkisia tietorakenteita käytettäessä usein esiintyvän ongelman diskreettien tarkkuustasojen näkyvistä rajoista. Renderöidyssä kuvassa ei näy selkeitä eroja matalalla ja korkeammalla tarkkuudella renderöityjen solmujen välillä kun tarkkuus laskee vähitellen kamerasta poispäin. Kuvassa \ref{img:clod} vasemmalla on havainnollistettu diskreettejä tarkkuustasoja ja oikealla jatkuvia tarkkuustasoja.
+
+\subsection{Laitossuunnitteluohjelmistoon soveltuva tietorakenne}
+
+Luvussa \ref{sisäkkäis} esitelty Potree on osoittaunut massiivisten pistepilvien interaktiivisen visualisoinnin olevan mahdollista jopa verkkoselaimessa, jossa etenkin tiedonsiirtonopeus rajoittaa renderöinnin nopeutta. Tarkastellaan siis sisäkkäispistepuiden sovelutuvuutta laitossuunnitteluohjelmistoon. 
+
+Oktettipuun läpikäyminen taso kerrallaan muodostaa tehokkaasti tarkkuustasot, joten vaatimus \ref{vaatimus:lod} on helppo tyydyttää. Pisteiden asettelu sisäkkäisten oktettipuiden solmuihin mahdollistaa myös vaatimuksen \ref{vaatimus:ooc} mukaisesti ulkoisen muistin käyttämisen. Scheiblauerin muokattavien sisäkkäisten oktettipuiden jokainen solmu sisältää ruudukon, johon pisteet sijoitetaan. Mitä syvemmällä tasolla solmu on, sitä pienempiä ruudukon solut ovat. Vaatimuksen \ref{vaatimus:harvennus} esittämä pilven harvennus onnistuu asettamalla puulle enimmäissyvyys ruudukon koon mukaan ja hylkäämällä lehtisolmuissa kaikki pisteet, jotka tulisi lisätyksi jo varattuun soluun. 
+
+Valintaoperaatiot onnistuvat nopeasti oktettipuussa. Puun jokainen solmu sisältää tiedon sen sisältämien pisteiden rajauslaatikosta \engl{bounding box}, joten jos valinnan sijainti ei osu rajauslaatikon sisälle, ei kyseisen solmun lapsisolmujakaan tarvitse tarkastaa. Yksittäisiä pisteitä tarvitsee tarkastella vasta kun valittavan alueen raja kulkee puun solmun rajauslaatikon läpi, tai kun käyttäjä haluaa valita vain yhden pisteen. Tietyllä aluella sijaitsevat pisteet jakautuvat useaan oktettipuun solmuun, minkä johdosta valintaoperaatiot eivät ole triviaaleja sisäkkäisissä oktettipuissa. Vaatimuksiin \ref{vaatimus:crop} ja \ref{vaatimus:select} voidaan kuitenkin vastata sisäkkäisillä oktettipuilla. Scheiblauer ja Schütz eivät tiivistäneet pistepilviä, joten niiden tarkkuus ei kärsinyt. Näin myöskään vaatimus \ref{vaatimus:virhe} ei tuota ongelmia.
+
+Sisäkkäispistepuut näyttävät siis soveltuvan myös laitossuunnitteluohjelmiston tarpeisiin. Scheiblauerin ja Schützin tietorakenteiden käyttämät ruudukot mahdollistavat kuitenkin myös joitakin laitossuunnittelusovelluksille tärkeitä optiomointeja, kuten luvussa \ref{mun} esitelty pistedatan kompressio.
