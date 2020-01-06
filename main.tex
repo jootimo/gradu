@@ -66,7 +66,7 @@
 \title{Pistepilvien visualisointi laitossuunnitteluohjelmistossa}
 \opinnayte{Pro Gradu}
 \author{Timo Heinonen}
-\vuosi{2018}
+\vuosi{2020}
 \oppiaine{Tietojenkäsittelytiede}
 \tarkastaja{P.P.}
 \tarkastaja{H.H.}
@@ -94,11 +94,13 @@
         {\today}%
   Pistepilvet ovat useimmiten laserkeilaimilla mitattuja malleja jostakin tosimaailman esineestä tai maisemasta. Monimutkaisen geometrian sijaan kohdetta kuvataan valtavalla määrällä pisteitä, jotka visualisoimalla saadaan kuva yhtenäisitä pinnoista. Laserkeilaimella taltioituja pistepilviä käytetään esimerkiksi arkkitehtuurissa, rakentamisessa ja kuluttajatuotteiden suunnittelussa. Tässä tutkielmassa keskitytään pistepilvien käyttöön laitossuunnitteluohjelmistossa, jossa käyttäjä haluaa katsella suurista laitoksista keilattuja pistepilviä ja mallintaa geometriaa niiden avulla.
 
-  Pistepilvien massiivinen koko aiheuttaa ongelmia niitä käsitteleville ja visualisoiville ohjelmistoille. Suuret pistepilvet eivät mahdu kerralla tietokoneen keskusmuistiin ja niiden visualisoiminen kestää kauan. Usein pistepilvi tallennetaan hierarkiseen tietorakenteeseen, joka mahdollistaa sen asteittaisen lataamisen kiintolevyltä ja pisteiden määrää vähentäviä tarkkuustasoja, joilla saadaan aikaan interaktiivinen ruudunpäivitystaajuus.
+  Pistepilvien massiivinen koko aiheuttaa ongelmia niitä käsitteleville ja visualisoiville ohjelmistoille. Suuret pistepilvet eivät mahdu kerralla tietokoneen keskusmuistiin ja niiden visualisoiminen kestää kauan. Usein pistepilvi tallennetaan hierarkiseen tietorakenteeseen, joka mahdollistaa sen asteittaisen lataamisen kiintolevyltä ja sellaisen tarkkuustason valitseminen, joka mahdollistaa interaktiivisen ruudunpäivitystaajuuden.
   
-  Tässä tutkielmassa perehdytään pistepilvien visualisoinnissa käytettyihin hierarkisiin tietorakenteisiin ja todetaan niin kutsuttujen sisäkkäispistepuiden soveltuvan laitossuunnitteluohjelmistossa käytettäväksi. Lisäksi esitellään sisäkkäispistepuille yksinkertainen kompressiotekniikka ja renderöintialgoritmi. 
+  Tässä tutkielmassa perehdytään pistepilvien visualisoinnissa käytettyihin hierarkisiin tietorakenteisiin ja todetaan niin kutsuttujen sisäkkäispistepuiden soveltuvan laitossuunnitteluohjelmiston pistepilvivisualisoijassa käytettäväksi. Lisäksi esitellään sisäkkäispistepuille yksinkertainen kompressiotekniikka ja tärkeimpiä pisteitä priorisoiva renderöintialgoritmi. 
   
-  Lopuksi mitataan kompression ja renderöintialgoritmin vaikutusta suorituskykyyn. Pistedatan kompressointi pienentää tiedostokokoja ja lyhentää tietorakenteen rakennusaikaa, mutta kompression purkaminen vaatii laskenta-aikaa renderöintivaiheessa. 
+  Lopuksi mitataan kompression ja renderöintialgoritmin vaikutusta suorituskykyyn. Pistedatan kompressointi pienentää tiedostokokoja ja lyhentää tietorakenteen rakennusaikaa, mutta kompression purkaminen vaatii laskenta-aikaa renderöintivaiheessa. Esitelty renderöintialgoritmi piirtää pisteitä ruudulle hitaammin kuin suoraviivainen toteutus, mutta katselijaa lähinnä olevat pisteet tulevat renderöidyksi tarkemmalla resoluutiolla.
+
+  Avainsanat: pistepilvi, laserkeilain, tietokoneavusteinen suunnittelu, tietorakenteet, tietokonegrafiikka
 
 \end{tiivistelma}
 
@@ -139,6 +141,7 @@
 \clearpage
 %\bibliographystyle{plain} % We choose the "plain" reference style
 \bibliographystyle{wihuri}
+%\bibliographystyle{acm}
 \bibliography{refs} % Entries are in the "refs.bib" file
 %
 %\begin{thebibliography}{50}% Viiteluettelo. TÄTÄ ON PAKKO KÄYTTÄÄ !

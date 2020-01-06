@@ -121,7 +121,7 @@ FUNCTION {output.bibitem}
 }
 
 FUNCTION {fin.entry}
-{ add.period$
+{ 
   write$
   newline$
 }
@@ -234,7 +234,7 @@ FUNCTION {format.edited}
 FUNCTION {format.title}
 { title empty$
     { "" }
-    'title
+    { "" title emphasize "t" change.case$ * ", " * }
   if$
 }
 
@@ -409,7 +409,7 @@ FUNCTION {add.string.check}
 }
 
 FUNCTION {format.vol.page}
-{ "volume" volume embolden #1 push.string.check
+{ "volume" volume #1 push.string.check
   " " *
   "pages" pages field.or.null first.page #0 add.string.check
   " " *
@@ -614,6 +614,7 @@ FUNCTION {format.title.and.series.and.org}
 FUNCTION {article}
 { output.bibitem
   "author" format.authors #1 push.string.check
+  "title"  format.title #0 add.string.check
   "journal" journal #0 add.string.check " " *
   output
   format.vol.page #0 push.string
@@ -672,7 +673,7 @@ FUNCTION {inbook} { book }
 
 FUNCTION {incollection} { book }
 
-FUNCTION {inproceedings}{ book }
+FUNCTION {inproceedings}{ article }
 
 FUNCTION {proceedings} { book }
 
@@ -724,13 +725,14 @@ FUNCTION {manual}
 FUNCTION {mastersthesis}
 { output.bibitem
   "author" format.authors #1 push.string.check
+    "title"  format.title #0 add.string.check
   title empty$
     'skip$
     { "We don't use thesis titles in Phys. Rev, see \cite{"
       cite$ "}" * * warning$
     }
   if$
-  "Master's thesis" format.thesis.type   #1   add.string
+  "pro gradu -tutkielma" format.thesis.type   #1   add.string
   "school"   school   #1   add.string.check
   address #1 add.string
   "year" format.date   note empty$ not   add.string.check
@@ -744,13 +746,14 @@ FUNCTION {mastersthesis}
 FUNCTION {phdthesis}
 { output.bibitem
   "author" format.authors #1 push.string.check
+  "title"  format.title #0 add.string.check
   title empty$
     'skip$
     { "We don't use thesis titles in Phys. Rev, see \cite{"
       cite$ "}" * * warning$
     }
   if$
-  "Ph.D. thesis" format.thesis.type   #1   add.string
+  "Väitöskirja" format.thesis.type   #1   add.string
   "school"   school   #1   add.string.check
   address #1 add.string
   "year" format.date   note empty$ not   add.string.check
