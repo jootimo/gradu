@@ -11,4 +11,9 @@ Pistebudjetin käyttö pistepilveä renderöitäessä mahdollistaa interaktiivis
     \includegraphics[width=0.7\textwidth]{tuloksia/ilmastointi_2M/ilmastointihuone_vesijohto_overviewbuf.png}
     \caption{Kahden miljoonan pisteen budjetin käyttäminen aiheuttaa ilmanvaihtohuone-pilvessä häiritseviä tarkkuustasojen välisiä eroja.}
     \label{lod_border}
-\end{figure} 
+\end{figure}
+
+Laitossuunnitteluohjelmistossa pistepilven renderöintiä voidaan kuitenkin jatkaa monen ruudun ajan, eikä pistebudjetin käyttäminen ole tarpeen. 3d-maisema pistepilvineen ja 2d-grafiikka, kuten kursori ja muut avustimet, voidaan piirtää näytönohjaimelle eri puskureihin. Näin on mahdollista renderöidä uudestaan vain kursori, kun käyttäjä liikuttaa hiirtä, minkä jälkeen pistepilven renderöintiä voidaan jatkaa siitä mihin viimeksi jäätiin. Oktettipuun solmujen järjestäminen tärkeyden mukaan on silti tarpeen. Kuten kuvasta \ref{img:worksite_vertailu} näkyy, järjestämisen ansiosta katselupistettä lähellä olevat mielenkiintoiset alueet tarkentuvat nopeammin.
+
+Mallinnustyössä pistepilvi täytyy usein renderöidä useaan maisemaan. Käytännössä joudutaan harvoin tilanteeseen, jossa kamerat liikkuvat ja pistepilviä joudutaan päivittämään monessa maisemassa samaan aikaan. Kuitenkin olisi suotavaa, jos visualisoija renderöisi ensin pistepilven yleiskuvan jokaiseen maisemaan, minkä jälkeen se kävisi maisemia läpi ja antaisi kullekin pienen aikasiivun pistepilven tarkentamiseen. Samoin usean pistepilven tapauksessa ei saisi käydä niin, että yksi pilvi piirretään täyteen tarkkuuteensa ennenkuin toista on edes aloitettu. 
+
