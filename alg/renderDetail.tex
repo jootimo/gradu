@@ -7,7 +7,7 @@ $i \gets 0$ \kommentti{Täytettävän puskuriosion indeksi}
 
 \For{Solmu $s \in S$} {
     \uIf{Puskuriosiossa $i$ ei ole tilaa solmun $s$ pisteille} {
-        Lähetä puskuriosio $i$ näytönohjaimelle renderöitäväksi\\
+        Lähetä puskuriosio $i$ näytönohjaimelle piirrettäväksi\\
         Lähetä osion $i$ synkronointiobjekti näytönohjaimelle\\
         $i = (i + 1)$ mod $3$\\
         Odota, että näytönohjain on käsitellyt osion $i$ synkronointiobjektin

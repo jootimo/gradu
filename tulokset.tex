@@ -1,6 +1,6 @@
 \section{Tietorakenteen arviointi}\label{tulokset}
 
-Luvussa \ref{mun} esitettiin sisäkkäispistepuun solmujen sisältämien ruudukoiden mahdollistama yksinkertainen kompressiotekniikka ja algoritmeja puun rakentamiseen ja renderöintiin. Ensin mitataan sisäkkäispistepuun rakentamisen, tallentamisen ja läpikäynnin suorituskykyä ja arvioidaan kompression vaikutusta siihen. Tämän jälkeen mitataan pistepilvien renderöintinopeutta eri tekniikoilla käyttäen maiseman läpi kulkevia kamera-ajoja. Testikoneessa on Intel i7-8850H -suoritin, 32 gigatavua keskusmuistia, SSD-levy ja Nvidia Quadro P2000 -näytönohjain.  
+Luvussa \ref{mun} esitettiin sisäkkäispistepuun solmujen sisältämien ruudukoiden mahdollistama yksinkertainen kompressiotekniikka ja algoritmeja puun rakentamiseen ja visualisointiin. Ensin mitataan sisäkkäispistepuun rakentamisen, tallentamisen ja läpikäynnin suorituskykyä ja arvioidaan kompression vaikutusta siihen. Tämän jälkeen mitataan pistepilvien visualisointinopeutta eri tekniikoilla käyttäen maiseman läpi kulkevia kamera-ajoja. Testikoneessa on Intel i7-8850H -suoritin, 32 gigatavua keskusmuistia, SSD-levy ja Nvidia Quadro P2000 -näytönohjain.  
 
 Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kolmella pistepilvellä. \emph{Pannuhuone}-pilvi sisälsi 20 keilausta, jotka veivät 18,7 gigatavua tilaa tallennettuna pakkaamattomaan tekstitiedostoon. Keilauksista muodostettiin puu, jossa oli 546572600 pistettä 528017:ssa solmussa, jotka jakautuivat yhdeksälle tasolle. \emph{Toimisto} sisälsi 8,43 gigatavua pisteitä 21 keilauksesta ja siitä muodostetussa puussa oli 240727221 pistettä 608002:ssa solmussa 11:llä tasolla. \emph{Pumput} oli testattavista pienin, vain 41:n megatavun kokoinen pistepilvi. Siinä oli 5 keilausta, joista rakennetussa puussa oli 1213990 pistettä 4561:ssä solmussa seitsemällä tasolla.  
 
@@ -45,40 +45,40 @@ Taulukoissa \ref{taulukko:pannuhuone}, \ref{taulukko:toimisto} ja \ref{taulukko:
 
 Yllätyksettömästi 16:n tavun pistedatan muistiin lataaminen ja läpikäyminen oli huomattavasti nopeampaa kuin kompressoitujen pisteiden. Nelitavuisten pisteiden lataaminen ja kompression purkaminen oli nopeampaa kuin kahdeksantavuisten. Tietorakennetta rakennettaessa näyttää siltä, että pistedatan kirjoittaminen levylle vie huomattavan osan suoritusajasta. Tästä syystä on ajansäästön kannalta kannattavaa käyttää laskenta-aikaa pistedatan kompressointiin, jotta kirjoitettavia tavuja olisi vähemmän. 
 
-Tietorakenteen renderöitiä arvioitaessa käytetään kahta pistepilveä. \emph{Ilmanvaihtohuone} on keilattu Elomatic Oy:n Jyväskylän toimiston ilmanvaihdon konehuoneesta ja siinä on 13 keilausta, joista muodostetussa puussa on 506366789 pistettä 267641 solmussa kahdeksassa tasossa. \emph{Worksite}-pilvi on Leica Geosystemsin testidataa, joka sisältää 7 keilausta, joiden 53881180 pistettä jakautuu 543105 solmuun yhdeksälle puun tasolle. 
+Tietorakenteen visualisointia arvioitaessa käytetään kahta pistepilveä. \emph{Ilmanvaihtohuone} on keilattu Elomatic Oy:n Jyväskylän toimiston ilmanvaihdon konehuoneesta ja siinä on 13 keilausta, joista muodostetussa puussa on 506366789 pistettä 267641 solmussa kahdeksassa tasossa. \emph{Worksite}-pilvi on Leica Geosystemsin testidataa, joka sisältää 7 keilausta, joiden 53881180 pistettä jakautuu 543105 solmuun yhdeksälle puun tasolle. 
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{tuloksia/worksite_compressed_vs_uncompressed.png}
-    \caption{Worksite-pilven kahden miljoonan pisteen renderöintiin vaadittu aika millisekunteina käyttäen kompressoimattomia 16:n tavun pisteitä ja kahdeksaan tavuun kompressoituja pisteitä.}
+    \caption{Worksite-pilven kahden miljoonan pisteen piirtämiseen vaadittu aika millisekunteina käyttäen kompressoimattomia 16:n tavun pisteitä ja kahdeksaan tavuun kompressoituja pisteitä.}
     \label{ws_compr}
 \end{figure}
 
-Arvioidaan ensin luvussa \ref{kompressio} esitellyn kompression vaikutusta pistepilven renderöintiaikaan. Kuvassa \ref{ws_compr} on esitetty kaavio kahden miljoonan pisteen renderöinnin vaatimasta ajasta kamera-ajon jokaisella ruudunpäivityksellä. Sininen viiva kuvaa renderöintiaikaa kompressoimattomilla pisteillä ja oranssi viiva värit säilyttävällä kompressiolla. Renderöinnissä on käytetty luvussa \ref{render} esiteltyä puskurivirta-algoritmia. 
+Arvioidaan ensin luvussa \ref{kompressio} esitellyn kompression vaikutusta pistepilven visualisointiaikaan. Kuvassa \ref{ws_compr} on esitetty kaavio kahden miljoonan pisteen piirtämisen vaatimasta ajasta kamera-ajon jokaisella ruudunpäivityksellä. Sininen viiva kuvaa piirtoaikaa kompressoimattomilla pisteillä ja oranssi viiva värit säilyttävällä kompressiolla. Visualisoinnissa on käytetty luvussa \ref{render} esiteltyä puskurivirta-algoritmia. 
 
-Kamera-ajo alkaa maiseman reunalta ja kulkee työmaan ohi lähestyen sen reunaa siten, että näkyvissä olevien puun solmujen määrä laskee tasaisesti. Tämä näkyy myös kuvassa \ref{ws_compr} ruudun renderöintiajan laskiessa. Näkymäkarton sisällä olevien solmujen määrä kasvaa äkkinäisesti noin 150:nnen ruudun kohdalla, jolloin kamera kääntyy niin, että koko pilvi on näkyvissä. Lopuksi kamera lähestyy vastakkaista seinää ja näkyvissä olevien solmujen määrä laskee. 
+Kamera-ajo alkaa maiseman reunalta ja kulkee työmaan ohi lähestyen sen reunaa siten, että näkyvissä olevien puun solmujen määrä laskee tasaisesti. Tämä näkyy myös kuvassa \ref{ws_compr} ruudun visualisointiajan laskiessa. Näkymäkarton sisällä olevien solmujen määrä kasvaa äkkinäisesti noin 150:nnen ruudun kohdalla, jolloin kamera kääntyy niin, että koko pilvi on näkyvissä. Lopuksi kamera lähestyy vastakkaista seinää ja näkyvissä olevien solmujen määrä laskee. 
 
-Kuvaajasta huomataan, että kompressoimattomien 16-tavuisten pisteiden renderöinti on jonkin verran nopeampaa kuin kompressoitujen kahdeksantavuisten pisteiden. Eron selittää kompression avaamiseen vaadittu laskenta. Jokaisesta kompressoidusta pisteestä etsitään kompressoidun pisteen indeksiä vastaava ruudukon solu ja lasketaan sen keskipiste. Renderöintiajan ero on kuitenkin pieni ja voidaan katsoa, että miltei puolittunut tallennustilan tarve oikeuttaa pistedatan kompression.
+Kuvaajasta huomataan, että kompressoimattomien 16-tavuisten pisteiden piirtäminen on jonkin verran nopeampaa kuin kompressoitujen kahdeksantavuisten pisteiden. Eron selittää kompression avaamiseen vaadittu laskenta. Jokaisesta kompressoidusta pisteestä etsitään kompressoidun pisteen indeksiä vastaava ruudukon solu ja lasketaan sen keskipiste. Visualisointiajan ero on kuitenkin pieni ja voidaan katsoa, että miltei puolittunut tallennustilan tarve oikeuttaa pistedatan kompression.
 
 \begin{figure}[h] 
     \centering
     \includegraphics[width=0.9\textwidth]{tuloksia/ilmanvaihtohuone_ms_per_frame.png}
-    \caption{Ilmanvaihtohuone: kahden miljoonan pisteen renderöintiin vaadittu aika millisekunteina kahdella eri renderöintialgoritmilla.}
+    \caption{Ilmanvaihtohuone: kahden miljoonan pisteen piirtämiseen vaadittu aika millisekunteina kahdella eri visualisointialgoritmilla.}
     \label{iv_ms}
 \end{figure}
 
-Luvussa \ref{render} esiteltiin puskurivirran lisäksi yleiskuvapuskuria käyttävä algoritmi, joka pitää osaa pistepilvestä näytönohjaimen muistissa. Kuvassa \ref{iv_ms} on mitattu kahden miljoonan pisteen renderöintiaikaa ilmanvaihtohuone-pilvessä. Sininen viiva kuvaa renderöintiaikaa käytettäessä pelkkää puskurivirtaa ja oranssin viivan kuvaamassa mittauksessa on ensin renderöity yleiskuvapuskuri, minkä jälkeen jäljelle jäävät puun solmut on järjestetty kuvaruudulle projisoidun koon mukaan ja renderöity puskurivirralla. Yleiskuvapuskurissa on puun neljä ensimmäistä tasoa, joissa on yhteensä 286 solmua ja niissä 723834 pistettä.
+Luvussa \ref{render} esiteltiin puskurivirran lisäksi yleiskuvapuskuria käyttävä algoritmi, joka pitää osaa pistepilvestä näytönohjaimen muistissa. Kuvassa \ref{iv_ms} on mitattu kahden miljoonan pisteen piirtoaikaa ilmanvaihtohuone-pilvessä. Sininen viiva kuvaa piirtoaikaa käytettäessä pelkkää puskurivirtaa ja oranssin viivan kuvaamassa mittauksessa on ensin visualisoitu yleiskuvapuskuri, minkä jälkeen jäljelle jäävät puun solmut on järjestetty kuvaruudulle projisoidun koon mukaan ja piirretty puskurivirralla. Yleiskuvapuskurissa on puun neljä ensimmäistä tasoa, joissa on yhteensä 286 solmua ja niissä 723834 pistettä.
 
-Ilmanvaihtohuoneen kamera-ajo alkaa huoneen reunalta kameran osoittaessa vastakkaiselle seinälle. Kamera liikkuu kohti vastakkaista seinää, jolloin renderöitävien solmujen määrä vähenee. Kameran saavutettua vastakkaisen seinän noin sadan ruudun jälkeen se kääntyy ympäri osoittamaan huoneen poikki. Näkyvissä olevien solmujen äkkinäinen kasvaminen näkyy jyrkkänä piikkinä kuvassa \ref{iv_ms}. Tämän jälkeen kamera lähestyy taas seinää ja renderöintiaika kasvaa. Lopuksi kamera peruuttaa pois päin seinästä ja näkyvillä olevien solmujen kasvava määrä pitkittää ruutujen renderöintiä.
+Ilmanvaihtohuoneen kamera-ajo alkaa huoneen reunalta kameran osoittaessa vastakkaiselle seinälle. Kamera liikkuu kohti vastakkaista seinää, jolloin visualisoitavien solmujen määrä vähenee. Kameran saavutettua vastakkaisen seinän noin sadan ruudun jälkeen se kääntyy ympäri osoittamaan huoneen poikki. Näkyvissä olevien solmujen äkkinäinen kasvaminen näkyy jyrkkänä piikkinä kuvassa \ref{iv_ms}. Tämän jälkeen kamera lähestyy taas seinää ja piirtoaika kasvaa. Lopuksi kamera peruuttaa pois päin seinästä ja näkyvillä olevien solmujen kasvava määrä pitkittää ruutujen visualisointia.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{tuloksia/worksite_ms_per_frame.png}
-    \caption{Worksite-pilven kahden miljoonan pisteen renderöintiin vaadittu aika millisekunteina kahdella eri renderöintialgoritmilla}
+    \caption{Worksite-pilven kahden miljoonan pisteen piirtämiseen vaadittu aika millisekunteina kahdella eri visualisointialgoritmilla}
     \label{ws_ms}
 \end{figure}
 
-Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset worksite-pilvelle. Oranssin viivan kuvaamassa renderöintitavassa on yleiskuvapuskurissa puun viisi ylintä kerrosta, 1862 solmua ja 481663 pistettä.
+Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset worksite-pilvelle. Oranssin viivan kuvaamassa visualisointitavassa on yleiskuvapuskurissa puun viisi ylintä kerrosta, 1862 solmua ja 481663 pistettä.
 
 \begin{figure}
     \subfloat[]{
@@ -87,17 +87,17 @@ Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset worksite-pilvelle. Oranssin vi
     \subfloat[]{
         \includegraphics[width=.5\linewidth]{tuloksia/worksite_2M/worksite_overviewbuf.png}
     }
-    \caption{Worksite-pilvi renderöity kahdella miljoonalla pisteellä käyttäen (a) pelkkää puskurivirtaa ja (b) yleiskuvapuskurin ja puskurivirran yhdistelmällä. Oikeanpuoleisessa kuvassa oktettipuun solmujen järjestämisen ansiosta kameraa lähellä oleva seinä on piirretty korkeammalla pistetiheydellä kuin vasemmassa kuvassa. Pistepilvi on Leica Geosystemsin omaisuutta.}
+    \caption{Worksite-pilvi visualisoitu kahdella miljoonalla pisteellä käyttäen (a) pelkkää puskurivirtaa ja (b) yleiskuvapuskurin ja puskurivirran yhdistelmällä. Oikeanpuoleisessa kuvassa oktettipuun solmujen järjestämisen ansiosta kameraa lähellä oleva seinä on piirretty korkeammalla pistetiheydellä kuin vasemmassa kuvassa. Pistepilvi on Leica Geosystemsin omaisuutta.}
     \label{img:worksite_vertailu}
 \end{figure}
 
-Mittauksista selviää, että pelkän puskurivirran käyttäminen puun renderöinnissä on selkeästi nopeampaa kuin yleiskuvapuskurin ja puskurivirran yhdistelmällä. Tämä ero selittyy puun solmujen järjestämiseen vaaditulla ajalla. Vaikka järjestäminen vie arvokasta laskenta-aikaa, voidaan sen parantavan lopputuloksen laatua. Kuvassa \ref{img:worksite_vertailu} vasemmalla puolella näkyy, kuinka puskurivirta on renderöinyt koko näkyvillä olevan pistepilven samalla pistetiheydellä ja taaimmainen seinä näyttää tarkemmalta kuin kameraa lähempänä oleva. Oikeanpuoleisessa kuvassa puun solmut on yleiskuvan renderöinnin jälkeen järjestetty ruudulle projisoidun koon mukaan, minkä seurauksena etualalla oleva seinä näkyy selvästi.
+Mittauksista selviää, että pelkän puskurivirran käyttäminen puun visualisoinnissa on selkeästi nopeampaa kuin yleiskuvapuskurin ja puskurivirran yhdistelmällä. Tämä ero selittyy puun solmujen järjestämiseen vaaditulla ajalla. Vaikka järjestäminen vie arvokasta laskenta-aikaa, voidaan sen katsoa parantavan lopputuloksen laatua. Kuvassa \ref{img:worksite_vertailu} vasemmalla puolella näkyy, kuinka puskurivirta on piirtänyt koko näkyvillä olevan pistepilven samalla pistetiheydellä ja taaimmainen seinä näyttää tarkemmalta kuin kameraa lähempänä oleva. Oikeanpuoleisessa kuvassa puun solmut on yleiskuvan piirtämisen jälkeen järjestetty ruudulle projisoidun koon mukaan, minkä seurauksena etualalla oleva seinä näkyy selvästi.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{tuloksia/worksite_overview.png}
-    \caption{Worksite-pilvestä muodostetun puun viiden ylimmän tason renderöintiin käytetty aika mikrosekunteina puskurivirralla ja kun pisteet ovat valmiiksi yleiskuvapuskurissa näytönohjaimen muistissa.}
+    \caption{Worksite-pilvestä muodostetun puun viiden ylimmän tason visualisointiin käytetty aika mikrosekunteina puskurivirralla ja kun pisteet ovat valmiiksi yleiskuvapuskurissa näytönohjaimen muistissa.}
     \label{ws_ovw}
 \end{figure}
 
-Kameran liikkuessa pistepilven ohi riittää usein renderöidä vain karkea yleiskuva pilvestä. Kun yleiskuvan pisteet pidetään näytönohjaimen muistissa, on niiden renderöiminen jokaisella ruudunpäivityksellä nopeaa. Kuvassa \ref{ws_ovw} on verrattu yleiskuvan renderöintiä kun yleiskuvapuskuri on valmiiksi näytönohjaimen muistissa siihen, kun pisteet ladataan keskusmuistista puskurivirralla näytönohjaimelle. Yleiskuvapuskurin tapauksessa renderöintiaika on mitattu piirtokomennon suorittamisesta siihen, että näytönohjain on saanut kaikki pisteet renderöityä ja merkattua synkronointiobjektin käsitellyksi. Näin kaikki pisteet on varmasti renderöity ruudulle ajastimen pysähtyessä. Pisteiden lataaminen levyltä ja kompression purkaminen on näissä mittauksissa jätetty pois.
+Kameran liikkuessa pistepilven ohi riittää usein piirtää vain karkea yleiskuva pilvestä. Kun yleiskuvan pisteet pidetään näytönohjaimen muistissa, on niiden piirtäminen jokaisella ruudunpäivityksellä nopeaa. Kuvassa \ref{ws_ovw} on verrattu yleiskuvan piirtämistä kun yleiskuvapuskuri on valmiiksi näytönohjaimen muistissa siihen, kun pisteet ladataan keskusmuistista puskurivirralla näytönohjaimelle. Yleiskuvapuskurin tapauksessa piirtoaika on mitattu piirtokomennon suorittamisesta siihen, että näytönohjain on saanut kaikki pisteet piirrettyä ja merkattua synkronointiobjektin käsitellyksi. Näin kaikki pisteet on varmasti piirretty ruudulle ajastimen pysähtyessä. Pisteiden lataaminen levyltä ja kompression purkaminen on näissä mittauksissa jätetty pois.

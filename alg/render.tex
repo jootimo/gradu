@@ -4,7 +4,7 @@
 
 $b_{yleiskuva} \gets$ pistepuskuri, jota pidetään näytönohjaimen muistissa
 
-\uIf{Ensimmäinen renderöintikerta}{
+\uIf{Ensimmäinen visualisointikerta}{
     \While{$b_{yleiskuva}$ ei ole täynnä}{
         \kommentti{Käydään puuta läpi taso kerrallaan}
         \For{Solmu $s \in P$} {
@@ -13,9 +13,9 @@ $b_{yleiskuva} \gets$ pistepuskuri, jota pidetään näytönohjaimen muistissa
     }    
 }
 
-Lähetä $b_{yleiskuva}$ näytönohjaimelle renderöitäväksi.
+Lähetä $b_{yleiskuva}$ näytönohjaimelle piirrettäväksi.
 
-\kommentti{Loput pisteet renderöidään puskurivirralla}
+\kommentti{Loput pisteet visualisoidaan puskurivirralla}
 $S \gets$ näkyvissä olevat puun solmut, joita ei lisätty puskuriin $b_{yleiskuva}$\\
 Järjestä S ruudulle projisoidun koon mukaan\\
-RenderöiPuskurivirta(S)
+PiirräPuskurivirta(S)
