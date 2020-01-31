@@ -5,9 +5,9 @@ Luvussa \ref{mun} esitettiin sisäkkäispistepuun solmujen sisältämien ruuduko
 Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kolmella pistepilvellä. \emph{Pannuhuone}-pilvi sisälsi 20 keilausta, jotka veivät 18,7 gigatavua tilaa tallennettuna pakkaamattomaan tekstitiedostoon. Keilauksista muodostettiin puu, jossa oli 546572600 pistettä 528017:ssa solmussa, jotka jakautuivat yhdeksälle tasolle. \emph{Toimisto} sisälsi 8,43 gigatavua pisteitä 21 keilauksesta ja siitä muodostetussa puussa oli 240727221 pistettä 608002:ssa solmussa 11:llä tasolla. \emph{Pumput} oli testattavista pienin, vain 41:n megatavun kokoinen pistepilvi. Siinä oli 5 keilausta, joista rakennetussa puussa oli 1213990 pistettä 4561:ssä solmussa seitsemällä tasolla.  
 
 \begin{table}[h]
-    \begin{tabular}{llll}
+    \begin{tabular}{|l|l|l|l|}
     \hline
-    pisteiden esitysmuoto & tiedoston koko & rakentaminen ja tallentaminen & läpikäynti \\ \hline
+    \textbf{pisteiden esitysmuoto} & \textbf{tiedoston koko} & \textbf{rakentaminen ja tallentaminen} & \textbf{läpikäynti} \\ \hline
     16 tavua       & 8,17 GB             & 2574s = 42min 54s              & 6227ms     \\
     8 tavua        & 4,10 GB             & 1652s = 27min 32s             & 16190ms    \\
     4 tavua        & 2,07 GB             & 1602s = 26min 42s             & 13462ms    \\ \hline
@@ -18,9 +18,9 @@ Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kol
 
 
 \begin{table}[h]
-    \begin{tabular}{llll}
+    \begin{tabular}{|l|l|l|l|}
     \hline
-    pisteiden esitysmuoto & tiedoston koko & rakentaminen ja tallentaminen & läpikäynti \\ \hline
+    \textbf{pisteiden esitysmuoto} & \textbf{tiedoston koko} & \textbf{rakentaminen ja tallentaminen} & \textbf{läpikäynti} \\ \hline
     16 tavua & 3,59GB              & 891s = 14min 51s              & 2763ms     \\
     8 tavua  & 1,83GB              & 724s = 12min 4s               & 8492ms     \\
     4 tavua & 961MB               & 712s = 11min 52s              & 6985ms     \\ \hline
@@ -30,11 +30,11 @@ Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kol
 \end{table}
 
 \begin{table}[h]
-    \begin{tabular}{llll}
+    \begin{tabular}{|l|l|l|l|}
     \hline
-    pisteiden esitysmuoto & tiedoston koko & rakentaminen ja tallentaminen & läpikäynti \\ \hline
-    16 tavua       & 18,6MB              & 12s                           & 14ms       \\
-    8 tavua      & 9,57MB              & 10s                           & 36ms       \\
+    \textbf{pisteiden esitysmuoto} & \textbf{tiedoston koko} & \textbf{rakentaminen ja tallentaminen} & \textbf{läpikäynti} \\ \hline
+    16 tavua       & 18,6MB              & 12s                           & 14ms       \\ \hline
+    8 tavua      & 9,57MB              & 10s                           & 36ms       \\ \hline
     4 tavua      & 4,94MB              & 9s                            & 29ms       \\ \hline
     \end{tabular}
     \caption{Pumput-pilvestä muodostetun oktettipuun rakentaminen ja pisteiden läpikäyminen}

@@ -543,7 +543,7 @@ FUNCTION {format.bedition}
           if$
         }
       if$
-      " ed." *
+      " painos" *
     }
   if$
 }
