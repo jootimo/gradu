@@ -501,7 +501,7 @@ FUNCTION {format.etc}
 
 
 FUNCTION {format.pub.add.year.etc}
-{ " ("
+{ ", "
   publisher empty$
     { "PUBLISHER" "No publisher for entry " cite$ "." * * warning$ }
     { publisher }
@@ -511,7 +511,7 @@ FUNCTION {format.pub.add.year.etc}
     { "" "Missing address in entry " cite$ * "." * warning$ }
     { address }
   if$
-  ", " * *
+  ", (" * *
   year empty$
    { "YEAR" }
    'year
@@ -735,7 +735,7 @@ FUNCTION {mastersthesis}
   "pro gradu -tutkielma" format.thesis.type   #1   add.string
   "school"   school   #1   add.string.check
   address #1 add.string
-  "year" format.date   note empty$ not   add.string.check
+  "year" format.date paren  note empty$ not   add.string.check
   note empty$
     'skip$
     { note lc.first.letter * }
@@ -756,7 +756,7 @@ FUNCTION {phdthesis}
   "Väitöskirja" format.thesis.type   #1   add.string
   "school"   school   #1   add.string.check
   address #1 add.string
-  "year" format.date   note empty$ not   add.string.check
+  "year" format.date paren  note empty$ not   add.string.check
   note empty$
     'skip$
     { note lc.first.letter * }

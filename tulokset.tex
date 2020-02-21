@@ -2,7 +2,7 @@
 
 Luvussa \ref{mun} esitettiin sisäkkäispistepuun solmujen sisältämien ruudukoiden mahdollistama yksinkertainen kompressiotekniikka ja algoritmeja puun rakentamiseen ja visualisointiin. Ensin mitataan sisäkkäispistepuun rakentamisen, tallentamisen ja läpikäynnin suorituskykyä ja arvioidaan kompression vaikutusta siihen. Tämän jälkeen mitataan pistepilvien visualisointinopeutta eri tekniikoilla käyttäen maiseman läpi kulkevia kamera-ajoja. Testikoneessa on Intel i7-8850H -suoritin, 32 gigatavua keskusmuistia, SSD-levy ja Nvidia Quadro P2000 -näytönohjain.  
 
-Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kolmella pistepilvellä. \emph{Pannuhuone}-pilvi sisälsi 20 keilausta, jotka veivät 18,7 gigatavua tilaa tallennettuna pakkaamattomaan tekstitiedostoon. Keilauksista muodostettiin puu, jossa oli 546572600 pistettä 528017:ssa solmussa, jotka jakautuivat yhdeksälle tasolle. \emph{Toimisto} sisälsi 8,43 gigatavua pisteitä 21 keilauksesta ja siitä muodostetussa puussa oli 240727221 pistettä 608002:ssa solmussa 11:llä tasolla. \emph{Pumput} oli testattavista pienin, vain 41:n megatavun kokoinen pistepilvi. Siinä oli 5 keilausta, joista rakennetussa puussa oli 1213990 pistettä 4561:ssä solmussa seitsemällä tasolla.  
+Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kolmella pistepilvellä. \emph{Konehuone}-pilvi sisälsi 20 keilausta, jotka veivät 18,7 gigatavua tilaa tallennettuna pakkaamattomaan tekstitiedostoon. Keilauksista muodostettiin puu, jossa oli 546572600 pistettä 528017:ssa solmussa, jotka jakautuivat yhdeksälle tasolle. \emph{Toimisto} sisälsi 8,43 gigatavua pisteitä 21 keilauksesta ja siitä muodostetussa puussa oli 240727221 pistettä 608002:ssa solmussa 11:llä tasolla. \emph{Pumput} oli testattavista pienin, vain 41:n megatavun kokoinen pistepilvi. Siinä oli 5 keilausta, joista rakennetussa puussa oli 1213990 pistettä 4561:ssä solmussa seitsemällä tasolla.  
 
 \begin{table}[h]
     \begin{tabular}{|l|l|l|l|}
@@ -12,8 +12,8 @@ Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kol
     8 tavua        & 4,10 GB             & 1652s = 27min 32s             & 16190ms    \\
     4 tavua        & 2,07 GB             & 1602s = 26min 42s             & 13462ms    \\ \hline
     \end{tabular}
-    \caption{Pannuhuone-pilvestä muodostetun oktettipuun rakentaminen ja pisteiden läpikäyminen}
-    \label{taulukko:pannuhuone}
+    \caption{Konehuone-pilvestä muodostetun oktettipuun rakentaminen ja pisteiden läpikäyminen}
+    \label{taulukko:konehuone}
 \end{table}
 
 
@@ -41,7 +41,7 @@ Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kol
     \label{taulukko:pumput}
 \end{table}
 
-Taulukoissa \ref{taulukko:pannuhuone}, \ref{taulukko:toimisto} ja \ref{taulukko:pumput} on mitattu testipilvien rakentamiseen, tallentamiseen ja pisteiden läpikäyntiin kuluva aika käyttäen kolmea luvussa \ref{kompressio} käytettyä pisteiden esitysmuotoa: maailmakoordinaatit ja väri (16 tavua), ruudukon solun indeksi ja väri (8 tavua), sekä solun suhteelliset koordinaatit ja laserkeilaimeen takaisin heijastuneen valon intensiteetti (4 tavua). 
+Taulukoissa \ref{taulukko:kone  huone}, \ref{taulukko:toimisto} ja \ref{taulukko:pumput} on mitattu testipilvien rakentamiseen, tallentamiseen ja pisteiden läpikäyntiin kuluva aika ja binääritiedoston koko käyttäen kolmea luvussa \ref{kompressio} käytettyä pisteiden esitysmuotoa: maailmakoordinaatit ja väri (16 tavua), ruudukon solun indeksi ja väri (8 tavua), sekä solun suhteelliset koordinaatit ja laserkeilaimeen takaisin heijastuneen valon intensiteetti (4 tavua). 
 
 Yllätyksettömästi 16:n tavun pistedatan muistiin lataaminen ja läpikäyminen oli huomattavasti nopeampaa kuin kompressoitujen pisteiden. Nelitavuisten pisteiden lataaminen ja kompression purkaminen oli nopeampaa kuin kahdeksantavuisten. Tietorakennetta rakennettaessa näyttää siltä, että pistedatan kirjoittaminen levylle vie huomattavan osan suoritusajasta. Tästä syystä on ajansäästön kannalta kannattavaa käyttää laskenta-aikaa pistedatan kompressointiin, jotta kirjoitettavia tavuja olisi vähemmän. 
 
@@ -56,7 +56,7 @@ Tietorakenteen visualisointia arvioitaessa käytetään kahta pistepilveä. \emp
 
 Arvioidaan ensin luvussa \ref{kompressio} esitellyn kompression vaikutusta pistepilven visualisointiaikaan. Kuvassa \ref{ws_compr} on esitetty kaavio kahden miljoonan pisteen piirtämisen vaatimasta ajasta kamera-ajon jokaisella ruudunpäivityksellä. Sininen viiva kuvaa piirtoaikaa kompressoimattomilla pisteillä ja oranssi viiva värit säilyttävällä kompressiolla. Visualisoinnissa on käytetty luvussa \ref{render} esiteltyä puskurivirta-algoritmia. 
 
-Kamera-ajo alkaa maiseman reunalta ja kulkee työmaan ohi lähestyen sen reunaa siten, että näkyvissä olevien puun solmujen määrä laskee tasaisesti. Tämä näkyy myös kuvassa \ref{ws_compr} ruudun visualisointiajan laskiessa. Näkymäkarton sisällä olevien solmujen määrä kasvaa äkkinäisesti noin 150:nnen ruudun kohdalla, jolloin kamera kääntyy niin, että koko pilvi on näkyvissä. Lopuksi kamera lähestyy vastakkaista seinää ja näkyvissä olevien solmujen määrä laskee. 
+Kamera-ajo alkaa maiseman reunalta ja kulkee työmaan ohi lähestyen sen reunaa siten, että näkyvissä olevien puun solmujen määrä laskee tasaisesti. Tämä näkyy myös kuvassa \ref{ws_compr} ruudun visualisointiajan laskiessa. Näkymäkarton sisällä olevien solmujen määrä kasvaa äkkinäisesti noin 150:nnen ruudun kohdalla, kun kamera kääntyy niin, että koko pilvi on näkyvissä. Lopuksi kamera lähestyy vastakkaista seinää ja näkyvissä olevien solmujen määrä laskee. 
 
 Kuvaajasta huomataan, että kompressoimattomien 16-tavuisten pisteiden piirtäminen on jonkin verran nopeampaa kuin kompressoitujen kahdeksantavuisten pisteiden. Eron selittää kompression avaamiseen vaadittu laskenta. Jokaisesta kompressoidusta pisteestä etsitään kompressoidun pisteen indeksiä vastaava ruudukon solu ja lasketaan sen keskipiste. Visualisointiajan ero on kuitenkin pieni ja voidaan katsoa, että miltei puolittunut tallennustilan tarve oikeuttaa pistedatan kompression.
 

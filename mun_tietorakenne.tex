@@ -1,10 +1,10 @@
 \section{Pistepilven visualisointi sisäkkäispistepuilla}\label{mun}
 
-Luvussa \ref{usecase} todettiin Scheiblauerin ja Schützin ehdottamien sisäkkäispistepuiden soveltuvan laitossuunnitteluohjelmistossa käytettävän pistepilvivisualisoijan tarpeisiin. Sisäkkäispistepuiden rakenne mahdollistaa seuraavaksi esiteltävän yksinkertaisen tekniikan pistedatan kompressioon. Tämän jälkeen esitellään algoritmeja sisäkkäispistepuun rakentamiseen, renderöintiin ja pisteiden valitsemiseen.    
+Luvussa \ref{usecase} todettiin Scheiblauerin ja Schützin ehdottamien sisäkkäispistepuiden soveltuvan laitossuunnitteluohjelmistossa käytettävän pistepilvivisualisoijan tarpeisiin. Sisäkkäispistepuiden rakenne mahdollistaa seuraavaksi esiteltävän yksinkertaisen tekniikan pistedatan kompressioon. Tämän jälkeen esitellään algoritmeja sisäkkäispistepuun rakentamiseen, renderöintiin ja pisteiden valitsemiseen.
 
 \subsection{Pistedatan esitysmuoto}\label{kompressio}
 
-Pistepilvet sisältävät usein satoja miljoonia tai jopa miljardeja pisteitä, mikä johtaa luonnollisesti isoihin tiedostokokoihin. Yleensä hierarkiatiedon osuus tiedoston sisällöstä on varsin pieni, joten tiedostokokoa saadaan pienennettyä parhaiten tiivistämällä itse pisteiden esitysmuotoa. Pisteistä tarvitsee tallentaa vähintään niiden sijainti ja väri. Yleensä sijainti esitetään kolmella nelitavuisella liukuluvuilla ja väri RGB-koodauksella kolmella yksitavuisella kokonaisluvulla:
+Pistepilvet sisältävät usein satoja miljoonia tai jopa miljardeja pisteitä, mikä johtaa luonnollisesti isoihin tiedostokokoihin. Yleensä hierarkiatiedon osuus tiedoston sisällöstä on varsin pieni, joten tiedostokokoa saadaan pienennettyä parhaiten tiivistämällä itse pisteiden esitysmuotoa. Pisteistä tarvitsee tallentaa vähintään niiden sijainti ja väri. Yleensä sijainti esitetään kolmella nelitavuisella liukuluvuilla ja väri RGB-koodauksella kolmella tavulla:
 
 \code{
 struct Point \{\\
@@ -17,7 +17,7 @@ struct Point \{\\
     \}
 }
 
-\noindent Yleensä näiden 15:a tavun lisäksi lisätään yksi pakkaustavu, jotta koko olisi mukava kahden potenssi. Miljardi pistettä tallennettuna tässä esitysmuodossa vaatisi siis 16 gigatavua muistia.\footnote{Pistepilvisovelluksen käyttäjän rahapussin koosta riippuen tämän kokoinen pilvi mahtuisi vielä keskusmuistiin ja jopa näytönohjaimen muistiin \cite{rtx}.} Muuttamalla pisteiden esitysmuotoa voidaan pistepilviä tiivistää ja joitakin operaatioita nopeuttaa.
+\noindent Yleensä näiden 15:a tavun lisäksi lisätään yksi pakkaustavu, jotta koko olisi mukava kahden potenssi. Miljardi pistettä tallennettuna tässä esitysmuodossa vaatisi siis 16 gigatavua muistia. Muuttamalla pisteiden esitysmuotoa voidaan pistepilviä tiivistää ja joitakin operaatioita nopeuttaa.
 
 \begin{figure}
     \subfile{fig/ruudukko.tex}
@@ -93,7 +93,7 @@ Puun syvyyttä voi rajoittaa asettamalla ruudukon soluille vähimmäismitat. Yle
     \subfile{alg/lisaaPiste.tex}
 \end{algorithm}
 
-Tietorakennetta tallennettaessa kirjoitetaan tiedostoon ensin tarvittavat tiedot puun solmuista ja pisteet vasta niiden jälkeen. Jokainen solmu sisältää tiedon siitä, kuinka monta pistettä siihen kuuluu, sekä ensimmäisen pisteen indeksin pistetaulukossa. Tämä mahdollistaa sen, että pistepilveä käsiteltäessä luetaan tiedostosta ensin vain kevyt hierarkia, jonka jälkeen vain tarvittavat pisteet voidaan lukea muistiin. Tiedoston rakennetta on havainnollistettu kuvassa \ref{layout}. Pisteiden lukumäärän ja ensimmäisen pisteen indeksin lisäksi jokaisesta solmusta tallennetaan rajauslaatikko ja sijaintikoodi, joka kertoo sen sijainnin puussa. Sijaintikoodin  numerot kertovat reitin juurisolmusta kyseiseen solmuun. Esimerkiksi koodi 014 tarkoittaa juurisolmun toisessa oktetissa sijaitsevan lapsen viidennessä oktetissa sijaitsevaa lasta. Lopuksi tarvitsee levylle kirjoittaa vielä millä puun tasolla se sijaitsee, jotta tiedostoa lukiessa tiedettäisiin sijaintikoodin pituus.
+Jotta säästettäisiin satojen tuhansien tiedostojen avaamisen ja sulkemisen vaatima aika, voidaan laitossuunnitteluohjelmistossa tietorakenne tallentaa yhteen tiedostoon. Tallennettaessa kirjoitetaan tiedostoon ensin tarvittavat tiedot puun solmuista ja pisteet vasta niiden jälkeen. Jokainen solmu sisältää tiedon siitä, kuinka monta pistettä siihen kuuluu, sekä ensimmäisen pisteen indeksin pistetaulukossa. Tämä mahdollistaa sen, että pistepilveä käsiteltäessä luetaan tiedostosta ensin vain kevyt hierarkia, jonka jälkeen vain tarvittavat pisteet voidaan lukea muistiin. Tiedoston rakennetta on havainnollistettu kuvassa \ref{layout}. Pisteiden lukumäärän ja ensimmäisen pisteen indeksin lisäksi jokaisesta solmusta tallennetaan rajauslaatikko ja sijaintikoodi, joka kertoo sen sijainnin puussa. Sijaintikoodin  numerot kertovat reitin juurisolmusta kyseiseen solmuun. Esimerkiksi koodi 014 tarkoittaa juurisolmun toisessa oktetissa sijaitsevan lapsen viidennessä oktetissa sijaitsevaa lasta. Lopuksi tarvitsee levylle kirjoittaa vielä millä puun tasolla se sijaitsee, jotta tiedostoa lukiessa tiedettäisiin sijaintikoodin pituus.
 
 \begin{figure}
     \centering
@@ -121,11 +121,11 @@ struct Node \{\\
 
 \noindent Nelitavuisilla liukuluvuilla ja kokonaisluvuilla vaatii solmu siis tallennustilaa $33 + d$ tavua, missä $d$ on solmun syvyys puussa.
 
-Edellä kuvattu rakennusalgoritmi pitää koko oktettipuun muistissa ennen kuin pisteet kirjoitetaan levylle. Massiivisten pistepilvien tapauksessa keskusmuisti saattaa täyttyä vaikka pilveä olisi harvennettu ja pisteitä kompressoitu. Muisin täyttyessä käyttöjärjestelmä alkaa pitää osaa prosessin muistiavaruudesta kiintolevyllä sivutuksen \engl{paging} avulla \cite{os}. Jatkotutkimuksen aiheeksi jää selvittää, onko nopeampaa antaa käyttöjärjestelmän siirtää sivuja kiintolevylle, vai esimerkiksi tallentaa ensin pisteitä väliaikaiseen tiedostoon niiden lisäysjärjestykessä, josta ne kopioidaan oikeassa järjestyksessä lopulliseen tiedostoon. 
+Edellä kuvattu rakennusalgoritmi pitää koko oktettipuun muistissa ennen kuin pisteet kirjoitetaan levylle. Massiivisten pistepilvien tapauksessa keskusmuisti saattaa täyttyä vaikka pilveä olisi harvennettu ja pisteitä kompressoitu. Muisin täyttyessä käyttöjärjestelmä alkaa pitää osaa prosessin muistiavaruudesta kiintolevyllä sivutuksen \engl{paging} avulla \cite{os}. Jatkotutkimuksen aiheeksi jää selvittää, onko nopeampaa antaa käyttöjärjestelmän siirtää sivuja kiintolevylle, vai esimerkiksi tallentaa ensin pisteitä väliaikaisiin tiedostoihin niiden lisäysjärjestykessä, josta ne kopioidaan oikeassa järjestyksessä lopulliseen tiedostoon. 
 
 \subsection{Visualisointi}\label{render}
 
-Nopein tapa visualisoida pistepilvi on pitää kaikki pisteet näytönohjaimen muistissa ja joka ruudunpäivityksellä piirtää kaikki näkymässä näkyvät pisteet. Vaikka koko pistepilvi mahtuisi näytönohjaimen muistiin, täytyy laitossuunnitteluohjelmistossa visualisoida muutakin grafiikkaa. Näytönohjaimen muistia voidaan säästää käyttämällä niin kutsuttua puskurivirtaa \engl{buffer streaming}. Yleinen ongelma grafiikan piirtämisessä on se, että näytönohjain prosessoi dataa nopeammin kuin suoritin ehtii sille syöttää. Puskurivirran ajatuksena on pitää näytönohjain mahdollisimman toimeliaana jakamalla puskuri, jonka kautta dataa siirretään keskusmuistista näytönohjaimen muistiin, kolmeen osaan. Samalla kun näytönohjain käsittelee yhtä puskurin osaa, suoritin voi täyttää toista datalla, ja kolmas on jo palautumassa suorittimen täytettäväksi. Teoriassa näytönohjain voi vain vaihtaa luettavaa puskuria ilman, että sen tarvitsisi odottaa lainkaan hidasta tiedonsiirtoa. \cite{opengl}
+Nopein tapa visualisoida pistepilvi on pitää kaikki pisteet näytönohjaimen muistissa ja joka ruudunpäivityksellä piirtää kaikki näkymässä näkyvät pisteet. Vaikka koko pistepilvi mahtuisi näytönohjaimen muistiin, täytyy laitossuunnitteluohjelmistossa visualisoida muutakin grafiikkaa. Näytönohjaimen muistia voidaan säästää käyttämällä niin kutsuttua puskurivirtaa \engl{buffer streaming}. Yleinen ongelma grafiikan piirtämisessä on se, että näytönohjain prosessoi dataa nopeammin kuin suoritin ehtii sille syöttää. Puskurivirran ajatuksena on pitää näytönohjain mahdollisimman toimeliaana jakamalla puskuri, jonka kautta dataa siirretään keskusmuistista näytönohjaimen muistiin, kolmeen osaan. Samalla kun näytönohjain käsittelee yhtä puskurin osaa, suoritin voi täyttää toista datalla, ja kolmas on jo palautumassa suorittimen täytettäväksi. Teoriassa näytönohjain voi vain vaihtaa luettavaa osiota ilman, että sen tarvitsisi odottaa lainkaan hidasta tiedonsiirtoa. \cite{opengl}
 
 \begin{figure}
     \centering
@@ -153,7 +153,7 @@ Algoritmissa \ref{alg:render} yleiskuvapuskuri täytetään ensimmäisellä visu
     \subfile{alg/renderDetail.tex}
 \end{algorithm}
 
-Yleiskuvan visualisoinnin jälkeen jäljelle jäävät solmut järjestetään niiden kuvaruudulle projisoidun koon mukaan, koska pistepilvi näyttää tarkentuvan nopeammin, kun ensin piirretään suuret ja lähellä kameraa olevat solmut. Järjestämisen jälkeen loput pisteet voidaan piirtää algoritmissa \ref{alg:renderDetail} kuvatulla puskurivirralla. 
+Yleiskuvan visualisoinnin jälkeen jäljelle jäävät solmut järjestetään niiden kuvaruudulle projisoidun koon mukaan, koska kuva näyttää tarkentuvan nopeammin, kun ensin piirretään suuret ja lähellä kameraa olevat solmut. Järjestämisen jälkeen loput pisteet voidaan piirtää algoritmissa \ref{alg:renderDetail} kuvatulla puskurivirralla. 
 
 Algoritmi \ref{alg:renderDetail} lisää kunkin solmun pisteet täyttövuorossa olevaan puskurivirran osioon. Puskuriosion täyttyessä vaihdetaan täytettäväksi seuraava osio. Puskurivirtaa käyttäessä täytyy varmistaa, ettei sama osio ole sekä suorittimen kirjoitettavana, että näytönohjaimen luettavana. Tämä tapahtuu lähettämällä näytönohjaimelle jokaisen puskuriosion täyttymisen jälkeen synkronointiobjekti \engl{sync object}. Kun uutta osiota otetaan kirjoitettavaksi, tarkastetaan, että näytönohjain on merkannut kyseisen osion synkronointiobjektin käsitellyksi. \cite{sync}
 
