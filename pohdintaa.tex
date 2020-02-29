@@ -8,7 +8,7 @@ Pistebudjetin käyttö pistepilveä visualisoitaessa mahdollistaa interaktiivise
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{tuloksia/ilmastointi_2M/ilmastointihuone_vesijohto_overviewbuf.png}
+    \includegraphics[width=0.75\textwidth]{tuloksia/ilmastointi_2M/ilmastointihuone_vesijohto_overviewbuf.png}
     \caption{Kahden miljoonan pisteen budjetin käyttäminen aiheuttaa ilmanvaihtohuone-pilvessä häiritseviä tarkkuustasojen välisiä eroja.}
     \label{lod_border}
 \end{figure}
@@ -16,6 +16,20 @@ Pistebudjetin käyttö pistepilveä visualisoitaessa mahdollistaa interaktiivise
 Laitossuunnitteluohjelmistossa pistepilven visualisointia voidaan kuitenkin jatkaa monen ruudun ajan, eikä pistebudjetin käyttäminen ole tarpeen. 3d-maisema pistepilvineen ja 2d-grafiikka, kuten kursori ja muut avustimet, voidaan piirtää näytönohjaimelle eri puskureihin. Näin on mahdollista piirtää uudestaan vain kursori, kun käyttäjä liikuttaa hiirtä, minkä jälkeen pistepilven visualisointia voidaan jatkaa siitä mihin viimeksi jäätiin. Oktettipuun solmujen järjestäminen tärkeyden mukaan on silti tarpeen. Kuten kuvasta \ref{img:worksite_vertailu} näkyy, järjestämisen ansiosta katselupistettä lähellä olevat mielenkiintoiset alueet tarkentuvat nopeammin.
 
 %Mallinnustyössä pistepilvi täytyy usein piirtää useaan maisemaan samanaikaisesti. Käytännössä joudutaan harvoin tilanteeseen, jossa kamerat liikkuvat ja pistepilviä joudutaan päivittämään monessa maisemassa samaan aikaan. Kuitenkin olisi suotavaa, jos visualisoija piirtäisi ensin pistepilven yleiskuvan jokaiseen maisemaan, minkä jälkeen se kävisi maisemia läpi ja antaisi kullekin pienen aikasiivun pistepilven tarkentamiseen. Samoin usean pistepilven tapauksessa ei saisi käydä niin, että yksi pilvi piirretään täyteen tarkkuuteensa ennenkuin toista on edes aloitettu. 
+
+\begin{figure}[t]
+    \centering
+    \subfloat[]{
+        \includegraphics[width=.42\linewidth]{img/kaiutin2.png}
+    }
+    \subfloat[]{
+        \includegraphics[width=.4338\linewidth]{img/kaiutin1.png}
+    }
+    \caption{Yksityiskohta panoramakuvasta, joka on muodostettu (a) yhden laserkeilauksen sisältävästä ja (b) useita keilauksia sisältävästä pistepilvestä. Samojen pintojen mitatut värit vaihtelevat keilainten välillä. Pistepilvi on Elomatic Oy:n omaisuutta.}
+    \label{img:kaiuttimet}
+\end{figure}
+
+Usealla laserkeilauksella mitattujen pisteiden yhdistäminen yhteen pistepilveen vaikuttaa negatiivisesti etenkin panoramakuvien laatuun. Saman pinnan pisteet tallentuvat eri värisinä riippuen mistä kohtaa ne on mitattu. Tämä johtuu katselupisteiden välisistä eroista valaistuksessa, ja aiheuttaa kuvassa \ref{img:kaiuttimet} havainnollistettua ikävää häiriötä. Panoramakuvaa piirtäessä olisikin hyödyllistä tietää, kuinka kaukaa kuvatasolle projisoitu piste on mitattu. Näin voitaisiin priorisoida pisteitä, jotka ovat lähellä keilaimen sijaintia.
 
 Tutkielmassa esitelty oktettipuu ei suoraan sovellu putkien automaattiseen sovittamiseen pistepilveen luvussa \ref{laitossuunnittelu} esitellyillä tekniikoilla. Oktettipuu toki jakaa pistepilviä pienempiin osiin joita on helpompi käsitellä, mutta ongelmaksi muodostuu pisteiden jakautuminen puun jokaiselle tasolle. Jotta päästäisiin käsiksi tietyn alueen pisteisiin, täytyy käydä läpi kaikki solmut polulla juuresta alueen peittämiin lehtiin. Tehokkaampaa olisi, jos kaikki pisteet olisivat lehtisolmuissa, jolloin tarkasteltavissa solmuissa ei olisi halutun alueen ulkopuolisia pisteitä. Automaattista putkenreititystä varten olisikin ehkä kannattavaa järjestää pistepilvi johonkin toiseen tietorakenteeseen. 
 

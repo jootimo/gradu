@@ -335,8 +335,8 @@ FUNCTION {format.pages}
 { pages empty$
     { "" }
     { pages multi.page.check
-        { "pp.\ " pages n.dashify * }
-        { "p.\ " pages * }
+        { "pp.\ " pages n.dashify * ", " * }
+        { "p.\ " pages * ", " * }
       if$
     }
   if$
@@ -615,9 +615,12 @@ FUNCTION {article}
 { output.bibitem
   "author" format.authors #1 push.string.check
   "title"  format.title #0 add.string.check
-  "journal" journal #0 add.string.check " " *
+  journal empty$
+    'skip$
+    { journal * ", " * }
+  if$
   output
-  format.vol.page #0 push.string
+  format.pages #0 push.string
   " " *
   "date" format.date paren #0 add.string.check
  % note empty$

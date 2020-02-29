@@ -75,7 +75,7 @@ Pisteiden sijainnin suhteellinen esitysmuoto nopeuttaa myös pistepilvien käsit
 
 %Edellä todettiin sisäkkäispistepuiden sopivan pistepilvien käsittelyyn käytettäväksi tietorakenteeksi laitossuunnitteluohjelmistossa ja ehdotettiin pisteille kompaktimpaa esitysmuotoa. Käydään nyt läpi puun rakentamiseen käytettyjä algoritmeja.
 
-Edellä esitellyn oktettipuun rakentaminen suoritetaan kahdessa vaiheessa. Ensin käydään kaikki syötepisteet läpi ja selvitetään niille rajauslaatikko. Tämän jälkeen luodaan tyhjä juurisolmu, jonka rajauslaatikkona toimii äsken laskettu, kaikki pisteet sisältävä tila. Nyt syötepisteet voidaan lisätä yksitellen juurisolmuun, joka syöttää ne tarvittaessa edelleen lapsisolmuilleen. Rakentamisen ylintä tasoa on kuvattu algoritmissa \ref{alg:rakenna}.
+Edellä esitellyn oktettipuun rakentaminen suoritetaan kahdessa vaiheessa. Ensin käydään läpi kaikki syötteenä annettujen laserkeilausten piseet ja selvitetään niille rajauslaatikko. Tämän jälkeen luodaan tyhjä juurisolmu, jonka rajauslaatikkona toimii äsken laskettu, kaikki pisteet sisältävä tila. Nyt syötepisteet voidaan lisätä yksitellen juurisolmuun, joka syöttää ne tarvittaessa edelleen lapsisolmuilleen. Rakentamisen ylintä tasoa on kuvattu algoritmissa \ref{alg:rakenna}.
 
 \begin{algorithm}[!h]
     \caption{RakennaOktettipuu}
