@@ -2,15 +2,15 @@
 
 Luvussa \ref{mun} esitettiin sisäkkäispistepuun solmujen sisältämien ruudukoiden mahdollistama yksinkertainen kompressiotekniikka ja algoritmeja puun rakentamiseen ja visualisointiin. Ensin mitataan sisäkkäispistepuun rakentamisen, tallentamisen ja läpikäynnin suorituskykyä ja arvioidaan kompression vaikutusta siihen. Tämän jälkeen mitataan pistepilvien visualisointinopeutta eri tekniikoilla käyttäen maiseman läpi kulkevia kamera-ajoja. Testikoneessa on Intel i7-8850H -suoritin, 32 gigatavua keskusmuistia, SSD-levy ja Nvidia Quadro P2000 -näytönohjain.  
 
-Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kolmella pistepilvellä. \emph{Konehuone}-pilvi sisälsi 20 keilausta, jotka veivät 18,7 gigatavua tilaa tallennettuna pakkaamattomaan tekstitiedostoon. Keilauksista muodostettiin puu, jossa oli 546572600 pistettä 528017:ssa solmussa, jotka jakautuivat yhdeksälle tasolle. \emph{Toimisto} sisälsi 8,43 gigatavua pisteitä 21 keilauksesta ja siitä muodostetussa puussa oli 240727221 pistettä 608002:ssa solmussa 11:llä tasolla. \emph{Pumput} oli testattavista pienin, vain 41:n megatavun kokoinen pistepilvi. Siinä oli 5 keilausta, joista rakennetussa puussa oli 1213990 pistettä 4561:ssä solmussa seitsemällä tasolla.  
+Tietorakenteen rakentamista, tallentamista ja muistiin lataamista arvioitiin kolmella pistepilvellä. \emph{Konehuone}-pilvi sisälsi 20 keilausta, jotka veivät 18,7 gigatavua tilaa tallennettuna pakkaamattomaan tekstitiedostoon. Keilauksista muodostettiin puu, jossa oli 546 572 600 pistettä 528 017:ssa solmussa, jotka jakautuivat yhdeksälle tasolle. \emph{Toimisto} sisälsi 8,43 gigatavua pisteitä 21 keilauksesta ja siitä muodostetussa puussa oli 240 727 221 pistettä 608 002:ssa solmussa 11:llä tasolla. \emph{Pumput} oli testattavista pienin, vain 41:n megatavun kokoinen pistepilvi. Siinä oli 5 keilausta, joista rakennetussa puussa oli 1 213 990 pistettä 4561:ssä solmussa seitsemällä tasolla.  
 
 \begin{table}[h]
     \begin{tabular}{|l|l|l|l|}
     \hline
     \textbf{pisteiden esitysmuoto} & \textbf{tiedoston koko} & \textbf{rakentaminen ja tallentaminen} & \textbf{läpikäynti} \\ \hline
-    16 tavua       & 8,17 GB             & 2574s = 42min 54s              & 6227ms     \\
-    8 tavua        & 4,10 GB             & 1652s = 27min 32s             & 16190ms    \\
-    4 tavua        & 2,07 GB             & 1602s = 26min 42s             & 13462ms    \\ \hline
+    16 tavua       & 8,17GB             & 2574s = 42min 54s              & 6227ms     \\
+    8 tavua        & 4,10GB             & 1652s = 27min 32s             & 16190ms    \\
+    4 tavua        & 2,07GB             & 1602s = 26min 42s             & 13462ms    \\ \hline
     \end{tabular}
     \caption{Konehuone-pilvestä muodostetun oktettipuun rakentaminen ja pisteiden läpikäyminen}
     \label{taulukko:konehuone}
@@ -45,7 +45,7 @@ Taulukoissa \ref{taulukko:konehuone}, \ref{taulukko:toimisto} ja \ref{taulukko:p
 
 Yllätyksettömästi 16:n tavun pistedatan muistiin lataaminen ja läpikäyminen oli huomattavasti nopeampaa kuin kompressoitujen pisteiden. Nelitavuisten pisteiden lataaminen ja kompression purkaminen oli nopeampaa kuin kahdeksantavuisten. Tietorakennetta rakennettaessa näyttää siltä, että pistedatan kirjoittaminen levylle vie huomattavan osan suoritusajasta. Tästä syystä on ajansäästön kannalta kannattavaa käyttää laskenta-aikaa pistedatan kompressointiin, jotta kirjoitettavia tavuja olisi vähemmän. 
 
-Tietorakenteen visualisointia arvioitaessa käytetään kahta pistepilveä. \emph{Ilmanvaihtohuone} on keilattu Elomatic Oy:n Jyväskylän toimiston ilmanvaihdon konehuoneesta ja siinä on 13 keilausta, joista muodostetussa puussa on 506366789 pistettä 267641 solmussa kahdeksassa tasossa. \emph{Worksite}-pilvi on Leica Geosystemsin testidataa, joka sisältää 7 keilausta, joiden 53881180 pistettä jakautuu 543105 solmuun yhdeksälle puun tasolle. 
+Tietorakenteen visualisointia arvioitaessa käytetään kahta pistepilveä. \emph{Ilmanvaihtohuone} on keilattu Elomatic Oy:n Jyväskylän toimiston ilmanvaihdon konehuoneesta ja siinä on 13 keilausta, joista muodostetussa puussa on 506 366 789 pistettä 267 641 solmussa kahdeksassa tasossa. \emph{Worksite}-pilvi on Leica Geosystemsin testidataa, joka sisältää 7 keilausta, joiden 53 881 180 pistettä jakautuu 543 105 solmuun yhdeksälle puun tasolle. 
 
 \begin{figure}[h]
     \centering
@@ -67,9 +67,9 @@ Kuvaajasta huomataan, että kompressoimattomien 16-tavuisten pisteiden piirtämi
     \label{iv_ms}
 \end{figure}
 
-Luvussa \ref{render} esiteltiin puskurivirran lisäksi yleiskuvapuskuria käyttävä algoritmi, joka pitää osaa pistepilvestä näytönohjaimen muistissa. Kuvassa \ref{iv_ms} on mitattu kahden miljoonan pisteen piirtoaikaa ilmanvaihtohuone-pilvessä. Sininen viiva kuvaa piirtoaikaa käytettäessä pelkkää puskurivirtaa ja oranssin viivan kuvaamassa mittauksessa on ensin visualisoitu yleiskuvapuskuri, minkä jälkeen jäljelle jäävät puun solmut on järjestetty kuvaruudulle projisoidun koon mukaan ja piirretty puskurivirralla. Yleiskuvapuskurissa on puun neljä ensimmäistä tasoa, joissa on yhteensä 286 solmua ja niissä 723834 pistettä.
+Luvussa \ref{render} esiteltiin puskurivirran lisäksi yleiskuvapuskuria käyttävä algoritmi, joka pitää osaa pistepilvestä näytönohjaimen muistissa. Kuvassa \ref{iv_ms} on mitattu kahden miljoonan pisteen piirtoaikaa ilmanvaihtohuone-pilvessä. Sininen viiva kuvaa piirtoaikaa käytettäessä pelkkää puskurivirtaa ja oranssin viivan kuvaamassa mittauksessa on ensin visualisoitu yleiskuvapuskuri, minkä jälkeen jäljelle jäävät puun solmut on järjestetty kuvaruudulle projisoidun koon mukaan ja piirretty puskurivirralla. Yleiskuvapuskurissa on puun neljä ensimmäistä tasoa, joissa on yhteensä 286 solmua ja niissä 723 834 pistettä.
 
-Ilmanvaihtohuoneen kamera-ajo alkaa huoneen reunalta kameran osoittaessa vastakkaiselle seinälle. Kamera liikkuu kohti vastakkaista seinää, jolloin visualisoitavien solmujen määrä vähenee. Kameran saavutettua vastakkaisen seinän noin sadan ruudun jälkeen se kääntyy ympäri osoittamaan huoneen poikki. Näkyvissä olevien solmujen äkkinäinen kasvaminen näkyy jyrkkänä piikkinä kuvassa \ref{iv_ms}. Tämän jälkeen kamera lähestyy taas seinää ja piirtoaika kasvaa. Lopuksi kamera peruuttaa pois päin seinästä ja näkyvillä olevien solmujen kasvava määrä pitkittää ruutujen visualisointia.
+Ilmanvaihtohuoneen kamera-ajo alkaa huoneen reunalta kameran osoittaessa vastakkaiselle seinälle. Kamera liikkuu kohti seinää, jolloin visualisoitavien solmujen määrä vähenee. Kameran saavutettua vastakkaisen seinän noin sadan ruudun jälkeen se kääntyy ympäri osoittamaan huoneen poikki. Näkyvissä olevien solmujen äkkinäinen kasvaminen näkyy jyrkkänä piikkinä kuvassa \ref{iv_ms}. Tämän jälkeen kamera lähestyy taas seinää ja piirtoaika vähenee. Lopuksi kamera peruuttaa pois päin seinästä ja näkyvillä olevien solmujen kasvava määrä pitkittää ruutujen visualisointia.
 
 \begin{figure}[h]
     \centering
@@ -78,7 +78,7 @@ Ilmanvaihtohuoneen kamera-ajo alkaa huoneen reunalta kameran osoittaessa vastakk
     \label{ws_ms}
 \end{figure}
 
-Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset worksite-pilvelle. Oranssin viivan kuvaamassa visualisointitavassa on yleiskuvapuskurissa puun viisi ylintä kerrosta, 1862 solmua ja 481663 pistettä.
+Kuvassa \ref{ws_ms} on tehty vastaavat mittaukset worksite-pilvelle. Oranssin viivan kuvaamassa visualisointitavassa on yleiskuvapuskurissa puun viisi ylintä kerrosta, 1862 solmua ja 481 663 pistettä.
 
 \begin{figure}
     \subfloat[]{

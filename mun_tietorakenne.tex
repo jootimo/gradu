@@ -1,6 +1,6 @@
 \section{Pistepilven visualisointi sisäkkäispistepuilla}\label{mun}
 
-Luvussa \ref{usecase} todettiin Scheiblauerin ja Schützin ehdottamien sisäkkäispistepuiden soveltuvan laitossuunnitteluohjelmistossa käytettävän pistepilvivisualisoijan tarpeisiin. Sisäkkäispistepuiden rakenne mahdollistaa seuraavaksi esiteltävän yksinkertaisen tekniikan pistedatan kompressioon. Tämän jälkeen esitellään algoritmeja sisäkkäispistepuun rakentamiseen, renderöintiin ja pisteiden valitsemiseen.
+Luvussa \ref{usecase} todettiin Scheiblauerin ja Schützin ehdottamien sisäkkäispistepuiden soveltuvan laitossuunnitteluohjelmistossa käytettävän pistepilvivisualisoijan tarpeisiin. Sisäkkäispistepuiden rakenne mahdollistaa seuraavaksi esiteltävän yksinkertaisen tekniikan pistedatan kompressioon. Tämän jälkeen esitellään algoritmeja sisäkkäispistepuun rakentamiseen, visualisointiin ja pisteiden valitsemiseen.
 
 \subsection{Pistedatan esitysmuoto}\label{kompressio}
 
@@ -40,7 +40,7 @@ struct Point \{\\
 
 \noindent Kun solun indeksi tallennetaan etumerkittömänä nelitavuisena kokonaislukuna ja lisätään loppuun yksi pakkaustavu, tiivistyy piste kahdeksantavuiseksi. Näin miljardi pistettä vaatisi enää 8 gigatavua muistia. 
 
-Esitysmuotoa voidaan tiivistää vielä tästäkin. Pisteen etäisyyttä suhteessa ruudukkoon voidaan esittää kolmella tavulla niin, että jokainen tavu kuvaa koordinaattiakselien suuntaisten askelten määrää ruudusta 0 lähtien. Yhden tavun esittämä enimmäisarvo on 255, joten ruudukossa voi olla enintään $255^3=16581375$ solua. Tällainen kompressio tuo toki pistepilveen epätarkkuutta, johon palataan pian.
+Esitysmuotoa voidaan tiivistää vielä tästäkin. Pisteen etäisyyttä suhteessa ruudukkoon voidaan esittää kolmella tavulla niin, että jokainen tavu kuvaa koordinaattiakselien suuntaisten askelten määrää ruudusta 0 lähtien. Yhden tavun esittämä enimmäisarvo on 255, joten ruudukossa voi olla enintään $255^3$ solua. Tällainen kompressio tuo toki pistepilveen epätarkkuutta, johon palataan pian.
 
 Usein laitossuunnittelussa käytetyissä laserkeilaimissa ei käytetä värikameraa antamaan pisteille värejä, vaan väri-informaatio johdetaan keilaimeen heijastuvan valon määrästä. Tämä arvo normalisoidaan yleensä välille $[0,255]$, josta saadaan jokin harmaan sävy. Tällaisissa pistepilvissä on siis turha tallentaa jokaiselle pisteelle \texttt{r}, \texttt{g} ja \texttt{b} -arvoja, kun vain yksi arvo riittäisi. Näin piste voidaan esittää muodossa 
 
@@ -67,15 +67,15 @@ Kun pisteen tarkka sijainti unohdetaan ja se ilmaistaan suhteessa ruudukkoon, sy
     \epsilon = \frac{a \sqrt{3}}{2}.      
 \end{equation}
 
-Vaatimus \ref{vaatimus:virhe} esitti virheen enimmäissuuruudeksi yhtä millimetriä. Oktettipuu jakaa rajauslaatikon sivun kahtia joka tasolla ja ruudukko sen edelleen pieniin soluihin. Jos oletetaan esimerkiksi pistepilven rajauslaatikko kuutioksi, jonka sivun pituus on sata metriä ja ruudukon sisältävän Scheiblauerin ja Schützin käyttämää 128 solua jokaiseen koordinaattiakselin suuntaan, saavutetaan puun tasolla 11 ruudukko, jonka solun sivun pituus on $a = \frac{100m/2^{10}}{128} \approx 0,763mm$. Tällaisessa ruudukossa enimmäisvirhe on $\frac{0,763mm \cdot \sqrt{3}}{2} \approx 0,661mm$, joten kaikki tähän ruudukkoon lisätyt pisteet täyttävät vaatimuksen \ref{vaatimus:virhe}. Tämä ei tarkoita sitä, että puu voisi sisältää pisteitä vain tasolle 11 ja sitä syvemmälle. Pisteitä voi hyväksyä suuriinkin soluihin, jos ne ovat sattuvat osumaan tarpeeksi lähelle sen keskipistettä. Käytännössä suurissa pistepilvissä on pisteitä yleensä niin tiheästi, että puun ylimmillekin tasoille tulee tallennetuksi pisteitä.
+Vaatimus \ref{vaatimus:virhe} esitti virheen enimmäissuuruudeksi yhtä millimetriä. Oktettipuu jakaa rajauslaatikon sivun kahtia joka tasolla ja ruudukko sen edelleen pieniin soluihin. Jos oletetaan esimerkiksi pistepilven rajauslaatikko kuutioksi, jonka sivun pituus on sata metriä ja ruudukon sisältävän Scheiblauerin ja Schützin käyttämää 128 solua jokaiseen koordinaattiakselin suuntaan, saavutetaan puun tasolla 11 ruudukko, jonka solun sivun pituus on $a = \frac{100m/2^{10}}{128} \approx 0,763mm$. Tällaisessa ruudukossa enimmäisvirhe on $\frac{0,763mm \cdot \sqrt{3}}{2} \approx 0,661mm$, joten kaikki tähän ruudukkoon lisätyt pisteet täyttävät vaatimuksen \ref{vaatimus:virhe}. Tämä ei tarkoita sitä, että puu voisi sisältää pisteitä vain tasolle 11 ja sitä syvemmälle. Pisteitä voi hyväksyä suuriinkin soluihin, jos ne sattuvat osumaan tarpeeksi lähelle sen keskipistettä. Käytännössä suurissa pistepilvissä on pisteitä yleensä niin tiheästi, että puun ylimmillekin tasoille tulee tallennetuksi pisteitä.
 
-Pisteiden sijainnin suhteellinen esitysmuoto nopeuttaa myös pistepilvien käsittelyä. Laitossuunnittelussa pistepilveä joudutaan usein sovellukseen latauksen jälkeen liikuttamaan ja skaalaamaan, jotta se istuisi hyvin 3d-malliin. Jos pisteisiin olisi tallennettu absoluuttinen sijainti, jouduttaisiin pistepilveä tallennettaessa uudelleenkirjoittamaan kaikki pisteet käyttäjän määrittämällä transformaatiomatriisilla kerrottuna. Edellä kuvatulla esitysmuodolla transformaatio täytyy suorittaa vain oktettipuun solmujen rajauslaatikoilla, joista tiivistetyn pisteen sijainti johdetaan. Tämä johtaa merkittävään parannukseen käyttökokemuksessa, sillä satojen miljoonien pisteiden kirjoittaminen levylle kestää useita minuutteja.
+Pisteiden sijainnin suhteellinen esitysmuoto nopeuttaa myös pistepilvien käsittelyä. Laitossuunnittelussa pistepilveä joudutaan usein sovellukseen latauksen jälkeen liikuttamaan ja skaalaamaan, jotta se istuisi hyvin 3d-malliin. Jos pisteisiin olisi tallennettu absoluuttinen sijainti, jouduttaisiin pistepilveä tallennettaessa uudelleenkirjoittamaan kaikki pisteet käyttäjän määrittämällä transformaatiomatriisilla kerrottuna. Edellä kuvatulla esitysmuodolla transformaatio täytyy suorittaa vain oktettipuun solmujen rajauslaatikoilla, joista tiivistetyn pisteen sijainti johdetaan. Tämä johtaa merkittävään parannukseen käyttökokemuksessa, sillä satojen miljoonien pisteiden kirjoittaminen levylle voi kestää useita minuutteja.
 
 \subsection{Tietorakenteen rakentaminen}
 
 %Edellä todettiin sisäkkäispistepuiden sopivan pistepilvien käsittelyyn käytettäväksi tietorakenteeksi laitossuunnitteluohjelmistossa ja ehdotettiin pisteille kompaktimpaa esitysmuotoa. Käydään nyt läpi puun rakentamiseen käytettyjä algoritmeja.
 
-Edellä esitellyn oktettipuun rakentaminen suoritetaan kahdessa vaiheessa. Ensin käydään läpi kaikki syötteenä annettujen laserkeilausten piseet ja selvitetään niille rajauslaatikko. Tämän jälkeen luodaan tyhjä juurisolmu, jonka rajauslaatikkona toimii äsken laskettu, kaikki pisteet sisältävä tila. Nyt syötepisteet voidaan lisätä yksitellen juurisolmuun, joka syöttää ne tarvittaessa edelleen lapsisolmuilleen. Rakentamisen ylintä tasoa on kuvattu algoritmissa \ref{alg:rakenna}.
+Edellä esitellyn oktettipuun rakentaminen suoritetaan kahdessa vaiheessa. Ensin käydään läpi kaikki syötteenä annettujen laserkeilausten pisteet ja selvitetään niille rajauslaatikko. Tämän jälkeen luodaan tyhjä juurisolmu, jonka rajauslaatikkona toimii äsken laskettu, kaikki pisteet sisältävä tila. Nyt syötepisteet voidaan lisätä yksitellen juurisolmuun, joka syöttää ne tarvittaessa edelleen lapsisolmuilleen. Rakentamisen ylintä tasoa on kuvattu algoritmissa \ref{alg:rakenna}.
 
 \begin{algorithm}[!h]
     \caption{RakennaOktettipuu}
@@ -121,7 +121,7 @@ struct Node \{\\
 
 \noindent Nelitavuisilla liukuluvuilla ja kokonaisluvuilla vaatii solmu siis tallennustilaa $33 + d$ tavua, missä $d$ on solmun syvyys puussa.
 
-Edellä kuvattu rakennusalgoritmi pitää koko oktettipuun muistissa ennen kuin pisteet kirjoitetaan levylle. Massiivisten pistepilvien tapauksessa keskusmuisti saattaa täyttyä vaikka pilveä olisi harvennettu ja pisteitä kompressoitu. Muisin täyttyessä käyttöjärjestelmä alkaa pitää osaa prosessin muistiavaruudesta kiintolevyllä sivutuksen \engl{paging} avulla \cite{os}. Jatkotutkimuksen aiheeksi jää selvittää, onko nopeampaa antaa käyttöjärjestelmän siirtää sivuja kiintolevylle, vai esimerkiksi tallentaa ensin pisteitä väliaikaisiin tiedostoihin niiden lisäysjärjestykessä, josta ne kopioidaan oikeassa järjestyksessä lopulliseen tiedostoon. 
+Edellä kuvattu rakennusalgoritmi pitää koko oktettipuun muistissa ennen kuin pisteet kirjoitetaan levylle. Massiivisten pistepilvien tapauksessa keskusmuisti saattaa täyttyä vaikka pilveä olisi harvennettu ja pisteet esitetty tiiviimmässä muodossa. Muistin täyttyessä käyttöjärjestelmä alkaa pitää osaa prosessin muistiavaruudesta kiintolevyllä sivutuksen \engl{paging} avulla \cite{os}. Jatkotutkimuksen aiheeksi jää selvittää, onko nopeampaa antaa käyttöjärjestelmän siirtää sivuja kiintolevylle, vai esimerkiksi tallentaa ensin pisteitä väliaikaisiin tiedostoihin niiden lisäysjärjestykessä, mistä ne kopioidaan oikeassa järjestyksessä lopulliseen tiedostoon. 
 
 \subsection{Visualisointi}\label{render}
 
@@ -161,23 +161,23 @@ Algoritmi \ref{alg:render} suorittaa pistepilvelle näkyvyyskarsintaa \engl{visi
 
 Yksityiskohtien karsinta on suosittu nopeutustekniikka tietokonegrafiikassa. Ajatuksena on visualisoida vain tärkeimmät objektit ja jättää kaukana olevat tai pienet objektit käsittelemättä, jotta ruudunpäivitystaajuus pysyy interaktiivisena. Yksinkertainen tapa karsia yksityiskohtia on järjestää objektit niiden kuvaruudulle projisoidun koon mukaan ja piirtää niitä tiettyyn rajaan asti, tai kunnes aika loppuu kesken. Akenine-Möller et al. \cite{rrr} esittävät kuvaruudulle projisoidun objektin koon arviolle kaavaa 
 \begin{equation}
-    a = \pi (\frac{nr}{\mathbf{d} \cdot (\mathbf{c}-\mathbf{v})})^2,
+    a = \pi \left(\frac{nr}{\mathbf{d} \cdot (\mathbf{c}-\mathbf{v})}\right)^2,
 \end{equation} jossa $n$ on katselupisteen etäisyys kuvatasosta, $r$ objektin rajauspallon säde ja $\mathbf{c}$ keskipiste, $\mathbf{d}$ on normalisoitu katsomissuunta, ja $\mathbf{v}$ katselupiste. \cite{mikko}
 
-Mikko Yllikäinen huomautti pro gradu -tutkielmassaan \cite{mikko}, ettei tarkkaa arvioita objektien koosta kannata selvittää, jos halutaan selville vain suuruusjärjestys. Yllikäinen yksinkertaistaa kaavan muotoon 
+Mikko Yllikäinen huomautti pro gradu -tutkielmassaan \cite{mikko}, ettei tarkkaa arvioita objektien koosta tarvitse selvittää, jos halutaan selville vain suuruusjärjestys. Yllikäinen yksinkertaistaa kaavan muotoon 
 \begin{equation}
     \begin{split}
     a & = \frac{r}{\mathbf{d} \cdot ( \mathbf{c} - \mathbf{v} )}\\
     & \approx \frac{r}{\sqrt{(c_x-v_x)^2 + (c_y-v_y)^2 + (c_z - v_z)^2}}\\
-    & \propto \frac{r}{(c_x-v_x)^2 + (c_y-v_y)^2 + (c_z - v_z)^2}.    
+    & \approx \frac{r}{(c_x-v_x)^2 + (c_y-v_y)^2 + (c_z - v_z)^2}.    
     \end{split}
 \end{equation}
- Yllikäinen nimittää tällä kaavalla muodostetu suuruusjärjestyksen käyttämistä yksityiskohtien karsinnassa kontribuutiokarsinnaksi \engl{contribution culling}. On huomattava, että tällainen karsinta ei ole mahdollista paralleliprojektiomaisemissa, joissa katseluetäisyys ei vaikuta objektien kokoon. \cite{mikko}
+ Yllikäinen nimittää tällä kaavalla muodostetun suuruusjärjestyksen käyttämistä yksityiskohtien karsinnassa kontribuutiokarsinnaksi \engl{contribution culling}. On huomattava, että tällainen karsinta on tarkoitettu käytettäväksi perspektiiviprojektiota käyttävissä maisemissa. Paralleeliprojektiomaisemissa katseluetäisyys ei vaikuta objektien kokoon. \cite{mikko}
 
 
 \subsection{Pisteiden valitseminen}
 
-Yksittäisten pisteiden valitseminen pistepilvestä on hyvin raskas operaatio, jos pisteet eivät ole hierarkisessa tietorakenteessa. Oktettipuuta käytettäessä kaikkia pisteitä ei tarvitse kuitenkaan käydä läpi. Käyttäjän valitessa hiirellä piste ammutaan kamerasta säde kursorin projisoidun sijainnin läpi pistepilveen. Nyt pisteitä tarvitsee etsiä vain niistä oktettipuun solmuista, joihin säde osuu. Yksinkertaisimmillaan voidaan valita sädettä lähinnä oleva piste. Tällöin valituksi saattaisi kuitenkin tulla muukalaispiste, joka sattuu olemaan juuri kameran edessä. Yksinkertainen tapa välttää muukalaispisteen valitsemista olisi hylätä sellaiset puun solmut, joissa säde osuu vain yhteen tai muutamaan pisteeseen. Toinen vaihtoehto olisi kerätä useita kandidaattipisteitä ja hylätä varmuuden vuoksi muutama kursoria lähinnä oleva piste.
+Yksittäisten pisteiden valitseminen pistepilvestä on hyvin raskas operaatio, jos pisteet eivät ole hierarkisessa tietorakenteessa. Oktettipuuta käytettäessä kaikkia pisteitä ei tarvitse kuitenkaan käydä läpi. Käyttäjän valitessa hiirellä pisteen ammutaan kamerasta säde kursorin projisoidun sijainnin läpi pistepilveen. Nyt pisteitä tarvitsee etsiä vain niistä oktettipuun solmuista, joihin säde osuu. Yksinkertaisimmillaan voidaan valita sädettä lähinnä oleva piste. Tällöin valituksi saattaisi kuitenkin tulla häiriöstä aiheutunut poikkeava piste, joka sattuu olemaan juuri kameran edessä. Yksinkertainen tapa välttää tällaisen pisteen valitseminen olisi hylätä sellaiset puun solmut, joissa säteen lähellä on vain yksi tai muutama piste. Toinen vaihtoehto olisi kerätä useita kandidaattipisteitä ja hylätä varmuuden vuoksi muutama katselupistettä lähinnä oleva piste.
 
 %\begin{figure}
 %    \centering

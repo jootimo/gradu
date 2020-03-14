@@ -4,11 +4,13 @@
 \Output{Pisteet sisältävän oktettipuun juurisolmu $s$}
 
 \kommentti{Selvitetään ensin pilvien rajauslaatikkojen unioni}
+
 $L \gets$ tyhjä rajauslaatikko\\
 \For{pistepilvi $pc \in P$} {
     \For{piste $p \in pc$} {
-        \If{$p \cap L = \emptyset$}{
-            $L \gets L \cup p$
+        \If{$p$ on laatikon $L$ ulkopuolella}{
+            \kommentti{Kasvata laatikkoa $L$ niin, että se sisältää pisteen $p$}
+            $L \gets$ bbox($L,p$)
         }
     }
 }

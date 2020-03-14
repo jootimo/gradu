@@ -1,6 +1,6 @@
 \tdplotsetmaincoords{60}{110}
 \pgfmathsetmacro{\rvec}{.8}
-\pgfmathsetmacro{\thetavec}{30}
+\pgfmathsetmacro{\thetavec}{40}
 \pgfmathsetmacro{\phivec}{60}
 \begin{tikzpicture}[scale=5,tdplot_main_coords]
     \coordinate (O) at (0,0,0);
@@ -13,6 +13,6 @@
     \draw[dashed, color=red] (P) -- (Pxy);
     \tdplotdrawarc{(O)}{0.2}{0}{\phivec}{anchor=north}{$\phi$}
     \tdplotsetthetaplanecoords{\phivec}
-    \tdplotdrawarc[tdplot_rotated_coords]{(O)}{0.25}{75}%
+    \tdplotdrawarc[tdplot_rotated_coords]{(O)}{0.25}{0}%
         {\thetavec}{anchor=south west}{$\theta$}
 \end{tikzpicture}
